@@ -15,47 +15,47 @@ export function SwapSheet({ currentExerciseId, workoutType, onSelect, onClose }:
   return (
     <div className="fixed inset-0 z-50 flex items-end">
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-charcoal/40 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-retro-brown/50 backdrop-blur-sm" onClick={onClose} />
 
       {/* Sheet */}
-      <div className="animate-slide-up relative w-full bg-white rounded-t-3xl p-5 pb-10 max-h-[60vh] overflow-y-auto shadow-2xl">
-        <div className="w-12 h-1.5 bg-cream-dark rounded-full mx-auto mb-5" />
-        <h3 className="text-lg font-bold text-charcoal mb-4">Swap exercise</h3>
+      <div className="animate-slide-up relative w-full bg-retro-white rounded-t-2xl max-h-[60vh] overflow-hidden shadow-2xl">
+        <div className="retro-stripes" />
+        <div className="p-5 pb-10 overflow-y-auto max-h-[calc(60vh-6px)]">
+          <h3 className="font-display text-2xl text-retro-brown tracking-wider mb-4">SWAP EXERCISE</h3>
 
-        {options.length === 0 ? (
-          <p className="text-gray-warm text-center py-8">No alternatives available</p>
-        ) : (
-          <div className="space-y-2">
-            {options.map((opt) => {
-              const exercise = exerciseDB.find((e) => e.id === opt);
-              if (!exercise) return null;
-              return (
-                <button
-                  key={opt}
-                  onClick={() => onSelect(opt)}
-                  className="w-full flex items-center gap-3 p-4 rounded-2xl hover:bg-cream-dark active:scale-[0.98] transition-all text-left min-h-[56px] bg-cream/50"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-cream-dark flex items-center justify-center">
-                    <span className="text-xl">{exercise.emoji}</span>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-charcoal">{exercise.name}</p>
-                    <p className="text-xs text-gray-warm mt-0.5">
-                      {exercise.muscleGroups.join(', ')}
-                    </p>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        )}
+          {options.length === 0 ? (
+            <p className="text-retro-warm text-center py-8 font-medium">No alternatives available</p>
+          ) : (
+            <div className="space-y-2">
+              {options.map((opt) => {
+                const exercise = exerciseDB.find((e) => e.id === opt);
+                if (!exercise) return null;
+                return (
+                  <button
+                    key={opt}
+                    onClick={() => onSelect(opt)}
+                    className="w-full flex items-center gap-3 p-4 rounded-xl active:scale-[0.98] transition-all text-left min-h-[56px] border border-retro-cream-dark hover:border-retro-blue"
+                  >
+                    <span className="text-2xl">{exercise.emoji}</span>
+                    <div>
+                      <p className="font-bold text-retro-brown">{exercise.name}</p>
+                      <p className="text-xs text-retro-warm font-medium mt-0.5">
+                        {exercise.muscleGroups.join(', ')}
+                      </p>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          )}
 
-        <button
-          onClick={onClose}
-          className="w-full mt-5 py-3.5 bg-cream-dark text-charcoal rounded-xl font-bold active:scale-95 transition-all min-h-[44px]"
-        >
-          Cancel
-        </button>
+          <button
+            onClick={onClose}
+            className="w-full mt-5 py-3.5 bg-retro-cream-dark text-retro-brown rounded-lg font-bold active:scale-95 transition-all min-h-[44px] tracking-wide"
+          >
+            CANCEL
+          </button>
+        </div>
       </div>
     </div>
   );

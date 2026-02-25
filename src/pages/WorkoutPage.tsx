@@ -41,7 +41,7 @@ export function WorkoutPage() {
   if (loading) {
     return (
       <div className="flex-1 flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-coral/30 border-t-coral rounded-full animate-spin" />
+        <div className="w-10 h-10 border-4 border-retro-red/30 border-t-retro-red rounded-full animate-spin" />
       </div>
     );
   }
@@ -49,8 +49,8 @@ export function WorkoutPage() {
   if (!session || !template) {
     return (
       <div className="flex-1 flex items-center justify-center p-6">
-        <p className="text-gray-warm">Workout not found.</p>
-        <button onClick={() => navigate('/')} className="text-coral underline ml-2">
+        <p className="text-retro-warm">Workout not found.</p>
+        <button onClick={() => navigate('/')} className="text-retro-red underline ml-2 font-bold">
           Go back
         </button>
       </div>
@@ -59,11 +59,11 @@ export function WorkoutPage() {
 
   if (showCompletion) {
     return (
-      <div className="flex-1 flex items-center justify-center p-6 bg-gradient-to-b from-cream to-teal/10">
+      <div className="flex-1 flex items-center justify-center p-6 bg-retro-cream">
         <div className="text-center animate-pop-in">
-          <p className="text-7xl mb-5">🎉</p>
-          <p className="text-3xl font-bold text-coral">Workout complete!</p>
-          <p className="text-gray-warm mt-3 text-lg">Great job!</p>
+          <p className="text-7xl mb-5">🏆</p>
+          <p className="font-display text-5xl text-retro-red tracking-wide">DONE!</p>
+          <p className="text-retro-warm mt-3 font-bold text-lg">Great work.</p>
         </div>
       </div>
     );
@@ -72,35 +72,34 @@ export function WorkoutPage() {
   return (
     <div className="flex-1 pb-24">
       {/* Header */}
-      <div className="sticky top-0 z-10">
-        <div className="bg-gradient-to-r from-coral to-coral-light px-4 pt-3 pb-4 shadow-md">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={() => navigate(-1)}
-              className="text-white/90 text-sm min-h-[44px] min-w-[44px] flex items-center font-medium"
-            >
-              ← Back
-            </button>
-            <div className="text-center">
-              <p className="font-bold text-white">
-                {template.emoji} {template.name}
-              </p>
-            </div>
-            <div className="w-[44px]" />
+      <div className="bg-retro-blue px-4 pt-3 pb-4">
+        <div className="flex items-center justify-between">
+          <button
+            onClick={() => navigate(-1)}
+            className="text-white/80 text-sm min-h-[44px] min-w-[44px] flex items-center font-bold"
+          >
+            ← BACK
+          </button>
+          <div className="text-center">
+            <p className="font-display text-xl text-white tracking-wider">
+              {template.emoji} {template.name.toUpperCase()}
+            </p>
           </div>
-
-          {/* Progress bar */}
-          <div className="mt-3 bg-white/20 rounded-full h-2.5 overflow-hidden">
-            <div
-              className="bg-white h-full rounded-full transition-all duration-700 ease-out shadow-sm"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-          <p className="text-xs text-white/80 mt-1.5 text-center font-medium">
-            {completedCount} of {totalCount} exercises
-          </p>
+          <div className="w-[44px]" />
         </div>
+
+        {/* Progress bar */}
+        <div className="mt-3 bg-white/20 rounded-full h-3 overflow-hidden">
+          <div
+            className="bg-retro-gold h-full rounded-full transition-all duration-700 ease-out"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+        <p className="text-xs text-white/70 mt-1.5 text-center font-bold tracking-wide">
+          {completedCount} / {totalCount}
+        </p>
       </div>
+      <div className="retro-stripes" />
 
       {/* Exercise list */}
       <div className="p-4 space-y-3">
@@ -125,9 +124,9 @@ export function WorkoutPage() {
         <div className="fixed bottom-20 left-0 right-0 px-4 animate-slide-up">
           <button
             onClick={handleComplete}
-            className="w-full py-4 bg-gradient-to-r from-teal to-teal-light text-white rounded-2xl text-lg font-bold shadow-lg hover:shadow-xl active:scale-[0.97] transition-all duration-200"
+            className="w-full py-4 bg-retro-green text-white rounded-xl font-display text-2xl tracking-widest shadow-lg active:scale-[0.97] transition-all"
           >
-            Complete Workout! 🎉
+            COMPLETE! 🏆
           </button>
         </div>
       )}

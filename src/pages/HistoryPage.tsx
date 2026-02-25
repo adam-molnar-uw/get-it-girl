@@ -42,7 +42,7 @@ export function HistoryPage() {
   if (loading) {
     return (
       <div className="flex-1 flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-coral/30 border-t-coral rounded-full animate-spin" />
+        <div className="w-10 h-10 border-4 border-retro-red/30 border-t-retro-red rounded-full animate-spin" />
       </div>
     );
   }
@@ -52,8 +52,8 @@ export function HistoryPage() {
       <div className="flex-1 flex items-center justify-center p-6">
         <div className="text-center animate-pop-in">
           <p className="text-5xl mb-4">📋</p>
-          <p className="text-xl font-bold text-charcoal">No workouts yet</p>
-          <p className="text-gray-warm mt-2">Complete your first workout to see it here!</p>
+          <p className="font-display text-3xl text-retro-brown tracking-wide">NO HISTORY YET</p>
+          <p className="text-retro-warm mt-2 font-medium">Complete your first workout!</p>
         </div>
       </div>
     );
@@ -62,29 +62,30 @@ export function HistoryPage() {
   return (
     <div className="flex-1 pb-24">
       {/* Header */}
-      <div className="bg-gradient-to-br from-charcoal to-gray-warm px-5 pt-6 pb-5 rounded-b-[2rem] shadow-lg">
-        <h1 className="text-2xl font-bold text-white">History</h1>
-        <p className="text-white/70 text-sm mt-1">Your workout journey</p>
+      <div className="bg-retro-brown px-5 pt-6 pb-5">
+        <h1 className="font-display text-4xl text-white tracking-wide leading-none">HISTORY</h1>
+        <p className="text-white/50 text-xs font-bold uppercase tracking-widest mt-2">
+          Your workout journey
+        </p>
       </div>
+      <div className="retro-stripes" />
 
       <div className="px-4 mt-5 space-y-6">
         {groups.map((group, gi) => (
           <div key={group.plan.id} className="animate-slide-up" style={{ animationDelay: `${gi * 80}ms` }}>
-            <h2 className="text-xs font-bold text-gray-warm uppercase tracking-widest mb-2 px-1">
-              Week {group.plan.weekNumber}
+            <h2 className="font-display text-xl text-retro-warm tracking-wider mb-2 px-1">
+              WEEK {group.plan.weekNumber}
             </h2>
             <div className="space-y-2">
               {group.entries.map((entry) => (
                 <div
                   key={entry.id}
-                  className="bg-white rounded-2xl p-4 shadow-md flex items-center gap-3"
+                  className="bg-retro-white rounded-xl p-4 border border-retro-cream-dark shadow-sm flex items-center gap-3"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-teal/10 flex items-center justify-center">
-                    <span className="text-xl">{entry.templateEmoji}</span>
-                  </div>
+                  <span className="text-2xl">{entry.templateEmoji}</span>
                   <div className="flex-1">
-                    <p className="font-bold text-charcoal">{entry.templateName}</p>
-                    <p className="text-xs text-gray-warm mt-0.5">
+                    <p className="font-bold text-retro-brown">{entry.templateName}</p>
+                    <p className="text-xs text-retro-warm font-medium mt-0.5">
                       {new Date(entry.completedAt).toLocaleDateString('en-US', {
                         weekday: 'short',
                         month: 'short',
@@ -94,9 +95,7 @@ export function HistoryPage() {
                       {entry.exerciseCount} exercises
                     </p>
                   </div>
-                  <div className="w-7 h-7 rounded-full bg-teal/10 flex items-center justify-center">
-                    <span className="text-teal text-sm">✓</span>
-                  </div>
+                  <span className="text-retro-green font-bold">✓</span>
                 </div>
               ))}
             </div>

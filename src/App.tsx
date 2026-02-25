@@ -9,7 +9,7 @@ import { SettingsPage } from './pages/SettingsPage';
 export default function App() {
   return (
     <HashRouter>
-      <div className="min-h-dvh flex flex-col bg-cream">
+      <div className="min-h-dvh flex flex-col bg-retro-cream">
         <Routes>
           <Route path="/" element={<TodayPage />} />
           <Route path="/week" element={<WeekPage />} />

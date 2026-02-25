@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  base: '/workout-pwa/',
+  base: '/get-it-girl/',
   plugins: [
     react(),
     tailwindcss(),
@@ -18,8 +18,8 @@ export default defineConfig({
         theme_color: '#FF6B6B',
         background_color: '#FFF8F0',
         display: 'standalone',
-        scope: '/workout-pwa/',
-        start_url: '/workout-pwa/',
+        scope: '/get-it-girl/',
+        start_url: '/get-it-girl/',
         icons: [
           {
             src: 'pwa-192x192.png',

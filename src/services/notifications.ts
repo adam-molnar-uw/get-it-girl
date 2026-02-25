@@ -24,7 +24,7 @@ export async function checkForReminder(hasUncompletedWorkout: boolean): Promise<
   if ('Notification' in window && Notification.permission === 'granted') {
     new Notification("Time to work out! 💪", {
       body: "You have a workout waiting for you today.",
-      icon: '/workout-pwa/pwa-192x192.png',
+      icon: '/get-it-girl/pwa-192x192.png',
     });
     localStorage.setItem('lastReminderDate', today);
   }

@@ -15,7 +15,7 @@ export default defineConfig({
         name: 'Get It Girl!',
         short_name: 'Get It Girl!',
         description: 'Your weekly workout guide',
-        theme_color: '#D64045',
+        theme_color: '#D97B3B',
         background_color: '#F5F0E8',
         display: 'standalone',
         scope: '/get-it-girl/',

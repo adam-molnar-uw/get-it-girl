@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  /* 70s Adicolor palette */
-  --color-retro-red: #D64045;
-  --color-retro-red-light: #E06367;
-  --color-retro-red-dark: #B53338;
-  --color-retro-blue: #3D5A80;
-  --color-retro-blue-light: #5B7FAA;
-  --color-retro-gold: #E8AA42;
-  --color-retro-gold-light: #F0C06A;
+  /* 70s Adicolor palette — Light Brown / Powder Blue / Orange */
+  --color-retro-red: #D97B3B;
+  --color-retro-red-light: #E49860;
+  --color-retro-red-dark: #BE6A2E;
+  --color-retro-blue: #7DA3B5;
+  --color-retro-blue-light: #A2C1CF;
+  --color-retro-gold: #A68B6B;
+  --color-retro-gold-light: #BFA285;
   --color-retro-green: #588157;
   --color-retro-green-light: #6B9B6A;
   --color-retro-cream: #F5F0E8;
@@ -18,9 +18,9 @@
   --color-retro-white: #FDFBF7;
 
   /* Aliases for easier use */
-  --color-primary: #D64045;
-  --color-accent: #3D5A80;
-  --color-gold: #E8AA42;
+  --color-primary: #D97B3B;
+  --color-accent: #7DA3B5;
+  --color-gold: #A68B6B;
   --color-success: #588157;
 
   --font-display: 'Bebas Neue', sans-serif;

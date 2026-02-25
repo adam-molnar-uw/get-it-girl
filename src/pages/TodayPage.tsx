@@ -16,7 +16,7 @@ const GREETINGS = [
 function getGreeting(): string {
   const hour = new Date().getHours();
   const prefix = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
-  const motivation = GREETINGS[Math.floor(Math.random() * GREETINGS.length)];
+  const motivation = GREETINGS[new Date().getDate() % GREETINGS.length];
   return `${prefix}! ${motivation}`;
 }
 
@@ -32,7 +32,7 @@ export function TodayPage() {
   if (loading) {
     return (
       <div className="flex-1 flex items-center justify-center">
-        <div className="text-coral text-lg">Loading...</div>
+        <div className="w-10 h-10 border-4 border-coral/30 border-t-coral rounded-full animate-spin" />
       </div>
     );
   }
@@ -56,54 +56,59 @@ export function TodayPage() {
   const restDay = isRestDay();
 
   return (
-    <div className="flex-1 p-4 pb-24 space-y-6">
-      {/* Greeting */}
-      <div>
-        <h1 className="text-2xl font-bold text-charcoal">{getGreeting()}</h1>
-        <p className="text-gray-warm mt-1">
+    <div className="flex-1 pb-24">
+      {/* Hero section with gradient */}
+      <div className="bg-gradient-to-br from-coral via-coral-light to-coral px-5 pt-6 pb-10 rounded-b-[2rem] shadow-lg">
+        <h1 className="text-2xl font-bold text-white">{getGreeting()}</h1>
+        <p className="text-white/80 mt-1 text-sm font-medium">
           Week {plan.weekNumber} &middot; {completedCount}/{totalCount} workouts done
         </p>
       </div>
 
-      {/* Progress Ring */}
-      <div className="flex justify-center">
-        <ProgressRing completed={completedCount} total={totalCount} />
+      {/* Progress Ring — overlapping the hero */}
+      <div className="flex justify-center -mt-16">
+        <div className="bg-cream rounded-full p-2 shadow-lg">
+          <ProgressRing completed={completedCount} total={totalCount} />
+        </div>
       </div>
 
-      {/* Rest day yoga suggestion */}
-      {restDay && remaining.length > 0 && (
-        <div className="bg-teal/10 rounded-2xl p-4 border border-teal/20">
-          <p className="text-teal-dark font-medium">
-            🧘 It's a rest day! How about a gentle yoga flow?
-          </p>
-        </div>
-      )}
+      <div className="px-4 mt-6 space-y-5">
+        {/* Rest day yoga suggestion */}
+        {restDay && remaining.length > 0 && (
+          <div className="animate-slide-up bg-gradient-to-r from-teal/10 to-teal/5 rounded-2xl p-4 border border-teal/20 shadow-sm">
+            <p className="text-teal-dark font-medium">
+              🧘 It's a rest day! How about a gentle yoga flow?
+            </p>
+          </div>
+        )}
 
-      {/* Remaining workouts */}
-      {remaining.length > 0 ? (
-        <div className="space-y-3">
-          <h2 className="text-lg font-semibold text-charcoal">
-            {restDay ? 'Upcoming workouts' : "Today's options"}
-          </h2>
-          {remaining.map((w) => {
-            const template = workoutTemplates.find((t) => t.id === w.templateId);
-            if (!template) return null;
-            return (
-              <WorkoutCard
-                key={w.index}
-                template={template}
-                onStart={() => navigate(`/workout/${plan.id}/${w.index}`)}
-              />
-            );
-          })}
-        </div>
-      ) : (
-        <div className="text-center py-8">
-          <p className="text-4xl mb-3">🎉</p>
-          <p className="text-xl font-bold text-coral">Week complete!</p>
-          <p className="text-gray-warm mt-1">Amazing work this week!</p>
-        </div>
-      )}
+        {/* Remaining workouts */}
+        {remaining.length > 0 ? (
+          <div className="space-y-3">
+            <h2 className="text-lg font-bold text-charcoal px-1">
+              {restDay ? 'Upcoming workouts' : "Today's options"}
+            </h2>
+            {remaining.map((w, i) => {
+              const template = workoutTemplates.find((t) => t.id === w.templateId);
+              if (!template) return null;
+              return (
+                <WorkoutCard
+                  key={w.index}
+                  template={template}
+                  onStart={() => navigate(`/workout/${plan.id}/${w.index}`)}
+                  delay={i * 60}
+                />
+              );
+            })}
+          </div>
+        ) : (
+          <div className="text-center py-10 animate-pop-in">
+            <p className="text-5xl mb-4">🎉</p>
+            <p className="text-2xl font-bold text-coral">Week complete!</p>
+            <p className="text-gray-warm mt-2">Amazing work this week!</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

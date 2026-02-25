@@ -4,15 +4,16 @@ interface ProgressRingProps {
   size?: number;
 }
 
-export function ProgressRing({ completed, total, size = 160 }: ProgressRingProps) {
-  const strokeWidth = 12;
+export function ProgressRing({ completed, total, size = 180 }: ProgressRingProps) {
+  const strokeWidth = 14;
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const progress = total > 0 ? completed / total : 0;
   const offset = circumference * (1 - progress);
+  const isDone = progress >= 1;
 
   return (
-    <div className="relative" style={{ width: size, height: size }}>
+    <div className={`relative ${isDone ? 'animate-glow' : ''}`} style={{ width: size, height: size }}>
       <svg width={size} height={size} className="-rotate-90">
         {/* Background ring */}
         <circle
@@ -29,20 +30,26 @@ export function ProgressRing({ completed, total, size = 160 }: ProgressRingProps
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke={progress >= 1 ? '#2EC4B6' : '#FF6B6B'}
+          stroke={isDone ? '#2EC4B6' : 'url(#progress-gradient)'}
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           strokeDasharray={circumference}
           strokeDashoffset={offset}
-          className="transition-all duration-700 ease-out"
+          className="transition-all duration-1000 ease-out"
         />
+        <defs>
+          <linearGradient id="progress-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FF6B6B" />
+            <stop offset="100%" stopColor="#FF8E8E" />
+          </linearGradient>
+        </defs>
       </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-3xl font-bold text-charcoal">
+      <div className={`absolute inset-0 flex flex-col items-center justify-center transition-transform duration-500 ${isDone ? 'scale-110' : ''}`}>
+        <span className="text-4xl font-bold text-charcoal leading-none">
           {completed}/{total}
         </span>
-        <span className="text-sm text-gray-warm">
-          {progress >= 1 ? 'Complete!' : 'workouts'}
+        <span className="text-sm text-gray-warm mt-1">
+          {isDone ? 'Complete!' : 'workouts'}
         </span>
       </div>
     </div>

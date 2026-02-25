@@ -42,7 +42,7 @@ export function SwapSheet({ currentExerciseId, workoutType, onSelect, onClose }:
                       {exercise.description && (
                         <p className="text-xs text-retro-brown/70 mt-0.5">{exercise.description}</p>
                       )}
-                      <p className="text-[10px] text-retro-warm font-medium mt-0.5 uppercase tracking-wide">
+                      <p className="text-xs text-retro-warm font-medium mt-0.5 uppercase tracking-wide">
                         {exercise.muscleGroups.join(' · ')}
                       </p>
                     </div>

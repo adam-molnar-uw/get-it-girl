@@ -27,7 +27,7 @@ export function BottomNav() {
               }
             >
               <span className="text-lg leading-none">{item.icon}</span>
-              <span className="text-[9px] font-bold tracking-[0.15em]">{item.label}</span>
+              <span className="text-[11px] font-bold tracking-[0.1em]">{item.label}</span>
             </NavLink>
           ))}
         </div>

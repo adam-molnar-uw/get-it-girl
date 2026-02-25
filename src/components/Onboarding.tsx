@@ -60,7 +60,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
       </div>
 
       {/* CTA */}
-      <div className="px-6 pb-10">
+      <div className="px-6 pb-10" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 2.5rem)' }}>
         {isLast ? (
           <button
             onClick={onComplete}

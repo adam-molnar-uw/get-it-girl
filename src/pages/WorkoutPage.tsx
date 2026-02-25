@@ -123,7 +123,7 @@ export function WorkoutPage() {
 
       {/* Complete button */}
       {allDone && (
-        <div className="fixed bottom-20 left-0 right-0 px-4 animate-slide-up">
+        <div className="fixed left-0 right-0 px-4 animate-slide-up" style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 5.5rem)' }}>
           <button
             onClick={handleComplete}
             className="w-full py-4 bg-retro-green text-white rounded-xl font-display text-2xl tracking-widest shadow-lg active:scale-[0.97] transition-all"

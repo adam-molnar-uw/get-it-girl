@@ -65,7 +65,7 @@ export function ExerciseRow({ exercise, sessionExercise, onToggle, onSwap }: Exe
           {!completed && (
             <button
               onClick={onSwap}
-              className="text-[10px] font-bold text-retro-warm uppercase tracking-wider hover:text-retro-red transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+              className="text-xs font-bold text-retro-warm uppercase tracking-wider hover:text-retro-red transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
             >
               SWAP
             </button>

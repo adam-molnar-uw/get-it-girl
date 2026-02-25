@@ -81,7 +81,7 @@ export function WeekPage() {
                         <button
                           key={name}
                           onClick={() => assignDay(i, w.assignedDay === dayIndex ? undefined : dayIndex)}
-                          className={`px-2 py-1.5 rounded text-[10px] font-bold tracking-wider transition-all ${
+                          className={`px-2 py-1.5 rounded text-xs font-bold tracking-wide transition-all ${
                             w.assignedDay === dayIndex
                               ? 'bg-retro-blue text-white'
                               : 'bg-retro-cream-dark text-retro-warm active:scale-95'

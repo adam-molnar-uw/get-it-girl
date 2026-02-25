@@ -39,6 +39,7 @@ export interface Exercise {
   workoutTypes: WorkoutType[];
   equipment: ('dumbbells' | 'bodyweight' | 'band')[];
   gifUrl?: string;
+  description?: string; // brief "how to" explanation
   cues: string[]; // form cues
   variations: ExerciseVariation[]; // harder versions (variation chain)
   isYoga?: boolean;

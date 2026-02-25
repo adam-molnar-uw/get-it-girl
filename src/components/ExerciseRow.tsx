@@ -73,9 +73,12 @@ export function ExerciseRow({ exercise, sessionExercise, onToggle, onSwap }: Exe
         </div>
       </div>
 
-      {/* Expanded image + all cues */}
+      {/* Expanded description + image + all cues */}
       {expanded && !completed && (
         <div className="px-4 pb-4 space-y-3">
+          {exercise.description && (
+            <p className="text-sm text-retro-brown leading-relaxed">{exercise.description}</p>
+          )}
           <ExerciseImage exerciseId={sessionExercise.exerciseId} />
           {exercise.cues.length > 1 && (
             <ul className="text-xs text-retro-warm space-y-1 pl-2">

@@ -39,8 +39,11 @@ export function SwapSheet({ currentExerciseId, workoutType, onSelect, onClose }:
                     <span className="text-2xl">{exercise.emoji}</span>
                     <div>
                       <p className="font-bold text-retro-brown">{exercise.name}</p>
-                      <p className="text-xs text-retro-warm font-medium mt-0.5">
-                        {exercise.muscleGroups.join(', ')}
+                      {exercise.description && (
+                        <p className="text-xs text-retro-brown/70 mt-0.5">{exercise.description}</p>
+                      )}
+                      <p className="text-[10px] text-retro-warm font-medium mt-0.5 uppercase tracking-wide">
+                        {exercise.muscleGroups.join(' · ')}
                       </p>
                     </div>
                   </button>

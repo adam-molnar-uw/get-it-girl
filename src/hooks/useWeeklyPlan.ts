@@ -16,49 +16,49 @@ export function useWeeklyPlan() {
   const [plan, setPlan] = useState<WeeklyPlan | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function loadOrGenerate() {
-      const weekId = getCurrentWeekId();
+  const loadOrGenerate = useCallback(async () => {
+    const weekId = getCurrentWeekId();
 
-      // Load or init progression
-      let progression = await getProgression();
-      if (!progression) {
-        progression = {
-          id: 'current',
-          currentWeek: 1,
-          startDate: new Date().toISOString(),
-        } satisfies ProgressionState;
-        await saveProgression(progression);
-      }
-
-      // Check if we need to advance the week
-      const startDate = new Date(progression.startDate);
-      const now = new Date();
-      const daysSinceStart = Math.floor((now.getTime() - startDate.getTime()) / 86400000);
-      const calculatedWeek = Math.max(1, Math.floor(daysSinceStart / 7) + 1);
-
-      if (calculatedWeek > progression.currentWeek) {
-        progression = { ...progression, currentWeek: calculatedWeek };
-        await saveProgression(progression);
-      }
-
-      // Load existing plan or generate new one
-      let existingPlan = await getWeeklyPlan(weekId);
-      if (!existingPlan) {
-        existingPlan = generateWeeklyPlan(progression.currentWeek);
-        await saveWeeklyPlan(existingPlan);
-      }
-
-      setPlan(existingPlan);
-      setLoading(false);
-
-      // Check for notifications
-      const hasUncompleted = existingPlan.workouts.some((w) => !w.completed);
-      checkForReminder(hasUncompleted);
+    // Load or init progression
+    let progression = await getProgression();
+    if (!progression) {
+      progression = {
+        id: 'current',
+        currentWeek: 1,
+        startDate: new Date().toISOString(),
+      } satisfies ProgressionState;
+      await saveProgression(progression);
     }
 
-    loadOrGenerate();
+    // Check if we need to advance the week
+    const startDate = new Date(progression.startDate);
+    const now = new Date();
+    const daysSinceStart = Math.floor((now.getTime() - startDate.getTime()) / 86400000);
+    const calculatedWeek = Math.max(1, Math.floor(daysSinceStart / 7) + 1);
+
+    if (calculatedWeek > progression.currentWeek) {
+      progression = { ...progression, currentWeek: calculatedWeek };
+      await saveProgression(progression);
+    }
+
+    // Load existing plan or generate new one
+    let existingPlan = await getWeeklyPlan(weekId);
+    if (!existingPlan) {
+      existingPlan = generateWeeklyPlan(progression.currentWeek);
+      await saveWeeklyPlan(existingPlan);
+    }
+
+    setPlan(existingPlan);
+    setLoading(false);
+
+    // Check for notifications
+    const hasUncompleted = existingPlan.workouts.some((w) => !w.completed);
+    checkForReminder(hasUncompleted);
   }, []);
+
+  useEffect(() => {
+    loadOrGenerate();
+  }, [loadOrGenerate]);
 
   const assignDay = useCallback(
     async (workoutIndex: number, day: number | undefined) => {
@@ -92,5 +92,10 @@ export function useWeeklyPlan() {
     [plan]
   );
 
-  return { plan, loading, assignDay, markCompleted };
+  const refresh = useCallback(async () => {
+    setLoading(true);
+    await loadOrGenerate();
+  }, [loadOrGenerate]);
+
+  return { plan, loading, assignDay, markCompleted, refresh };
 }

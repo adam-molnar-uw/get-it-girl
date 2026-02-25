@@ -1,6 +1,8 @@
 import { useWeeklyPlan } from '../hooks/useWeeklyPlan';
 import { ProgressRing } from '../components/ProgressRing';
 import { WorkoutCard } from '../components/WorkoutCard';
+import { PageTransition } from '../components/PageTransition';
+import { PullToRefresh } from '../components/PullToRefresh';
 import { workoutTemplates } from '../data/workout-templates';
 import { REST_DAYS } from '../types';
 import { useNavigate } from 'react-router-dom';
@@ -26,7 +28,7 @@ function isRestDay(): boolean {
 }
 
 export function TodayPage() {
-  const { plan, loading } = useWeeklyPlan();
+  const { plan, loading, refresh } = useWeeklyPlan();
   const navigate = useNavigate();
 
   if (loading) {
@@ -54,6 +56,8 @@ export function TodayPage() {
   const restDay = isRestDay();
 
   return (
+    <PageTransition>
+    <PullToRefresh onRefresh={refresh}>
     <div className="flex-1 pb-24">
       {/* Hero */}
       <div className="bg-retro-red px-5 pt-6 pb-12">
@@ -114,5 +118,7 @@ export function TodayPage() {
         )}
       </div>
     </div>
+    </PullToRefresh>
+    </PageTransition>
   );
 }

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useWorkoutSession } from '../hooks/useWorkoutSession';
 import { ExerciseRow } from '../components/ExerciseRow';
 import { SwapSheet } from '../components/SwapSheet';
+import { PageTransition } from '../components/PageTransition';
 import { exercises as exerciseDB } from '../data/exercises';
 import { workoutTemplates } from '../data/workout-templates';
 import type { WorkoutSessionExercise } from '../types';
@@ -70,6 +71,7 @@ export function WorkoutPage() {
   }
 
   return (
+    <PageTransition>
     <div className="flex-1 pb-24">
       {/* Header */}
       <div className="bg-retro-blue px-4 pt-3 pb-4">
@@ -144,5 +146,6 @@ export function WorkoutPage() {
         />
       )}
     </div>
+    </PageTransition>
   );
 }

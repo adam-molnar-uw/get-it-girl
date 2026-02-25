@@ -1,4 +1,5 @@
 import { useWeeklyPlan } from '../hooks/useWeeklyPlan';
+import { PageTransition } from '../components/PageTransition';
 import { workoutTemplates } from '../data/workout-templates';
 import { DAY_NAMES } from '../types';
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +19,7 @@ export function WeekPage() {
   const today = new Date().getDay();
 
   return (
+    <PageTransition>
     <div className="flex-1 pb-24">
       {/* Header */}
       <div className="bg-retro-blue px-5 pt-6 pb-5">
@@ -106,5 +108,6 @@ export function WeekPage() {
         </div>
       </div>
     </div>
+    </PageTransition>
   );
 }

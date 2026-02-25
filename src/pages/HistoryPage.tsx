@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getAllHistory, getAllWeeklyPlans } from '../db/repositories';
+import { PageTransition } from '../components/PageTransition';
 import type { WorkoutHistoryEntry, WeeklyPlan } from '../types';
 
 interface WeekGroup {
@@ -60,6 +61,7 @@ export function HistoryPage() {
   }
 
   return (
+    <PageTransition>
     <div className="flex-1 pb-24">
       {/* Header */}
       <div className="bg-retro-brown px-5 pt-6 pb-5">
@@ -103,5 +105,6 @@ export function HistoryPage() {
         ))}
       </div>
     </div>
+    </PageTransition>
   );
 }

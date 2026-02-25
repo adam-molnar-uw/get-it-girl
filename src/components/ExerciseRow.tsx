@@ -78,10 +78,7 @@ export function ExerciseRow({ exercise, sessionExercise, onToggle, onSwap }: Exe
       {/* Expanded image + all cues */}
       {expanded && !completed && (
         <div className="px-4 pb-4 space-y-3">
-          <ExerciseImage
-            exerciseId={sessionExercise.exerciseId}
-            className="w-full h-48"
-          />
+          <ExerciseImage exerciseId={sessionExercise.exerciseId} />
           {exercise.cues.length > 1 && (
             <ul className="text-xs text-gray-warm space-y-1 pl-2">
               {exercise.cues.map((cue, i) => (

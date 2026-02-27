@@ -120,6 +120,8 @@ Images come from [free-exercise-db](https://github.com/yuhonas/free-exercise-db)
 - [x] Page transition animations
 - [x] Pull-to-refresh on Today page
 - [x] Branded "GIG" app icons
+- [x] Exercise how-to descriptions (all 59)
+- [x] Mobile fixes: safe area insets for onboarding + complete button, font size bumps (nav labels, swap button, day chips)
 
 ### Potential Future Work
 - **Health profile / personalized routines** — cycle-aware training, injury filters, goal-based templates (deferred pending user consent)
@@ -130,3 +132,4 @@ Images come from [free-exercise-db](https://github.com/yuhonas/free-exercise-db)
 - **Streaks / stats** — motivational tracking ("3 weeks in a row!")
 - **Weekly summary card** — end-of-week recap
 - **More exercise image coverage** — yoga poses missing from free-exercise-db
+- **Mobile testing** — user hasn't sent screenshots yet; may have more visual issues on actual device

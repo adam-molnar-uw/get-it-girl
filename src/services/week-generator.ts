@@ -11,12 +11,12 @@ import type { WeeklyPlan, WeeklyPlanWorkout, WorkoutType } from '../types';
  * 6. Rotating: Cardio / HIIT / Pilates / Stretch / Recovery
  */
 
-const SLOT_TYPES: { type: WorkoutType; variant?: 'a' | 'b' | 'gym' }[] = [
+const SLOT_TYPES: { type: WorkoutType; preferredId?: string }[] = [
   { type: 'lower-body' },
   { type: 'upper-body' },
   { type: 'full-body' },
-  { type: 'yoga' },
-  { type: 'yoga' },
+  { type: 'yoga', preferredId: 'ashtanga-1' },
+  { type: 'yoga', preferredId: 'ashtanga-1' },
 ];
 
 const ROTATING_TYPES: WorkoutType[] = ['cardio', 'hiit', 'pilates', 'stretch', 'recovery'];
@@ -47,17 +47,23 @@ export function generateWeeklyPlan(programWeek: number, date: Date = new Date())
 
   // Slots 1-5: fixed types
   for (const slot of SLOT_TYPES) {
-    const candidates = workoutTemplates.filter((t) => t.type === slot.type);
+    // Use preferred template if specified, otherwise pick randomly
+    const preferred = slot.preferredId
+      ? workoutTemplates.find((t) => t.id === slot.preferredId)
+      : null;
 
+    if (preferred) {
+      workouts.push({ templateId: preferred.id, completed: false });
+      continue;
+    }
+
+    const candidates = workoutTemplates.filter((t) => t.type === slot.type);
     const template = candidates.length > 0
       ? pickRandom(candidates)
       : workoutTemplates.find((t) => t.type === slot.type);
 
     if (template) {
-      workouts.push({
-        templateId: template.id,
-        completed: false,
-      });
+      workouts.push({ templateId: template.id, completed: false });
     }
   }
 

@@ -18,94 +18,127 @@ export function WeekPage() {
 
   const today = new Date().getDay();
 
+  // Build a map of which days have workouts assigned/completed
+  const dayStatus = new Map<number, 'assigned' | 'completed'>();
+  plan.workouts.forEach((w) => {
+    if (w.assignedDay !== undefined) {
+      dayStatus.set(w.assignedDay, w.completed ? 'completed' : 'assigned');
+    }
+  });
+
   return (
     <PageTransition>
     <div className="flex-1 pb-24">
       {/* Header */}
-      <div className="bg-gradient-to-br from-dark-surface to-dark-card px-5 pt-6 pb-5">
-        <h1 className="font-display text-4xl text-lavender tracking-wide leading-none font-bold">
-          WEEK {plan.weekNumber}
+      <div className="px-5 pt-6 pb-2">
+        <h1 className="font-display text-3xl text-lavender font-bold leading-none">
+          Week {plan.weekNumber}
         </h1>
-        <p className="text-text-muted text-xs font-bold uppercase tracking-widest mt-2">
+        <p className="text-text-muted text-xs font-medium mt-1">
           Plan your workouts
         </p>
       </div>
-      <div className="retro-stripes" />
 
-      <div className="px-4 mt-5 space-y-5">
-        {/* 7-day grid */}
-        <div className="grid grid-cols-7 gap-1.5 text-center">
-          {DAY_NAMES.map((name, i) => (
-            <div
-              key={name}
-              className={`py-2.5 rounded-lg font-bold text-xs tracking-wider transition-all ${
-                i === today
-                  ? 'bg-peach text-dark-base shadow-md'
-                  : 'bg-dark-surface text-text-secondary border border-white/5'
-              }`}
-            >
-              {name.toUpperCase()}
-            </div>
-          ))}
-        </div>
-
-        {/* Workout list */}
-        <div className="space-y-3">
-          {plan.workouts.map((w, i) => {
-            const template = workoutTemplates.find((t) => t.id === w.templateId);
-            if (!template) return null;
+      {/* Calendar strip */}
+      <div className="px-5 py-4">
+        <div className="grid grid-cols-7 gap-2 text-center">
+          {DAY_NAMES.map((name, i) => {
+            const status = dayStatus.get(i);
+            const isToday = i === today;
 
             return (
-              <div
-                key={i}
-                className={`animate-slide-up glass-card overflow-hidden ${
-                  w.completed ? 'opacity-60' : ''
-                }`}
-                style={{ animationDelay: `${i * 50}ms` }}
-              >
-                <div className="p-4">
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">{template.emoji}</span>
-                    <div className="flex-1">
-                      <p className="font-bold text-text-primary text-[15px]">
-                        {template.name}
-                        {w.completed && <span className="text-mint ml-2">✓</span>}
-                      </p>
-                      <p className="text-xs text-text-secondary font-medium mt-0.5">{template.description}</p>
-                    </div>
-                  </div>
-
-                  <div className="mt-3 flex items-center gap-2">
-                    <div className="flex gap-1 flex-wrap flex-1">
-                      {DAY_NAMES.map((name, dayIndex) => (
-                        <button
-                          key={name}
-                          onClick={() => assignDay(i, w.assignedDay === dayIndex ? undefined : dayIndex)}
-                          className={`px-2 py-1.5 rounded text-xs font-bold tracking-wide transition-all ${
-                            w.assignedDay === dayIndex
-                              ? 'bg-lavender text-dark-base'
-                              : 'bg-white/5 text-text-secondary active:scale-95'
-                          }`}
-                        >
-                          {name.toUpperCase()}
-                        </button>
-                      ))}
-                    </div>
-
-                    {!w.completed && (
-                      <button
-                        onClick={() => navigate(`/workout/${plan.id}/${i}`)}
-                        className="ml-auto px-4 py-2.5 bg-peach text-dark-base rounded-xl font-display text-lg tracking-wider shadow-md active:scale-95 transition-all min-h-[44px] font-bold"
-                      >
-                        GO
-                      </button>
-                    )}
-                  </div>
+              <div key={name} className="flex flex-col items-center gap-1.5">
+                <span className={`text-[10px] font-bold tracking-wider ${
+                  isToday ? 'text-peach' : 'text-text-muted'
+                }`}>
+                  {name.toUpperCase()}
+                </span>
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
+                  isToday
+                    ? 'bg-peach text-dark-base'
+                    : status === 'completed'
+                    ? 'bg-mint/20 text-mint'
+                    : 'bg-white/5 text-text-secondary'
+                }`}>
+                  {status === 'completed' ? '✓' : i + 1}
                 </div>
+                {/* Dot indicator */}
+                <div className={`w-1.5 h-1.5 rounded-full ${
+                  status === 'completed'
+                    ? 'bg-mint'
+                    : status === 'assigned'
+                    ? 'bg-peach'
+                    : 'bg-transparent'
+                }`} />
               </div>
             );
           })}
         </div>
+      </div>
+
+      {/* Workout list */}
+      <div className="px-5 space-y-3 mt-2">
+        <h2 className="text-xs font-bold text-text-muted uppercase tracking-wider">
+          This week's workouts
+        </h2>
+
+        {plan.workouts.map((w, i) => {
+          const template = workoutTemplates.find((t) => t.id === w.templateId);
+          if (!template) return null;
+          return (
+            <div
+              key={i}
+              className={`animate-slide-up glass-card overflow-hidden ${
+                w.completed ? 'opacity-50' : ''
+              }`}
+              style={{ animationDelay: `${i * 50}ms` }}
+            >
+              <div className="p-4">
+                {/* Workout info */}
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="text-3xl">{template.emoji}</span>
+                  <div className="flex-1">
+                    <p className="font-display font-bold text-text-primary text-lg leading-tight">
+                      {template.name}
+                      {w.completed && <span className="text-mint ml-2">✓</span>}
+                    </p>
+                    <p className="text-xs text-text-secondary font-medium mt-0.5">
+                      {template.exercises.length} exercises · ~{template.exercises.length * 4} min
+                    </p>
+                  </div>
+                </div>
+
+                {/* Day assignment chips + GO */}
+                <div className="flex items-center gap-2">
+                  <div className="flex gap-1.5 flex-wrap flex-1">
+                    {DAY_NAMES.map((name, dayIndex) => (
+                      <button
+                        key={name}
+                        onClick={() => assignDay(i, w.assignedDay === dayIndex ? undefined : dayIndex)}
+                        className={`w-9 h-9 rounded-full text-[10px] font-bold tracking-wide transition-all flex items-center justify-center ${
+                          w.assignedDay === dayIndex
+                            ? 'bg-lavender text-dark-base'
+                            : 'bg-white/5 text-text-muted active:scale-95'
+                        }`}
+                      >
+                        {name.substring(0, 2).toUpperCase()}
+                      </button>
+                    ))}
+                  </div>
+
+                  {!w.completed && (
+                    <button
+                      onClick={() => navigate(`/workout/${plan.id}/${i}`)}
+                      className={`ml-auto px-5 py-2.5 bg-gradient-to-r from-peach-dark to-peach text-dark-base rounded-xl font-display text-base tracking-wider active:scale-95 transition-all min-h-[44px] font-bold`}
+                    >
+                      GO
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
     </PageTransition>

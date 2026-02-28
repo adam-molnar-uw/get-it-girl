@@ -48,12 +48,14 @@ export function HistoryPage() {
     );
   }
 
+  const totalWorkouts = groups.reduce((sum, g) => sum + g.entries.length, 0);
+
   if (groups.length === 0) {
     return (
       <div className="flex-1 flex items-center justify-center p-6">
         <div className="text-center animate-pop-in">
-          <p className="text-5xl mb-4">📋</p>
-          <p className="font-display text-3xl text-text-primary tracking-wide font-bold">NO HISTORY YET</p>
+          <p className="text-6xl mb-5">📋</p>
+          <p className="font-display text-2xl text-text-primary font-bold">No activity yet</p>
           <p className="text-text-secondary mt-2 font-medium">Complete your first workout!</p>
         </div>
       </div>
@@ -64,19 +66,36 @@ export function HistoryPage() {
     <PageTransition>
     <div className="flex-1 pb-24">
       {/* Header */}
-      <div className="bg-gradient-to-br from-dark-surface to-dark-card px-5 pt-6 pb-5">
-        <h1 className="font-display text-4xl text-mint tracking-wide leading-none font-bold">HISTORY</h1>
-        <p className="text-text-muted text-xs font-bold uppercase tracking-widest mt-2">
-          Your workout journey
+      <div className="px-5 pt-6 pb-2">
+        <h1 className="font-display text-3xl text-mint font-bold leading-none">Activity</h1>
+        <p className="text-text-muted text-xs font-medium mt-1">
+          {totalWorkouts} workout{totalWorkouts !== 1 ? 's' : ''} completed
         </p>
       </div>
-      <div className="retro-stripes" />
 
-      <div className="px-4 mt-5 space-y-6">
+      {/* Stats cards */}
+      <div className="px-5 py-4 grid grid-cols-3 gap-3">
+        <div className="glass-card p-3 text-center">
+          <p className="font-display text-2xl text-peach font-bold">{totalWorkouts}</p>
+          <p className="text-[10px] text-text-muted font-bold uppercase tracking-wider mt-0.5">Workouts</p>
+        </div>
+        <div className="glass-card p-3 text-center">
+          <p className="font-display text-2xl text-lavender font-bold">{groups.length}</p>
+          <p className="text-[10px] text-text-muted font-bold uppercase tracking-wider mt-0.5">Weeks</p>
+        </div>
+        <div className="glass-card p-3 text-center">
+          <p className="font-display text-2xl text-mint font-bold">
+            {groups.reduce((sum, g) => sum + g.entries.reduce((s, e) => s + e.exerciseCount, 0), 0)}
+          </p>
+          <p className="text-[10px] text-text-muted font-bold uppercase tracking-wider mt-0.5">Exercises</p>
+        </div>
+      </div>
+
+      <div className="px-5 space-y-6">
         {groups.map((group, gi) => (
           <div key={group.plan.id} className="animate-slide-up" style={{ animationDelay: `${gi * 80}ms` }}>
-            <h2 className="font-display text-xl text-text-secondary tracking-wider mb-2 px-1 font-bold">
-              WEEK {group.plan.weekNumber}
+            <h2 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2">
+              Week {group.plan.weekNumber}
             </h2>
             <div className="space-y-2">
               {group.entries.map((entry) => (
@@ -86,8 +105,8 @@ export function HistoryPage() {
                 >
                   <span className="text-2xl">{entry.templateEmoji}</span>
                   <div className="flex-1">
-                    <p className="font-bold text-text-primary">{entry.templateName}</p>
-                    <p className="text-xs text-text-secondary font-medium mt-0.5">
+                    <p className="font-bold text-text-primary text-sm">{entry.templateName}</p>
+                    <p className="text-xs text-text-muted font-medium mt-0.5">
                       {new Date(entry.completedAt).toLocaleDateString('en-US', {
                         weekday: 'short',
                         month: 'short',
@@ -97,7 +116,9 @@ export function HistoryPage() {
                       {entry.exerciseCount} exercises
                     </p>
                   </div>
-                  <span className="text-mint font-bold">✓</span>
+                  <div className="w-8 h-8 rounded-full bg-mint/20 flex items-center justify-center">
+                    <span className="text-mint text-sm font-bold">✓</span>
+                  </div>
                 </div>
               ))}
             </div>

@@ -4,47 +4,46 @@ interface ProgressRingProps {
   size?: number;
 }
 
-export function ProgressRing({ completed, total, size = 180 }: ProgressRingProps) {
-  const strokeWidth = 14;
-  const radius = (size - strokeWidth) / 2;
-  const circumference = 2 * Math.PI * radius;
+export function ProgressRing({ completed, total }: ProgressRingProps) {
   const progress = total > 0 ? completed / total : 0;
-  const offset = circumference * (1 - progress);
   const isDone = progress >= 1;
 
   return (
-    <div className={`relative ${isDone ? 'animate-glow' : ''}`} style={{ width: size, height: size }}>
-      <svg width={size} height={size} className="-rotate-90">
-        {/* Background ring */}
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          fill="none"
-          stroke="rgba(255,255,255,0.08)"
-          strokeWidth={strokeWidth}
-        />
-        {/* Progress ring */}
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          fill="none"
-          stroke={isDone ? '#A8E6CF' : '#FFAD9E'}
-          strokeWidth={strokeWidth}
-          strokeLinecap="round"
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-          className="transition-all duration-1000 ease-out"
-        />
-      </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="font-display text-5xl text-text-primary leading-none font-bold">
+    <div className={`w-full ${isDone ? 'animate-glow' : ''}`}>
+      {/* Stats row */}
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-sm font-bold text-text-secondary tracking-wide">
+          WEEKLY PROGRESS
+        </span>
+        <span className={`font-display text-lg font-bold ${isDone ? 'text-mint' : 'text-peach'}`}>
           {completed}/{total}
         </span>
-        <span className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-1">
-          {isDone ? 'Complete' : 'Workouts'}
-        </span>
+      </div>
+
+      {/* Progress bar */}
+      <div className="h-3 bg-white/8 rounded-full overflow-hidden">
+        <div
+          className={`h-full rounded-full transition-all duration-1000 ease-out ${
+            isDone
+              ? 'bg-gradient-to-r from-mint-dark to-mint'
+              : 'bg-gradient-to-r from-peach-dark to-peach'
+          }`}
+          style={{ width: `${Math.max(progress * 100, 2)}%` }}
+        />
+      </div>
+
+      {/* Workout dots */}
+      <div className="flex items-center gap-2 mt-3 justify-center">
+        {Array.from({ length: total }, (_, i) => (
+          <div
+            key={i}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              i < completed
+                ? isDone ? 'bg-mint' : 'bg-peach'
+                : 'bg-white/10'
+            }`}
+          />
+        ))}
       </div>
     </div>
   );

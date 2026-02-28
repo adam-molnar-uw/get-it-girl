@@ -8,6 +8,17 @@ import { exercises as exerciseDB } from '../data/exercises';
 import { workoutTemplates } from '../data/workout-templates';
 import type { WorkoutSessionExercise } from '../types';
 
+const TYPE_GRADIENT: Record<string, string> = {
+  'lower-body': 'from-peach-dark/20 to-dark-base',
+  'full-body': 'from-lavender/20 to-dark-base',
+  'hiit': 'from-peach/20 to-dark-base',
+  'yoga': 'from-mint/20 to-dark-base',
+  'cardio': 'from-peach-dark/20 to-dark-base',
+  'pilates': 'from-lavender/20 to-dark-base',
+  'stretch': 'from-mint-dark/20 to-dark-base',
+  'recovery': 'from-mint-light/20 to-dark-base',
+};
+
 export function WorkoutPage() {
   const { weekId, workoutIndex } = useParams<{ weekId: string; workoutIndex: string }>();
   const navigate = useNavigate();
@@ -62,49 +73,55 @@ export function WorkoutPage() {
     return (
       <div className="flex-1 flex items-center justify-center p-6 bg-dark-base">
         <div className="text-center animate-pop-in">
-          <p className="text-7xl mb-5">🏆</p>
-          <p className="font-display text-5xl text-peach tracking-wide font-bold">DONE!</p>
-          <p className="text-text-secondary mt-3 font-bold text-lg">Great work.</p>
+          <p className="text-8xl mb-6">🏆</p>
+          <p className="font-display text-4xl text-peach font-bold">Done!</p>
+          <p className="text-text-secondary mt-3 font-semibold text-lg">Great work.</p>
         </div>
       </div>
     );
   }
 
+  const gradient = TYPE_GRADIENT[template.type] ?? 'from-peach/20 to-dark-base';
+
   return (
     <PageTransition>
     <div className="flex-1 pb-24">
-      {/* Header */}
-      <div className="bg-gradient-to-br from-dark-surface to-dark-card px-4 pt-3 pb-4">
-        <div className="flex items-center justify-between">
+      {/* Header with gradient */}
+      <div className={`bg-gradient-to-b ${gradient} px-5 pt-4 pb-6`}>
+        <div className="flex items-center justify-between mb-4">
           <button
             onClick={() => navigate(-1)}
             className="text-text-secondary text-sm min-h-[44px] min-w-[44px] flex items-center font-bold"
           >
-            ← BACK
+            ← Back
           </button>
-          <div className="text-center">
-            <p className="font-display text-xl text-text-primary tracking-wider font-bold">
-              {template.emoji} {template.name.toUpperCase()}
-            </p>
-          </div>
           <div className="w-[44px]" />
         </div>
 
+        <div className="text-center mb-4">
+          <span className="text-4xl mb-2 block">{template.emoji}</span>
+          <h1 className="font-display text-2xl text-text-primary font-bold mt-2">
+            {template.name}
+          </h1>
+          <p className="text-text-muted text-xs font-medium mt-1">
+            {totalCount} exercises · ~{totalCount * 4} min
+          </p>
+        </div>
+
         {/* Progress bar */}
-        <div className="mt-3 bg-white/10 rounded-full h-3 overflow-hidden">
+        <div className="bg-white/8 rounded-full h-2.5 overflow-hidden">
           <div
             className="bg-gradient-to-r from-peach to-mint h-full rounded-full transition-all duration-700 ease-out"
             style={{ width: `${progress}%` }}
           />
         </div>
-        <p className="text-xs text-text-muted mt-1.5 text-center font-bold tracking-wide">
-          {completedCount} / {totalCount}
+        <p className="text-xs text-text-muted mt-2 text-center font-semibold">
+          {completedCount} of {totalCount} completed
         </p>
       </div>
-      <div className="retro-stripes" />
 
       {/* Exercise list */}
-      <div className="p-4 space-y-3">
+      <div className="px-5 py-4 space-y-3">
         {session.exercises.map((ex: WorkoutSessionExercise, i: number) => {
           const exercise = exerciseDB.find((e) => e.id === ex.exerciseId);
           if (!exercise) return null;
@@ -123,12 +140,12 @@ export function WorkoutPage() {
 
       {/* Complete button */}
       {allDone && (
-        <div className="fixed left-0 right-0 px-4 animate-slide-up" style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 5.5rem)' }}>
+        <div className="fixed left-0 right-0 px-5 animate-slide-up" style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 5.5rem)' }}>
           <button
             onClick={handleComplete}
-            className="w-full py-4 bg-mint text-dark-base rounded-2xl font-display text-2xl tracking-widest shadow-lg active:scale-[0.97] transition-all font-bold"
+            className="w-full py-4 bg-gradient-to-r from-mint-dark to-mint text-dark-base rounded-2xl font-display text-xl shadow-lg active:scale-[0.97] transition-all font-bold"
           >
-            COMPLETE! 🏆
+            Complete Workout 🏆
           </button>
         </div>
       )}

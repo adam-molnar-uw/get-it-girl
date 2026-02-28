@@ -41,31 +41,30 @@ export function SettingsPage() {
     <PageTransition>
     <div className="flex-1 pb-24">
       {/* Header */}
-      <div className="bg-gradient-to-br from-dark-surface to-dark-card px-5 pt-6 pb-5">
-        <h1 className="font-display text-4xl text-peach-light tracking-wide leading-none font-bold">SETTINGS</h1>
-        <p className="text-text-muted text-xs font-bold uppercase tracking-widest mt-2">
+      <div className="px-5 pt-6 pb-4">
+        <h1 className="font-display text-3xl text-peach-light font-bold leading-none">Settings</h1>
+        <p className="text-text-muted text-xs font-medium mt-1">
           Customize your experience
         </p>
       </div>
-      <div className="retro-stripes" />
 
-      <div className="px-4 mt-5 space-y-4">
+      <div className="px-5 space-y-4">
         {/* Program Info */}
         <div className="glass-card p-5 space-y-4">
-          <h2 className="font-display text-lg text-text-primary tracking-wider font-bold">PROGRAM</h2>
+          <h2 className="text-xs font-bold text-text-muted uppercase tracking-wider">Program</h2>
           <div className="flex justify-between items-center">
             <span className="text-text-secondary font-medium">Current week</span>
             <span className="font-display text-2xl text-peach font-bold">{currentWeek}</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-text-secondary font-medium">Equipment</span>
-            <span className="font-bold text-text-primary">2× 18lb dumbbells</span>
+            <span className="font-semibold text-text-primary">2× 18lb dumbbells</span>
           </div>
         </div>
 
         {/* Preferences */}
         <div className="glass-card p-5 space-y-5">
-          <h2 className="font-display text-lg text-text-primary tracking-wider font-bold">PREFERENCES</h2>
+          <h2 className="text-xs font-bold text-text-muted uppercase tracking-wider">Preferences</h2>
 
           <div className="flex items-center justify-between">
             <span className="text-text-primary font-medium">Rest day yoga</span>
@@ -108,21 +107,21 @@ export function SettingsPage() {
 
         {/* Reset */}
         <div className="glass-card p-5 space-y-3">
-          <h2 className="font-display text-lg text-danger tracking-wider font-bold">RESET</h2>
-          <p className="text-sm text-text-secondary">
-            Erase all data and start fresh. Cannot be undone.
+          <h2 className="text-xs font-bold text-danger uppercase tracking-wider">Danger zone</h2>
+          <p className="text-sm text-text-muted">
+            Erase all data and start fresh. This cannot be undone.
           </p>
           {showResetConfirm ? (
             <div className="flex gap-3">
               <button
                 onClick={handleReset}
-                className="flex-1 py-3 bg-danger text-dark-base rounded-lg font-bold shadow-md active:scale-95 transition-all min-h-[44px]"
+                className="flex-1 py-3 bg-danger text-dark-base rounded-xl font-bold active:scale-95 transition-all min-h-[44px]"
               >
                 Yes, reset
               </button>
               <button
                 onClick={() => setShowResetConfirm(false)}
-                className="flex-1 py-3 bg-white/10 text-text-primary rounded-lg font-bold active:scale-95 transition-all min-h-[44px]"
+                className="flex-1 py-3 bg-white/10 text-text-primary rounded-xl font-bold active:scale-95 transition-all min-h-[44px]"
               >
                 Cancel
               </button>
@@ -130,7 +129,7 @@ export function SettingsPage() {
           ) : (
             <button
               onClick={() => setShowResetConfirm(true)}
-              className="w-full py-3 bg-danger/10 text-danger rounded-lg font-bold active:scale-95 transition-all min-h-[44px]"
+              className="w-full py-3 bg-danger/10 text-danger rounded-xl font-bold active:scale-95 transition-all min-h-[44px]"
             >
               Reset all data
             </button>

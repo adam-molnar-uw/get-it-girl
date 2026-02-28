@@ -54,66 +54,93 @@ export function TodayPage() {
     .filter((w) => !w.completed);
 
   const restDay = isRestDay();
+  const nextWorkout = remaining[0];
+  const otherWorkouts = remaining.slice(1);
 
   return (
     <PageTransition>
     <PullToRefresh onRefresh={refresh}>
     <div className="flex-1 pb-24">
-      {/* Hero */}
-      <div className="bg-gradient-to-br from-dark-surface to-dark-card px-5 pt-6 pb-12">
-        <h1 className="font-display text-4xl text-peach tracking-wide leading-none font-bold">
-          GET IT GIRL!
+      {/* Header */}
+      <div className="px-5 pt-6 pb-2">
+        <h1 className="font-display text-3xl text-peach font-bold leading-none">
+          Get It Girl!
         </h1>
-        <p className="text-text-secondary mt-2 text-sm font-semibold tracking-wide">
+        <p className="text-text-secondary mt-1 text-sm font-medium">
           {getGreeting()}
         </p>
-        <p className="text-text-muted text-xs font-bold uppercase tracking-widest mt-1">
-          Week {plan.weekNumber} &middot; {completedCount}/{totalCount} done
-        </p>
-      </div>
-      <div className="retro-stripes" />
-
-      {/* Progress Ring */}
-      <div className="flex justify-center -mt-14">
-        <div className="bg-dark-base rounded-full p-2.5 shadow-lg border-2 border-white/10">
-          <ProgressRing completed={completedCount} total={totalCount} />
-        </div>
       </div>
 
-      <div className="px-4 mt-6 space-y-5">
-        {/* Rest day suggestion */}
-        {restDay && remaining.length > 0 && (
+      {/* Progress Section */}
+      <div className="px-5 py-4">
+        <ProgressRing completed={completedCount} total={totalCount} />
+      </div>
+
+      {/* Rest day banner */}
+      {restDay && remaining.length > 0 && (
+        <div className="px-5 mb-2">
           <div className="animate-slide-up glass-card p-4 border-l-4 border-mint">
             <p className="text-mint font-bold text-sm">
-              🧘 Rest day — try a gentle yoga flow
+              🧘 Rest day — try a gentle yoga flow or take it easy
             </p>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Remaining workouts */}
+      <div className="px-5 mt-2 space-y-5">
         {remaining.length > 0 ? (
-          <div className="space-y-3">
-            <h2 className="font-display text-2xl text-text-primary tracking-wide font-bold">
-              {restDay ? 'UPCOMING' : "CHOOSE TODAY'S MOVEMENT"}
-            </h2>
-            {remaining.map((w, i) => {
-              const template = workoutTemplates.find((t) => t.id === w.templateId);
+          <>
+            {/* Section header */}
+            <div>
+              <h2 className="font-display text-xl text-text-primary font-bold mb-1">
+                {restDay ? 'Upcoming' : "Choose today's movement"}
+              </h2>
+              <p className="text-text-muted text-xs font-medium">
+                {remaining.length} workout{remaining.length !== 1 ? 's' : ''} remaining this week
+              </p>
+            </div>
+
+            {/* Featured next workout */}
+            {nextWorkout && (() => {
+              const template = workoutTemplates.find((t) => t.id === nextWorkout.templateId);
               if (!template) return null;
               return (
                 <WorkoutCard
-                  key={w.index}
                   template={template}
-                  onStart={() => navigate(`/workout/${plan.id}/${w.index}`)}
-                  delay={i * 60}
+                  onStart={() => navigate(`/workout/${plan.id}/${nextWorkout.index}`)}
+                  featured
                 />
               );
-            })}
-          </div>
+            })()}
+
+            {/* Other workouts */}
+            {otherWorkouts.length > 0 && (
+              <div className="space-y-3">
+                <h3 className="text-xs font-bold text-text-muted uppercase tracking-wider">
+                  More workouts
+                </h3>
+                {otherWorkouts.map((w, i) => {
+                  const template = workoutTemplates.find((t) => t.id === w.templateId);
+                  if (!template) return null;
+                  return (
+                    <WorkoutCard
+                      key={w.index}
+                      template={template}
+                      onStart={() => navigate(`/workout/${plan.id}/${w.index}`)}
+                      delay={i * 60}
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </>
         ) : (
-          <div className="text-center py-10 animate-pop-in">
-            <p className="text-5xl mb-4">🏆</p>
-            <p className="font-display text-4xl text-peach tracking-wide font-bold">WEEK COMPLETE!</p>
-            <p className="text-text-secondary mt-2 font-semibold">Amazing work this week.</p>
+          <div className="text-center py-12 animate-pop-in">
+            <p className="text-6xl mb-5">🏆</p>
+            <p className="font-display text-3xl text-peach font-bold">Week Complete!</p>
+            <p className="text-text-secondary mt-3 font-medium text-lg">
+              Amazing work this week.
+            </p>
           </div>
         )}
       </div>

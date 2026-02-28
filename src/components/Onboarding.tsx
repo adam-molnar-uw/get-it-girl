@@ -3,17 +3,17 @@ import { useState } from 'react';
 const STEPS = [
   {
     emoji: '💪',
-    title: 'YOUR WEEKLY WORKOUTS',
+    title: 'Your Weekly Plan',
     body: 'Each week you get 5-6 workouts — lower body, full body, HIIT, yoga, and more. Pick what feels right each day.',
   },
   {
     emoji: '✅',
-    title: 'CHECK THEM OFF',
+    title: 'Track Your Progress',
     body: 'Tap into a workout, do each exercise, and check it off as you go. Swap any exercise for an alternative if you want.',
   },
   {
     emoji: '📈',
-    title: 'AUTO-PROGRESSION',
+    title: 'Get Stronger',
     body: 'The app gradually increases difficulty every 2 weeks — more reps, more sets, slower tempos — so you keep getting stronger.',
   },
 ];
@@ -30,16 +30,14 @@ export function Onboarding({ onComplete }: OnboardingProps) {
 
   return (
     <div className="fixed inset-0 z-[100] bg-dark-base flex flex-col">
-      <div className="retro-stripes" />
-
       <div className="flex-1 flex flex-col items-center justify-center px-8 text-center">
         <p
-          className="text-7xl mb-6 animate-pop-in"
+          className="text-8xl mb-8 animate-pop-in"
           key={step}
         >
           {current.emoji}
         </p>
-        <h2 className="font-display text-3xl text-text-primary tracking-wider mb-4 animate-slide-up font-bold">
+        <h2 className="font-display text-3xl text-text-primary mb-4 animate-slide-up font-bold">
           {current.title}
         </h2>
         <p className="text-text-secondary text-base leading-relaxed max-w-sm animate-slide-up font-medium">
@@ -48,12 +46,12 @@ export function Onboarding({ onComplete }: OnboardingProps) {
       </div>
 
       {/* Dots */}
-      <div className="flex justify-center gap-2 mb-6">
+      <div className="flex justify-center gap-3 mb-8">
         {STEPS.map((_, i) => (
           <div
             key={i}
-            className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-              i === step ? 'bg-peach scale-125' : 'bg-white/15'
+            className={`h-2 rounded-full transition-all duration-300 ${
+              i === step ? 'bg-peach w-8' : 'bg-white/15 w-2'
             }`}
           />
         ))}
@@ -64,23 +62,23 @@ export function Onboarding({ onComplete }: OnboardingProps) {
         {isLast ? (
           <button
             onClick={onComplete}
-            className="w-full py-4 bg-peach text-dark-base rounded-2xl font-display text-2xl tracking-widest shadow-lg active:scale-[0.97] transition-all font-bold"
+            className="w-full py-4 bg-gradient-to-r from-peach to-peach-light text-dark-base rounded-2xl font-display text-xl shadow-lg active:scale-[0.97] transition-all font-bold"
           >
-            LET'S GO!
+            Let's go!
           </button>
         ) : (
           <div className="flex gap-3">
             <button
               onClick={onComplete}
-              className="px-6 py-4 text-text-secondary font-bold tracking-wide min-h-[44px]"
+              className="px-6 py-4 text-text-muted font-semibold min-h-[44px]"
             >
-              SKIP
+              Skip
             </button>
             <button
               onClick={() => setStep((s) => s + 1)}
-              className="flex-1 py-4 bg-peach text-dark-base rounded-2xl font-display text-2xl tracking-widest shadow-lg active:scale-[0.97] transition-all font-bold"
+              className="flex-1 py-4 bg-gradient-to-r from-peach to-peach-light text-dark-base rounded-2xl font-display text-xl shadow-lg active:scale-[0.97] transition-all font-bold"
             >
-              NEXT
+              Next
             </button>
           </div>
         )}

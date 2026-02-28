@@ -85,9 +85,21 @@ export function useWorkoutSession(weekId: string, workoutIndex: number) {
       if (!session) return;
       const updated: WorkoutSession = {
         ...session,
-        exercises: session.exercises.map((e, i) =>
-          i === exerciseIndex ? { ...e, completed: !e.completed } : e
-        ),
+        exercises: session.exercises.map((e, i) => {
+          if (i !== exerciseIndex) return e;
+          // Backward compat: derive completedSets if missing
+          const currentSets = e.completedSets ?? (e.completed ? e.sets : 0);
+          if (e.completed) {
+            // Already done — reset
+            return { ...e, completedSets: 0, completed: false };
+          }
+          const next = currentSets + 1;
+          return {
+            ...e,
+            completedSets: next,
+            completed: next >= e.sets,
+          };
+        }),
       };
       setSession(updated);
       await saveSession(updated);

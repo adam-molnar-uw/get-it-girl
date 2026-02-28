@@ -115,6 +115,7 @@ export interface WorkoutSessionExercise {
   holdSeconds?: number;
   tempoNote?: string;
   completed: boolean;
+  completedSets?: number; // 0..sets — undefined treated as 0 (or sets if completed for old data)
 }
 
 export interface WorkoutSession {

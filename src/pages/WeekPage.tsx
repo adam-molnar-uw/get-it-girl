@@ -152,7 +152,11 @@ export function WeekPage() {
                     ))}
                   </div>
 
-                  {!w.completed && (
+                  {w.completed ? (
+                    <span className="ml-auto px-5 py-2.5 text-mint font-display text-base tracking-wider font-bold">
+                      DONE ✓
+                    </span>
+                  ) : (
                     <button
                       onClick={() => navigate(`/workout/${plan.id}/${i}`)}
                       className={`ml-auto px-5 py-2.5 bg-gradient-to-r from-peach-dark to-peach text-dark-base rounded-xl font-display text-base tracking-wider active:scale-95 transition-all min-h-[44px] font-bold`}

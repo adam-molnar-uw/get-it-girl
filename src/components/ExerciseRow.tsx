@@ -11,7 +11,9 @@ interface ExerciseRowProps {
 
 export function ExerciseRow({ exercise, sessionExercise, onToggle, onSwap }: ExerciseRowProps) {
   const { completed, sets, reps, holdSeconds, tempoNote } = sessionExercise;
+  const completedSets = sessionExercise.completedSets ?? (completed ? sets : 0);
   const [expanded, setExpanded] = useState(false);
+  const isSingleSet = sets <= 1;
 
   return (
     <div
@@ -21,19 +23,38 @@ export function ExerciseRow({ exercise, sessionExercise, onToggle, onSwap }: Exe
     >
       <div className="p-4">
         <div className="flex items-start gap-3">
-          {/* Checkbox */}
+          {/* Set indicator — single checkbox for 1-set, dots for multi-set */}
           <button
             onClick={onToggle}
-            className={`mt-0.5 w-7 h-7 rounded border-2 flex items-center justify-center shrink-0 transition-all min-w-[44px] min-h-[44px] ${
-              completed
-                ? 'bg-mint border-mint text-dark-base'
-                : 'border-white/20 hover:border-peach'
-            }`}
+            className="mt-0.5 shrink-0 min-w-[44px] min-h-[44px] flex items-center justify-center"
           >
-            {completed && (
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M2 7L5.5 10.5L12 3.5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+            {isSingleSet ? (
+              <div
+                className={`w-7 h-7 rounded border-2 flex items-center justify-center transition-all ${
+                  completed
+                    ? 'bg-mint border-mint text-dark-base'
+                    : 'border-white/20 hover:border-peach'
+                }`}
+              >
+                {completed && (
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M2 7L5.5 10.5L12 3.5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                )}
+              </div>
+            ) : (
+              <div className="flex gap-1.5">
+                {Array.from({ length: sets }, (_, i) => (
+                  <div
+                    key={i}
+                    className={`w-3.5 h-3.5 rounded-full border-2 transition-all ${
+                      i < completedSets
+                        ? 'bg-mint border-mint'
+                        : 'border-white/20'
+                    }`}
+                  />
+                ))}
+              </div>
             )}
           </button>
 
@@ -54,7 +75,11 @@ export function ExerciseRow({ exercise, sessionExercise, onToggle, onSwap }: Exe
                 ? 'FOLLOW PROTOCOL'
                 : holdSeconds
                 ? `HOLD ${holdSeconds}s`
-                : `${sets} × ${reps} REPS`}
+                : isSingleSet
+                ? `${reps} REPS`
+                : completed
+                ? `${sets} × ${reps} REPS`
+                : `SET ${completedSets + 1}/${sets} · ${reps} REPS`}
               {tempoNote && ` · ${tempoNote}`}
             </p>
 

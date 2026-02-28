@@ -67,22 +67,6 @@ export function SettingsPage() {
           <h2 className="text-xs font-bold text-text-muted uppercase tracking-wider">Preferences</h2>
 
           <div className="flex items-center justify-between">
-            <span className="text-text-primary font-medium">Rest day yoga</span>
-            <button
-              className={`w-14 h-8 rounded-full transition-colors relative ${
-                settings.restDayYogaEnabled ? 'bg-mint' : 'bg-white/10'
-              }`}
-              onClick={() => updateSetting('restDayYogaEnabled', !settings.restDayYogaEnabled)}
-            >
-              <div
-                className={`absolute top-1 w-6 h-6 bg-dark-base rounded-full shadow-md transition-transform duration-200 ${
-                  settings.restDayYogaEnabled ? 'translate-x-7' : 'translate-x-1'
-                }`}
-              />
-            </button>
-          </div>
-
-          <div className="flex items-center justify-between">
             <span className="text-text-primary font-medium">Notifications</span>
             <button
               className={`w-14 h-8 rounded-full transition-colors relative ${

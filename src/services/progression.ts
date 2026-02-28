@@ -20,6 +20,7 @@ export function applyProgression(
           sets: 1,
           reps: 1,
           completed: false,
+          completedSets: 0,
         };
       }
 
@@ -31,6 +32,7 @@ export function applyProgression(
           reps: 1,
           holdSeconds: tier.yogaHoldSeconds,
           completed: false,
+          completedSets: 0,
         };
       }
 
@@ -40,6 +42,7 @@ export function applyProgression(
         reps: tier.reps,
         tempoNote: tier.tempoNote,
         completed: false,
+        completedSets: 0,
       };
     });
 }

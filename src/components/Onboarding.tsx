@@ -4,7 +4,7 @@ const STEPS = [
   {
     emoji: '💪',
     title: 'Your Weekly Plan',
-    body: 'Each week you get 5-6 workouts — lower body, full body, HIIT, yoga, and more. Pick what feels right each day.',
+    body: 'Each week you have 7 workouts — 3 strength sessions (lower body, upper body, full body), 3 Mysore Ashtanga practices, and a Zone 2 cardio day. Gym or home versions available.',
   },
   {
     emoji: '✅',

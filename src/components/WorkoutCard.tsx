@@ -2,6 +2,7 @@ import type { WorkoutTemplate } from '../types';
 
 const TYPE_GRADIENTS: Record<string, string> = {
   'lower-body': 'from-peach-dark/30 to-peach/10',
+  'upper-body': 'from-lavender/30 to-lavender-light/10',
   'full-body': 'from-lavender/30 to-lavender-light/10',
   'hiit': 'from-peach/30 to-danger/10',
   'yoga': 'from-mint/30 to-mint-light/10',
@@ -13,6 +14,7 @@ const TYPE_GRADIENTS: Record<string, string> = {
 
 const TYPE_LABELS: Record<string, string> = {
   'lower-body': 'LOWER BODY',
+  'upper-body': 'UPPER BODY',
   'full-body': 'FULL BODY',
   'hiit': 'HIIT',
   'yoga': 'YOGA',
@@ -24,6 +26,7 @@ const TYPE_LABELS: Record<string, string> = {
 
 const TYPE_ACCENT: Record<string, string> = {
   'lower-body': 'text-peach',
+  'upper-body': 'text-lavender',
   'full-body': 'text-lavender',
   'hiit': 'text-peach',
   'yoga': 'text-mint',
@@ -35,6 +38,7 @@ const TYPE_ACCENT: Record<string, string> = {
 
 const TYPE_BADGE: Record<string, string> = {
   'lower-body': 'bg-peach/20 text-peach',
+  'upper-body': 'bg-lavender/20 text-lavender',
   'full-body': 'bg-lavender/20 text-lavender',
   'hiit': 'bg-peach/20 text-peach',
   'yoga': 'bg-mint/20 text-mint',

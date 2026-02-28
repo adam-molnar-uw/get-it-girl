@@ -174,6 +174,103 @@ export const workoutTemplates: WorkoutTemplate[] = [
     ],
   },
 
+  // ===== UPPER BODY =====
+  {
+    id: 'upper-1',
+    name: 'Upper Body: Push + Pull',
+    emoji: '💪',
+    type: 'upper-body',
+    description: 'Chest, back, shoulders & arms',
+    exercises: [
+      { exerciseId: 'db-bench-press', orderIndex: 0 },
+      { exerciseId: 'seated-cable-row', orderIndex: 1 },
+      { exerciseId: 'overhead-press', orderIndex: 2 },
+      { exerciseId: 'lat-pulldown', orderIndex: 3 },
+      { exerciseId: 'lateral-raise', orderIndex: 4 },
+      { exerciseId: 'cable-face-pull', orderIndex: 5 },
+      { exerciseId: 'tricep-pushdown', orderIndex: 6 },
+      { exerciseId: 'hammer-curl', orderIndex: 7 },
+    ],
+  },
+  {
+    id: 'upper-2',
+    name: 'Upper Body: Strength Focus',
+    emoji: '💪',
+    type: 'upper-body',
+    description: 'Heavy push, pull & isolation',
+    exercises: [
+      { exerciseId: 'db-bench-press', orderIndex: 0 },
+      { exerciseId: 'single-arm-db-row', orderIndex: 1 },
+      { exerciseId: 'overhead-press', orderIndex: 2 },
+      { exerciseId: 'lat-pulldown', orderIndex: 3 },
+      { exerciseId: 'cable-face-pull', orderIndex: 4 },
+      { exerciseId: 'tricep-extension', orderIndex: 5 },
+      { exerciseId: 'bicep-curl', orderIndex: 6 },
+    ],
+  },
+
+  // ===== GYM LOWER BODY =====
+  {
+    id: 'lower-gym-1',
+    name: 'Lower Body: Glute & Ham (Gym)',
+    emoji: '🍑',
+    type: 'lower-body',
+    description: 'Hip thrust, RDL, split squat & curls',
+    exercises: [
+      { exerciseId: 'barbell-hip-thrust', orderIndex: 0 },
+      { exerciseId: 'romanian-deadlift', orderIndex: 1 },
+      { exerciseId: 'bulgarian-split-squat', orderIndex: 2 },
+      { exerciseId: 'leg-curl', orderIndex: 3 },
+      { exerciseId: 'sumo-squat', orderIndex: 4 },
+      { exerciseId: 'calf-raises', orderIndex: 5 },
+    ],
+  },
+
+  // ===== GYM FULL BODY + VO₂ =====
+  {
+    id: 'full-body-vo2',
+    name: 'Full Body + VO₂ Max',
+    emoji: '🔥',
+    type: 'full-body',
+    description: 'Compound strength + intervals',
+    exercises: [
+      { exerciseId: 'barbell-squat', orderIndex: 0 },
+      { exerciseId: 'single-arm-db-row', orderIndex: 1 },
+      { exerciseId: 'push-ups', orderIndex: 2 },
+      { exerciseId: 'romanian-deadlift', orderIndex: 3 },
+      { exerciseId: 'ab-wheel', orderIndex: 4 },
+      { exerciseId: 'vo2-max-intervals', orderIndex: 5 },
+    ],
+  },
+
+  // ===== ASHTANGA YOGA =====
+  {
+    id: 'ashtanga-1',
+    name: 'Mysore Ashtanga',
+    emoji: '🧘',
+    type: 'yoga',
+    description: 'Full Primary Series — self-paced',
+    exercises: [
+      { exerciseId: 'ashtanga-sun-salutations', orderIndex: 0 },
+      { exerciseId: 'ashtanga-standing', orderIndex: 1 },
+      { exerciseId: 'ashtanga-seated', orderIndex: 2 },
+      { exerciseId: 'ashtanga-backbending', orderIndex: 3 },
+      { exerciseId: 'ashtanga-finishing', orderIndex: 4 },
+    ],
+  },
+
+  // ===== ZONE 2 CARDIO =====
+  {
+    id: 'zone2-1',
+    name: 'Zone 2 Cardio',
+    emoji: '💚',
+    type: 'cardio',
+    description: 'Aerobic base — bike, run, or walk',
+    exercises: [
+      { exerciseId: 'zone-2-cardio', orderIndex: 0 },
+    ],
+  },
+
   // ===== ROTATING SLOT =====
   {
     id: 'cardio-1',

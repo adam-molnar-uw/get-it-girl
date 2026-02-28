@@ -2,24 +2,24 @@ import { workoutTemplates } from '../data/workout-templates';
 import type { WeeklyPlan, WeeklyPlanWorkout, WorkoutType } from '../types';
 
 /**
- * Weekly distribution:
- * 1. Lower Body Strength (A)
- * 2. Full Body Strength
- * 3. HIIT Circuit
- * 4. Yoga Flow
- * 5. Lower Body Strength (B)
- * 6. Rotating: Cardio / Pilates / Stretch / Recovery
+ * Weekly distribution (program.js-aligned):
+ * 1. Lower Body Strength
+ * 2. Upper Body Strength
+ * 3. Full Body (or Full Body + VO₂)
+ * 4. Yoga (Ashtanga or Flow)
+ * 5. Yoga (Ashtanga or Flow)
+ * 6. Rotating: Cardio / HIIT / Pilates / Stretch / Recovery
  */
 
-const SLOT_TYPES: { type: WorkoutType; variant?: 'a' | 'b' }[] = [
-  { type: 'lower-body', variant: 'a' },
+const SLOT_TYPES: { type: WorkoutType; variant?: 'a' | 'b' | 'gym' }[] = [
+  { type: 'lower-body' },
+  { type: 'upper-body' },
   { type: 'full-body' },
-  { type: 'hiit' },
   { type: 'yoga' },
-  { type: 'lower-body', variant: 'b' },
+  { type: 'yoga' },
 ];
 
-const ROTATING_TYPES: WorkoutType[] = ['cardio', 'pilates', 'stretch', 'recovery'];
+const ROTATING_TYPES: WorkoutType[] = ['cardio', 'hiit', 'pilates', 'stretch', 'recovery'];
 
 function pickRandom<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -47,12 +47,7 @@ export function generateWeeklyPlan(programWeek: number, date: Date = new Date())
 
   // Slots 1-5: fixed types
   for (const slot of SLOT_TYPES) {
-    const candidates = workoutTemplates.filter((t) => {
-      if (t.type !== slot.type) return false;
-      if (slot.variant === 'a') return t.id.includes('-a');
-      if (slot.variant === 'b') return t.id.includes('-b');
-      return true;
-    });
+    const candidates = workoutTemplates.filter((t) => t.type === slot.type);
 
     const template = candidates.length > 0
       ? pickRandom(candidates)

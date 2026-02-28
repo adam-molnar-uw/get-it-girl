@@ -3,21 +3,22 @@ import type { WeeklyPlan, WeeklyPlanWorkout } from '../types';
 /**
  * Fixed weekly program (from program.js):
  *   1. Lower Body: Glute & Ham        (Mon)
- *   2. Upper Body: Push + Pull         (Wed)
- *   3. Full Body + VO₂ Max            (Fri)
- *   4. Mysore Ashtanga                 (Tue)
- *   5. Mysore Ashtanga                 (Thu)
- *   6. Zone 2 Cardio                   (Sat)
- *   Rest: Sunday
+ *   2. Mysore Ashtanga                 (Tue)
+ *   3. Upper Body: Push + Pull         (Wed)
+ *   4. Mysore Ashtanga                 (Thu)
+ *   5. Full Body + VO₂ Max            (Fri)
+ *   6. Mysore Ashtanga                 (Sat)
+ *   7. Zone 2 Cardio                   (Sun)
  *
  * Same every week — no randomness. Science-backed structure.
  */
 
 const FIXED_TEMPLATE_IDS = [
   'lower-gym-1',     // Lower Body: Glute & Ham
-  'upper-1',         // Upper Body: Push + Pull
-  'full-body-vo2',   // Full Body + VO₂ Max
   'ashtanga-1',      // Mysore Ashtanga
+  'upper-1',         // Upper Body: Push + Pull
+  'ashtanga-1',      // Mysore Ashtanga
+  'full-body-vo2',   // Full Body + VO₂ Max
   'ashtanga-1',      // Mysore Ashtanga
   'zone2-1',         // Zone 2 Cardio
 ];

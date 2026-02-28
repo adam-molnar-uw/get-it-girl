@@ -103,7 +103,7 @@ export function WeekPage() {
                       {w.completed && <span className="text-mint ml-2">✓</span>}
                     </p>
                     <p className="text-xs text-text-secondary font-medium mt-0.5">
-                      {template.exercises.length} exercises · ~{template.exercises.length * 4} min
+                      {template.exercises.length} exercise{template.exercises.length !== 1 ? 's' : ''} · ~{template.estimatedMinutes ?? template.exercises.length * 4} min
                     </p>
                   </div>
                 </div>

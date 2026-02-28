@@ -113,7 +113,7 @@ export function WorkoutPage() {
             {template.name}
           </h1>
           <p className="text-text-muted text-xs font-medium mt-1">
-            {totalCount} exercises · ~{totalCount * 4} min
+            {totalCount} exercise{totalCount !== 1 ? 's' : ''} · ~{template.estimatedMinutes ?? totalCount * 4} min
           </p>
         </div>
 

@@ -61,6 +61,7 @@ export function WorkoutCard({ template, onStart, delay = 0, featured = false }: 
   const badge = TYPE_BADGE[template.type] ?? 'bg-peach/20 text-peach';
   const label = TYPE_LABELS[template.type] ?? template.type.toUpperCase();
   const exerciseCount = template.exercises.length;
+  const duration = template.estimatedMinutes ?? exerciseCount * 4;
 
   if (featured) {
     return (
@@ -88,11 +89,11 @@ export function WorkoutCard({ template, onStart, delay = 0, featured = false }: 
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1.5">
                 <span className="text-text-muted text-xs">💪</span>
-                <span className="text-xs text-text-secondary font-semibold">{exerciseCount} exercises</span>
+                <span className="text-xs text-text-secondary font-semibold">{exerciseCount} exercise{exerciseCount !== 1 ? 's' : ''}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="text-text-muted text-xs">⏱</span>
-                <span className="text-xs text-text-secondary font-semibold">~{exerciseCount * 4} min</span>
+                <span className="text-xs text-text-secondary font-semibold">~{duration} min</span>
               </div>
             </div>
             <span className={`font-display text-lg font-bold tracking-wider ${accent}`}>
@@ -121,9 +122,9 @@ export function WorkoutCard({ template, onStart, delay = 0, featured = false }: 
               {template.name}
             </p>
             <div className="flex items-center gap-3 mt-1.5">
-              <span className="text-xs text-text-secondary font-semibold">{exerciseCount} exercises</span>
+              <span className="text-xs text-text-secondary font-semibold">{exerciseCount} exercise{exerciseCount !== 1 ? 's' : ''}</span>
               <span className="text-text-muted text-[8px]">●</span>
-              <span className="text-xs text-text-secondary font-semibold">~{exerciseCount * 4} min</span>
+              <span className="text-xs text-text-secondary font-semibold">~{duration} min</span>
             </div>
           </div>
           <span className={`font-display text-xl font-bold tracking-wide ${accent}`}>→</span>

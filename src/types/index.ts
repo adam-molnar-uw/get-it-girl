@@ -82,6 +82,7 @@ export interface WorkoutTemplate {
   type: WorkoutType;
   exercises: TemplateExercise[];
   description: string;
+  estimatedMinutes?: number;
 }
 
 // --- Persisted types (IndexedDB) ---

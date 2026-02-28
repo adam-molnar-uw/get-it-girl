@@ -233,6 +233,7 @@ export const workoutTemplates: WorkoutTemplate[] = [
     emoji: '🔥',
     type: 'full-body',
     description: 'Compound strength + intervals',
+    estimatedMinutes: 70,
     exercises: [
       { exerciseId: 'barbell-squat', orderIndex: 0 },
       { exerciseId: 'single-arm-db-row', orderIndex: 1 },
@@ -250,6 +251,7 @@ export const workoutTemplates: WorkoutTemplate[] = [
     emoji: '🧘',
     type: 'yoga',
     description: 'Full Primary Series — self-paced',
+    estimatedMinutes: 90,
     exercises: [
       { exerciseId: 'ashtanga-sun-salutations', orderIndex: 0 },
       { exerciseId: 'ashtanga-standing', orderIndex: 1 },
@@ -266,6 +268,7 @@ export const workoutTemplates: WorkoutTemplate[] = [
     emoji: '💚',
     type: 'cardio',
     description: 'Aerobic base — bike, run, or walk',
+    estimatedMinutes: 50,
     exercises: [
       { exerciseId: 'zone-2-cardio', orderIndex: 0 },
     ],

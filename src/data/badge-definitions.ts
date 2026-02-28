@@ -89,22 +89,6 @@ export const allBadges: Badge[] = [
 
   // === TYPE MASTERY ===
   {
-    id: 'hiit-master',
-    name: 'HIIT Hero',
-    description: 'Complete 5 HIIT workouts',
-    emoji: '⚡',
-    category: 'type-mastery',
-    criteria: { type: 'type-count', workoutType: 'hiit', count: 5 },
-  },
-  {
-    id: 'yoga-master',
-    name: 'Zen Master',
-    description: 'Complete 5 Yoga sessions',
-    emoji: '🧘',
-    category: 'type-mastery',
-    criteria: { type: 'type-count', workoutType: 'yoga', count: 5 },
-  },
-  {
     id: 'lower-master',
     name: 'Leg Day Legend',
     description: 'Complete 5 Lower Body workouts',
@@ -113,20 +97,36 @@ export const allBadges: Badge[] = [
     criteria: { type: 'type-count', workoutType: 'lower-body', count: 5 },
   },
   {
-    id: 'full-master',
-    name: 'Full Body Force',
-    description: 'Complete 5 Full Body workouts',
-    emoji: '💥',
-    category: 'type-mastery',
-    criteria: { type: 'type-count', workoutType: 'full-body', count: 5 },
-  },
-  {
     id: 'upper-master',
     name: 'Upper Body Boss',
     description: 'Complete 5 Upper Body workouts',
     emoji: '🏋️',
     category: 'type-mastery',
     criteria: { type: 'type-count', workoutType: 'upper-body', count: 5 },
+  },
+  {
+    id: 'full-master',
+    name: 'Full Body Force',
+    description: 'Complete 5 Full Body + VO₂ workouts',
+    emoji: '💥',
+    category: 'type-mastery',
+    criteria: { type: 'type-count', workoutType: 'full-body', count: 5 },
+  },
+  {
+    id: 'yoga-master',
+    name: 'Ashtanga Devotee',
+    description: 'Complete 5 Mysore Ashtanga sessions',
+    emoji: '🧘',
+    category: 'type-mastery',
+    criteria: { type: 'type-count', workoutType: 'yoga', count: 5 },
+  },
+  {
+    id: 'cardio-master',
+    name: 'Zone 2 Machine',
+    description: 'Complete 5 Zone 2 Cardio sessions',
+    emoji: '💚',
+    category: 'type-mastery',
+    criteria: { type: 'type-count', workoutType: 'cardio', count: 5 },
   },
 
   // === PROGRESSION ===

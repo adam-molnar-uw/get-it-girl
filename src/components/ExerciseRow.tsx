@@ -15,7 +15,7 @@ export function ExerciseRow({ exercise, sessionExercise, onToggle, onSwap }: Exe
 
   return (
     <div
-      className={`bg-retro-white rounded-xl border border-retro-cream-dark shadow-sm transition-all ${
+      className={`glass-card transition-all ${
         completed ? 'opacity-50' : ''
       }`}
     >
@@ -26,8 +26,8 @@ export function ExerciseRow({ exercise, sessionExercise, onToggle, onSwap }: Exe
             onClick={onToggle}
             className={`mt-0.5 w-7 h-7 rounded border-2 flex items-center justify-center shrink-0 transition-all min-w-[44px] min-h-[44px] ${
               completed
-                ? 'bg-retro-green border-retro-green text-white'
-                : 'border-retro-cream-dark hover:border-retro-red'
+                ? 'bg-mint border-mint text-dark-base'
+                : 'border-white/20 hover:border-peach'
             }`}
           >
             {completed && (
@@ -44,12 +44,12 @@ export function ExerciseRow({ exercise, sessionExercise, onToggle, onSwap }: Exe
           >
             <div className="flex items-center gap-2">
               <span className="text-lg">{exercise.emoji}</span>
-              <p className={`font-bold text-retro-brown ${completed ? 'line-through' : ''}`}>
+              <p className={`font-bold text-text-primary ${completed ? 'line-through' : ''}`}>
                 {exercise.name}
               </p>
             </div>
 
-            <p className="text-xs text-retro-warm font-semibold mt-0.5">
+            <p className="text-xs text-text-secondary font-semibold mt-0.5">
               {holdSeconds
                 ? `HOLD ${holdSeconds}s`
                 : `${sets} × ${reps} REPS`}
@@ -57,7 +57,7 @@ export function ExerciseRow({ exercise, sessionExercise, onToggle, onSwap }: Exe
             </p>
 
             {!completed && exercise.cues.length > 0 && (
-              <p className="text-xs text-retro-blue mt-1 font-medium">{exercise.cues[0]}</p>
+              <p className="text-xs text-lavender mt-1 font-medium">{exercise.cues[0]}</p>
             )}
           </button>
 
@@ -65,7 +65,7 @@ export function ExerciseRow({ exercise, sessionExercise, onToggle, onSwap }: Exe
           {!completed && (
             <button
               onClick={onSwap}
-              className="text-xs font-bold text-retro-warm uppercase tracking-wider hover:text-retro-red transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+              className="text-xs font-bold text-text-secondary uppercase tracking-wider hover:text-peach transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
             >
               SWAP
             </button>
@@ -77,14 +77,14 @@ export function ExerciseRow({ exercise, sessionExercise, onToggle, onSwap }: Exe
       {expanded && !completed && (
         <div className="px-4 pb-4 space-y-3">
           {exercise.description && (
-            <p className="text-sm text-retro-brown leading-relaxed">{exercise.description}</p>
+            <p className="text-sm text-text-primary/80 leading-relaxed">{exercise.description}</p>
           )}
           <ExerciseImage exerciseId={sessionExercise.exerciseId} />
           {exercise.cues.length > 1 && (
-            <ul className="text-xs text-retro-warm space-y-1 pl-2">
+            <ul className="text-xs text-text-secondary space-y-1 pl-2">
               {exercise.cues.map((cue, i) => (
                 <li key={i} className="flex items-start gap-1.5">
-                  <span className="text-retro-red mt-0.5 font-bold">•</span>
+                  <span className="text-peach mt-0.5 font-bold">•</span>
                   <span className="font-medium">{cue}</span>
                 </li>
               ))}

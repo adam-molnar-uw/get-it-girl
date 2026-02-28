@@ -29,7 +29,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
   const current = STEPS[step];
 
   return (
-    <div className="fixed inset-0 z-[100] bg-retro-cream flex flex-col">
+    <div className="fixed inset-0 z-[100] bg-dark-base flex flex-col">
       <div className="retro-stripes" />
 
       <div className="flex-1 flex flex-col items-center justify-center px-8 text-center">
@@ -39,10 +39,10 @@ export function Onboarding({ onComplete }: OnboardingProps) {
         >
           {current.emoji}
         </p>
-        <h2 className="font-display text-3xl text-retro-brown tracking-wider mb-4 animate-slide-up">
+        <h2 className="font-display text-3xl text-text-primary tracking-wider mb-4 animate-slide-up font-bold">
           {current.title}
         </h2>
-        <p className="text-retro-warm text-base leading-relaxed max-w-sm animate-slide-up font-medium">
+        <p className="text-text-secondary text-base leading-relaxed max-w-sm animate-slide-up font-medium">
           {current.body}
         </p>
       </div>
@@ -53,7 +53,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           <div
             key={i}
             className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-              i === step ? 'bg-retro-red scale-125' : 'bg-retro-cream-dark'
+              i === step ? 'bg-peach scale-125' : 'bg-white/15'
             }`}
           />
         ))}
@@ -64,7 +64,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
         {isLast ? (
           <button
             onClick={onComplete}
-            className="w-full py-4 bg-retro-red text-white rounded-xl font-display text-2xl tracking-widest shadow-lg active:scale-[0.97] transition-all"
+            className="w-full py-4 bg-peach text-dark-base rounded-2xl font-display text-2xl tracking-widest shadow-lg active:scale-[0.97] transition-all font-bold"
           >
             LET'S GO!
           </button>
@@ -72,13 +72,13 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           <div className="flex gap-3">
             <button
               onClick={onComplete}
-              className="px-6 py-4 text-retro-warm font-bold tracking-wide min-h-[44px]"
+              className="px-6 py-4 text-text-secondary font-bold tracking-wide min-h-[44px]"
             >
               SKIP
             </button>
             <button
               onClick={() => setStep((s) => s + 1)}
-              className="flex-1 py-4 bg-retro-red text-white rounded-xl font-display text-2xl tracking-widest shadow-lg active:scale-[0.97] transition-all"
+              className="flex-1 py-4 bg-peach text-dark-base rounded-2xl font-display text-2xl tracking-widest shadow-lg active:scale-[0.97] transition-all font-bold"
             >
               NEXT
             </button>

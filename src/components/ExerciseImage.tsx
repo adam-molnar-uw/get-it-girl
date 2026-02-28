@@ -21,7 +21,7 @@ export function ExerciseImage({ exerciseId }: ExerciseImageProps) {
   if (!images || error) return null;
 
   return (
-    <div className="relative rounded-xl bg-retro-cream-dark aspect-square max-w-[280px] mx-auto overflow-hidden border border-retro-cream-dark">
+    <div className="relative rounded-xl bg-dark-surface aspect-square max-w-[280px] mx-auto overflow-hidden border border-white/10">
       <img
         src={images.start}
         alt=""

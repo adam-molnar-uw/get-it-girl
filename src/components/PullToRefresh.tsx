@@ -25,7 +25,6 @@ export function PullToRefresh({ onRefresh, children }: PullToRefreshProps) {
     if (!pulling.current || refreshing) return;
     const delta = e.touches[0].clientY - startY.current;
     if (delta > 0) {
-      // Dampen the pull (feels more natural)
       setPullDistance(Math.min(delta * 0.4, 120));
     }
   }, [refreshing]);
@@ -36,7 +35,7 @@ export function PullToRefresh({ onRefresh, children }: PullToRefreshProps) {
 
     if (pullDistance >= THRESHOLD && !refreshing) {
       setRefreshing(true);
-      setPullDistance(50); // Hold at spinner position
+      setPullDistance(50);
       await onRefresh();
       setRefreshing(false);
     }
@@ -57,7 +56,7 @@ export function PullToRefresh({ onRefresh, children }: PullToRefreshProps) {
         style={{ height: pullDistance > 0 ? pullDistance : 0 }}
       >
         <div
-          className={`w-8 h-8 border-3 border-retro-red/30 border-t-retro-red rounded-full ${
+          className={`w-8 h-8 border-3 border-peach/30 border-t-peach rounded-full ${
             refreshing ? 'animate-spin' : ''
           }`}
           style={{

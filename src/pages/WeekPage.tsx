@@ -11,7 +11,7 @@ export function WeekPage() {
   if (loading || !plan) {
     return (
       <div className="flex-1 flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-retro-red/30 border-t-retro-red rounded-full animate-spin" />
+        <div className="w-10 h-10 border-4 border-peach/30 border-t-peach rounded-full animate-spin" />
       </div>
     );
   }
@@ -22,11 +22,11 @@ export function WeekPage() {
     <PageTransition>
     <div className="flex-1 pb-24">
       {/* Header */}
-      <div className="bg-retro-blue px-5 pt-6 pb-5">
-        <h1 className="font-display text-4xl text-white tracking-wide leading-none">
+      <div className="bg-gradient-to-br from-dark-surface to-dark-card px-5 pt-6 pb-5">
+        <h1 className="font-display text-4xl text-lavender tracking-wide leading-none font-bold">
           WEEK {plan.weekNumber}
         </h1>
-        <p className="text-white/70 text-xs font-bold uppercase tracking-widest mt-2">
+        <p className="text-text-muted text-xs font-bold uppercase tracking-widest mt-2">
           Plan your workouts
         </p>
       </div>
@@ -40,8 +40,8 @@ export function WeekPage() {
               key={name}
               className={`py-2.5 rounded-lg font-bold text-xs tracking-wider transition-all ${
                 i === today
-                  ? 'bg-retro-red text-white shadow-md'
-                  : 'bg-retro-white text-retro-warm border border-retro-cream-dark'
+                  ? 'bg-peach text-dark-base shadow-md'
+                  : 'bg-dark-surface text-text-secondary border border-white/5'
               }`}
             >
               {name.toUpperCase()}
@@ -58,7 +58,7 @@ export function WeekPage() {
             return (
               <div
                 key={i}
-                className={`animate-slide-up bg-retro-white rounded-xl overflow-hidden border border-retro-cream-dark shadow-md ${
+                className={`animate-slide-up glass-card overflow-hidden ${
                   w.completed ? 'opacity-60' : ''
                 }`}
                 style={{ animationDelay: `${i * 50}ms` }}
@@ -67,11 +67,11 @@ export function WeekPage() {
                   <div className="flex items-center gap-3">
                     <span className="text-2xl">{template.emoji}</span>
                     <div className="flex-1">
-                      <p className="font-bold text-retro-brown text-[15px]">
+                      <p className="font-bold text-text-primary text-[15px]">
                         {template.name}
-                        {w.completed && <span className="text-retro-green ml-2">✓</span>}
+                        {w.completed && <span className="text-mint ml-2">✓</span>}
                       </p>
-                      <p className="text-xs text-retro-warm font-medium mt-0.5">{template.description}</p>
+                      <p className="text-xs text-text-secondary font-medium mt-0.5">{template.description}</p>
                     </div>
                   </div>
 
@@ -83,8 +83,8 @@ export function WeekPage() {
                           onClick={() => assignDay(i, w.assignedDay === dayIndex ? undefined : dayIndex)}
                           className={`px-2 py-1.5 rounded text-xs font-bold tracking-wide transition-all ${
                             w.assignedDay === dayIndex
-                              ? 'bg-retro-blue text-white'
-                              : 'bg-retro-cream-dark text-retro-warm active:scale-95'
+                              ? 'bg-lavender text-dark-base'
+                              : 'bg-white/5 text-text-secondary active:scale-95'
                           }`}
                         >
                           {name.toUpperCase()}
@@ -95,7 +95,7 @@ export function WeekPage() {
                     {!w.completed && (
                       <button
                         onClick={() => navigate(`/workout/${plan.id}/${i}`)}
-                        className="ml-auto px-4 py-2.5 bg-retro-red text-white rounded-lg font-display text-lg tracking-wider shadow-md active:scale-95 transition-all min-h-[44px]"
+                        className="ml-auto px-4 py-2.5 bg-peach text-dark-base rounded-xl font-display text-lg tracking-wider shadow-md active:scale-95 transition-all min-h-[44px] font-bold"
                       >
                         GO
                       </button>

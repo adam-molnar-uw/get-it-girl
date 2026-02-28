@@ -32,7 +32,7 @@ export function SettingsPage() {
   if (!settings) {
     return (
       <div className="flex-1 flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-retro-red/30 border-t-retro-red rounded-full animate-spin" />
+        <div className="w-10 h-10 border-4 border-peach/30 border-t-peach rounded-full animate-spin" />
       </div>
     );
   }
@@ -41,9 +41,9 @@ export function SettingsPage() {
     <PageTransition>
     <div className="flex-1 pb-24">
       {/* Header */}
-      <div className="bg-retro-gold px-5 pt-6 pb-5">
-        <h1 className="font-display text-4xl text-retro-brown tracking-wide leading-none">SETTINGS</h1>
-        <p className="text-retro-brown/60 text-xs font-bold uppercase tracking-widest mt-2">
+      <div className="bg-gradient-to-br from-dark-surface to-dark-card px-5 pt-6 pb-5">
+        <h1 className="font-display text-4xl text-peach-light tracking-wide leading-none font-bold">SETTINGS</h1>
+        <p className="text-text-muted text-xs font-bold uppercase tracking-widest mt-2">
           Customize your experience
         </p>
       </div>
@@ -51,32 +51,32 @@ export function SettingsPage() {
 
       <div className="px-4 mt-5 space-y-4">
         {/* Program Info */}
-        <div className="bg-retro-white rounded-xl p-5 border border-retro-cream-dark shadow-md space-y-4">
-          <h2 className="font-display text-lg text-retro-brown tracking-wider">PROGRAM</h2>
+        <div className="glass-card p-5 space-y-4">
+          <h2 className="font-display text-lg text-text-primary tracking-wider font-bold">PROGRAM</h2>
           <div className="flex justify-between items-center">
-            <span className="text-retro-warm font-medium">Current week</span>
-            <span className="font-display text-2xl text-retro-red">{currentWeek}</span>
+            <span className="text-text-secondary font-medium">Current week</span>
+            <span className="font-display text-2xl text-peach font-bold">{currentWeek}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-retro-warm font-medium">Equipment</span>
-            <span className="font-bold text-retro-brown">2× 18lb dumbbells</span>
+            <span className="text-text-secondary font-medium">Equipment</span>
+            <span className="font-bold text-text-primary">2× 18lb dumbbells</span>
           </div>
         </div>
 
         {/* Preferences */}
-        <div className="bg-retro-white rounded-xl p-5 border border-retro-cream-dark shadow-md space-y-5">
-          <h2 className="font-display text-lg text-retro-brown tracking-wider">PREFERENCES</h2>
+        <div className="glass-card p-5 space-y-5">
+          <h2 className="font-display text-lg text-text-primary tracking-wider font-bold">PREFERENCES</h2>
 
           <div className="flex items-center justify-between">
-            <span className="text-retro-brown font-medium">Rest day yoga</span>
+            <span className="text-text-primary font-medium">Rest day yoga</span>
             <button
               className={`w-14 h-8 rounded-full transition-colors relative ${
-                settings.restDayYogaEnabled ? 'bg-retro-green' : 'bg-retro-cream-dark'
+                settings.restDayYogaEnabled ? 'bg-mint' : 'bg-white/10'
               }`}
               onClick={() => updateSetting('restDayYogaEnabled', !settings.restDayYogaEnabled)}
             >
               <div
-                className={`absolute top-1 w-6 h-6 bg-retro-white rounded-full shadow-md transition-transform duration-200 ${
+                className={`absolute top-1 w-6 h-6 bg-dark-base rounded-full shadow-md transition-transform duration-200 ${
                   settings.restDayYogaEnabled ? 'translate-x-7' : 'translate-x-1'
                 }`}
               />
@@ -84,10 +84,10 @@ export function SettingsPage() {
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-retro-brown font-medium">Notifications</span>
+            <span className="text-text-primary font-medium">Notifications</span>
             <button
               className={`w-14 h-8 rounded-full transition-colors relative ${
-                settings.notificationsEnabled ? 'bg-retro-green' : 'bg-retro-cream-dark'
+                settings.notificationsEnabled ? 'bg-mint' : 'bg-white/10'
               }`}
               onClick={async () => {
                 if (!settings.notificationsEnabled && 'Notification' in window) {
@@ -98,7 +98,7 @@ export function SettingsPage() {
               }}
             >
               <div
-                className={`absolute top-1 w-6 h-6 bg-retro-white rounded-full shadow-md transition-transform duration-200 ${
+                className={`absolute top-1 w-6 h-6 bg-dark-base rounded-full shadow-md transition-transform duration-200 ${
                   settings.notificationsEnabled ? 'translate-x-7' : 'translate-x-1'
                 }`}
               />
@@ -107,22 +107,22 @@ export function SettingsPage() {
         </div>
 
         {/* Reset */}
-        <div className="bg-retro-white rounded-xl p-5 border border-retro-cream-dark shadow-md space-y-3">
-          <h2 className="font-display text-lg text-retro-red tracking-wider">RESET</h2>
-          <p className="text-sm text-retro-warm">
+        <div className="glass-card p-5 space-y-3">
+          <h2 className="font-display text-lg text-danger tracking-wider font-bold">RESET</h2>
+          <p className="text-sm text-text-secondary">
             Erase all data and start fresh. Cannot be undone.
           </p>
           {showResetConfirm ? (
             <div className="flex gap-3">
               <button
                 onClick={handleReset}
-                className="flex-1 py-3 bg-retro-red text-white rounded-lg font-bold shadow-md active:scale-95 transition-all min-h-[44px]"
+                className="flex-1 py-3 bg-danger text-dark-base rounded-lg font-bold shadow-md active:scale-95 transition-all min-h-[44px]"
               >
                 Yes, reset
               </button>
               <button
                 onClick={() => setShowResetConfirm(false)}
-                className="flex-1 py-3 bg-retro-cream-dark text-retro-brown rounded-lg font-bold active:scale-95 transition-all min-h-[44px]"
+                className="flex-1 py-3 bg-white/10 text-text-primary rounded-lg font-bold active:scale-95 transition-all min-h-[44px]"
               >
                 Cancel
               </button>
@@ -130,7 +130,7 @@ export function SettingsPage() {
           ) : (
             <button
               onClick={() => setShowResetConfirm(true)}
-              className="w-full py-3 bg-retro-red/10 text-retro-red rounded-lg font-bold active:scale-95 transition-all min-h-[44px]"
+              className="w-full py-3 bg-danger/10 text-danger rounded-lg font-bold active:scale-95 transition-all min-h-[44px]"
             >
               Reset all data
             </button>

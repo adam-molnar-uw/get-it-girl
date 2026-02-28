@@ -11,7 +11,7 @@ export function BottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50">
       <div className="retro-stripes" />
-      <div className="bg-retro-white/95 backdrop-blur-md">
+      <div className="bg-dark-card/95 backdrop-blur-xl border-t border-white/5">
         <div className="flex justify-around items-center h-16 max-w-lg mx-auto px-2 pb-[env(safe-area-inset-bottom)]">
           {NAV_ITEMS.map((item) => (
             <NavLink
@@ -21,8 +21,8 @@ export function BottomNav() {
               className={({ isActive }) =>
                 `flex flex-col items-center gap-0.5 min-w-[64px] min-h-[44px] justify-center px-3 py-1.5 transition-all duration-200 border-b-3 ${
                   isActive
-                    ? 'text-retro-red border-retro-red'
-                    : 'text-retro-warm border-transparent'
+                    ? 'text-peach border-peach'
+                    : 'text-text-secondary border-transparent'
                 }`
               }
             >

@@ -42,7 +42,7 @@ export function WorkoutPage() {
   if (loading) {
     return (
       <div className="flex-1 flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-retro-red/30 border-t-retro-red rounded-full animate-spin" />
+        <div className="w-10 h-10 border-4 border-peach/30 border-t-peach rounded-full animate-spin" />
       </div>
     );
   }
@@ -50,8 +50,8 @@ export function WorkoutPage() {
   if (!session || !template) {
     return (
       <div className="flex-1 flex items-center justify-center p-6">
-        <p className="text-retro-warm">Workout not found.</p>
-        <button onClick={() => navigate('/')} className="text-retro-red underline ml-2 font-bold">
+        <p className="text-text-secondary">Workout not found.</p>
+        <button onClick={() => navigate('/')} className="text-peach underline ml-2 font-bold">
           Go back
         </button>
       </div>
@@ -60,11 +60,11 @@ export function WorkoutPage() {
 
   if (showCompletion) {
     return (
-      <div className="flex-1 flex items-center justify-center p-6 bg-retro-cream">
+      <div className="flex-1 flex items-center justify-center p-6 bg-dark-base">
         <div className="text-center animate-pop-in">
           <p className="text-7xl mb-5">🏆</p>
-          <p className="font-display text-5xl text-retro-red tracking-wide">DONE!</p>
-          <p className="text-retro-warm mt-3 font-bold text-lg">Great work.</p>
+          <p className="font-display text-5xl text-peach tracking-wide font-bold">DONE!</p>
+          <p className="text-text-secondary mt-3 font-bold text-lg">Great work.</p>
         </div>
       </div>
     );
@@ -74,16 +74,16 @@ export function WorkoutPage() {
     <PageTransition>
     <div className="flex-1 pb-24">
       {/* Header */}
-      <div className="bg-retro-blue px-4 pt-3 pb-4">
+      <div className="bg-gradient-to-br from-dark-surface to-dark-card px-4 pt-3 pb-4">
         <div className="flex items-center justify-between">
           <button
             onClick={() => navigate(-1)}
-            className="text-white/80 text-sm min-h-[44px] min-w-[44px] flex items-center font-bold"
+            className="text-text-secondary text-sm min-h-[44px] min-w-[44px] flex items-center font-bold"
           >
             ← BACK
           </button>
           <div className="text-center">
-            <p className="font-display text-xl text-white tracking-wider">
+            <p className="font-display text-xl text-text-primary tracking-wider font-bold">
               {template.emoji} {template.name.toUpperCase()}
             </p>
           </div>
@@ -91,13 +91,13 @@ export function WorkoutPage() {
         </div>
 
         {/* Progress bar */}
-        <div className="mt-3 bg-white/20 rounded-full h-3 overflow-hidden">
+        <div className="mt-3 bg-white/10 rounded-full h-3 overflow-hidden">
           <div
-            className="bg-retro-gold h-full rounded-full transition-all duration-700 ease-out"
+            className="bg-gradient-to-r from-peach to-mint h-full rounded-full transition-all duration-700 ease-out"
             style={{ width: `${progress}%` }}
           />
         </div>
-        <p className="text-xs text-white/70 mt-1.5 text-center font-bold tracking-wide">
+        <p className="text-xs text-text-muted mt-1.5 text-center font-bold tracking-wide">
           {completedCount} / {totalCount}
         </p>
       </div>
@@ -126,7 +126,7 @@ export function WorkoutPage() {
         <div className="fixed left-0 right-0 px-4 animate-slide-up" style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 5.5rem)' }}>
           <button
             onClick={handleComplete}
-            className="w-full py-4 bg-retro-green text-white rounded-xl font-display text-2xl tracking-widest shadow-lg active:scale-[0.97] transition-all"
+            className="w-full py-4 bg-mint text-dark-base rounded-2xl font-display text-2xl tracking-widest shadow-lg active:scale-[0.97] transition-all font-bold"
           >
             COMPLETE! 🏆
           </button>

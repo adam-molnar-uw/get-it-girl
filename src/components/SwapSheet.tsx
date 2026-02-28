@@ -15,16 +15,16 @@ export function SwapSheet({ currentExerciseId, workoutType, onSelect, onClose }:
   return (
     <div className="fixed inset-0 z-50 flex items-end">
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-retro-brown/50 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
 
       {/* Sheet */}
-      <div className="animate-slide-up relative w-full bg-retro-white rounded-t-2xl max-h-[60vh] overflow-hidden shadow-2xl">
+      <div className="animate-slide-up relative w-full bg-dark-card rounded-t-2xl max-h-[60vh] overflow-hidden shadow-2xl border-t border-white/10">
         <div className="retro-stripes" />
         <div className="p-5 pb-10 overflow-y-auto max-h-[calc(60vh-6px)]">
-          <h3 className="font-display text-2xl text-retro-brown tracking-wider mb-4">SWAP EXERCISE</h3>
+          <h3 className="font-display text-2xl text-text-primary tracking-wider mb-4 font-bold">SWAP EXERCISE</h3>
 
           {options.length === 0 ? (
-            <p className="text-retro-warm text-center py-8 font-medium">No alternatives available</p>
+            <p className="text-text-secondary text-center py-8 font-medium">No alternatives available</p>
           ) : (
             <div className="space-y-2">
               {options.map((opt) => {
@@ -34,15 +34,15 @@ export function SwapSheet({ currentExerciseId, workoutType, onSelect, onClose }:
                   <button
                     key={opt}
                     onClick={() => onSelect(opt)}
-                    className="w-full flex items-center gap-3 p-4 rounded-xl active:scale-[0.98] transition-all text-left min-h-[56px] border border-retro-cream-dark hover:border-retro-blue"
+                    className="w-full flex items-center gap-3 p-4 rounded-xl active:scale-[0.98] transition-all text-left min-h-[56px] glass-card-light hover:border-peach/30"
                   >
                     <span className="text-2xl">{exercise.emoji}</span>
                     <div>
-                      <p className="font-bold text-retro-brown">{exercise.name}</p>
+                      <p className="font-bold text-text-primary">{exercise.name}</p>
                       {exercise.description && (
-                        <p className="text-xs text-retro-brown/70 mt-0.5">{exercise.description}</p>
+                        <p className="text-xs text-text-primary/60 mt-0.5">{exercise.description}</p>
                       )}
-                      <p className="text-xs text-retro-warm font-medium mt-0.5 uppercase tracking-wide">
+                      <p className="text-xs text-text-secondary font-medium mt-0.5 uppercase tracking-wide">
                         {exercise.muscleGroups.join(' · ')}
                       </p>
                     </div>
@@ -54,7 +54,7 @@ export function SwapSheet({ currentExerciseId, workoutType, onSelect, onClose }:
 
           <button
             onClick={onClose}
-            className="w-full mt-5 py-3.5 bg-retro-cream-dark text-retro-brown rounded-lg font-bold active:scale-95 transition-all min-h-[44px] tracking-wide"
+            className="w-full mt-5 py-3.5 bg-white/10 text-text-primary rounded-lg font-bold active:scale-95 transition-all min-h-[44px] tracking-wide"
           >
             CANCEL
           </button>

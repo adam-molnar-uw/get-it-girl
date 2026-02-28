@@ -21,7 +21,7 @@ export function ProgressRing({ completed, total, size = 180 }: ProgressRingProps
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="#E8E0D4"
+          stroke="rgba(255,255,255,0.08)"
           strokeWidth={strokeWidth}
         />
         {/* Progress ring */}
@@ -30,7 +30,7 @@ export function ProgressRing({ completed, total, size = 180 }: ProgressRingProps
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke={isDone ? '#588157' : '#D97B3B'}
+          stroke={isDone ? '#A8E6CF' : '#FFAD9E'}
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           strokeDasharray={circumference}
@@ -39,10 +39,10 @@ export function ProgressRing({ completed, total, size = 180 }: ProgressRingProps
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="font-display text-5xl text-retro-brown leading-none">
+        <span className="font-display text-5xl text-text-primary leading-none font-bold">
           {completed}/{total}
         </span>
-        <span className="text-xs font-bold text-retro-warm uppercase tracking-widest mt-1">
+        <span className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-1">
           {isDone ? 'Complete' : 'Workouts'}
         </span>
       </div>

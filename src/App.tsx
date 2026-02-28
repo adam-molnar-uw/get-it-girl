@@ -26,7 +26,7 @@ export default function App() {
 
   return (
     <HashRouter>
-      <div className="min-h-dvh flex flex-col bg-retro-cream">
+      <div className="min-h-dvh flex flex-col bg-dark-base">
         <Routes>
           <Route path="/" element={<TodayPage />} />
           <Route path="/week" element={<WeekPage />} />

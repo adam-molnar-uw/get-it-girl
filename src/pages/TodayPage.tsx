@@ -6,7 +6,6 @@ import { StreakDisplay } from '../components/StreakDisplay';
 import { PageTransition } from '../components/PageTransition';
 import { PullToRefresh } from '../components/PullToRefresh';
 import { workoutTemplates } from '../data/workout-templates';
-import { REST_DAYS } from '../types';
 import { useNavigate } from 'react-router-dom';
 
 const GREETINGS = [
@@ -24,10 +23,18 @@ function getGreeting(): string {
   return `${prefix} — ${motivation}`;
 }
 
-function isRestDay(): boolean {
-  const day = new Date().getDay();
-  return REST_DAYS.includes(day as 0 | 1 | 2 | 3 | 4 | 5 | 6);
-}
+const RECOVERY_TIPS = [
+  { emoji: '💧', text: 'Hydrate — your muscles recover faster when you drink enough water.' },
+  { emoji: '😴', text: 'Sleep is gains. Aim for 7-9 hours tonight.' },
+  { emoji: '🧘', text: 'A few minutes of stretching now prevents soreness tomorrow.' },
+  { emoji: '🍎', text: 'Refuel with protein within an hour — your muscles will thank you.' },
+  { emoji: '🫁', text: 'Try 5 minutes of slow breathing. Recovery starts with your nervous system.' },
+  { emoji: '🛁', text: 'A warm bath or foam rolling tonight = fresher legs tomorrow.' },
+  { emoji: '🚶‍♀️', text: "A gentle walk is the best active recovery. Don't just sit!" },
+  { emoji: '💪', text: "Rest isn't laziness — it's where your body actually builds strength." },
+  { emoji: '🌿', text: 'Rest days are part of the program, not a break from it.' },
+  { emoji: '✨', text: "You showed up today. That's the hardest part. Be proud." },
+];
 
 export function TodayPage() {
   const { plan, loading, refresh } = useWeeklyPlan();
@@ -56,7 +63,11 @@ export function TodayPage() {
     .map((w, i) => ({ ...w, index: i }))
     .filter((w) => !w.completed);
 
-  const restDay = isRestDay();
+  const today = new Date().getDay();
+  const todayWorkout = plan.workouts.find((w) => w.assignedDay === today);
+  const todayDone = todayWorkout?.completed ?? false;
+  const recoveryTip = RECOVERY_TIPS[new Date().getDate() % RECOVERY_TIPS.length];
+
   const nextWorkout = remaining[0];
   const otherWorkouts = remaining.slice(1);
 
@@ -89,13 +100,21 @@ export function TodayPage() {
         <ProgressRing completed={completedCount} total={totalCount} />
       </div>
 
-      {/* Rest day banner */}
-      {restDay && remaining.length > 0 && (
+      {/* Recovery card — shows when today's workout is done */}
+      {todayDone && remaining.length > 0 && (
         <div className="px-5 mb-2">
           <div className="animate-slide-up glass-card p-4 border-l-4 border-mint">
-            <p className="text-mint font-bold text-sm">
-              🧘 Rest day — try a gentle yoga flow or take it easy
-            </p>
+            <div className="flex items-start gap-3">
+              <span className="text-2xl">{recoveryTip.emoji}</span>
+              <div>
+                <p className="text-mint font-display font-bold text-sm mb-0.5">
+                  You're done for today!
+                </p>
+                <p className="text-text-secondary text-xs font-medium leading-relaxed">
+                  {recoveryTip.text}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -106,7 +125,7 @@ export function TodayPage() {
             {/* Section header */}
             <div>
               <h2 className="font-display text-xl text-text-primary font-bold mb-1">
-                {restDay ? 'Upcoming' : "Choose today's movement"}
+                {todayDone ? 'Coming up' : "Choose today's movement"}
               </h2>
               <p className="text-text-muted text-xs font-medium">
                 {remaining.length} workout{remaining.length !== 1 ? 's' : ''} remaining this week
@@ -154,6 +173,19 @@ export function TodayPage() {
             <p className="text-text-secondary mt-3 font-medium text-lg">
               Amazing work this week.
             </p>
+            <div className="mt-6 glass-card p-5 text-left border-l-4 border-mint">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">🌿</span>
+                <div>
+                  <p className="text-mint font-display font-bold text-sm mb-1">
+                    Time to rest & recover
+                  </p>
+                  <p className="text-text-secondary text-xs font-medium leading-relaxed">
+                    Your body builds strength during rest, not during the workout. Enjoy your recovery — you earned it.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>

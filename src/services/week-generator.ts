@@ -1,26 +1,27 @@
 import type { WeeklyPlan, WeeklyPlanWorkout } from '../types';
 
 /**
- * Fixed weekly program (from program.js):
- *   1. Lower Body: Glute & Ham        (Mon)
- *   2. Mysore Ashtanga                 (Tue)
- *   3. Upper Body: Push + Pull         (Wed)
- *   4. Mysore Ashtanga                 (Thu)
- *   5. Full Body + VO₂ Max            (Fri)
- *   6. Mysore Ashtanga                 (Sat)
- *   7. Zone 2 Cardio                   (Sun)
+ * Fixed weekly program — Thursday is always a gym day:
+ *   Mon — Lower Body: Glute & Ham     (gym)
+ *   Tue — Mysore Ashtanga             (home)
+ *   Wed — Mysore Ashtanga             (home)
+ *   Thu — Upper Body: Push + Pull     (gym)
+ *   Fri — Mysore Ashtanga             (home)
+ *   Sat — Full Body + VO₂ Max        (gym)
+ *   Sun — Zone 2 Cardio              (anywhere)
  *
  * Same every week — no randomness. Science-backed structure.
  */
 
-const FIXED_TEMPLATE_IDS = [
-  'lower-gym-1',     // Lower Body: Glute & Ham
-  'ashtanga-1',      // Mysore Ashtanga
-  'upper-1',         // Upper Body: Push + Pull
-  'ashtanga-1',      // Mysore Ashtanga
-  'full-body-vo2',   // Full Body + VO₂ Max
-  'ashtanga-1',      // Mysore Ashtanga
-  'zone2-1',         // Zone 2 Cardio
+// [templateId, assignedDay] — day: 0=Sun, 1=Mon, ... 6=Sat
+const WEEKLY_SCHEDULE: [string, number][] = [
+  ['lower-gym-1',   1], // Mon
+  ['ashtanga-1',    2], // Tue
+  ['ashtanga-1',    3], // Wed
+  ['upper-1',       4], // Thu  ← guaranteed gym day
+  ['ashtanga-1',    5], // Fri
+  ['full-body-vo2', 6], // Sat
+  ['zone2-1',       0], // Sun
 ];
 
 function getWeekId(date: Date): string {
@@ -40,8 +41,9 @@ function getMondayOfWeek(date: Date): string {
 }
 
 export function generateWeeklyPlan(programWeek: number, date: Date = new Date()): WeeklyPlan {
-  const workouts: WeeklyPlanWorkout[] = FIXED_TEMPLATE_IDS.map((templateId) => ({
+  const workouts: WeeklyPlanWorkout[] = WEEKLY_SCHEDULE.map(([templateId, assignedDay]) => ({
     templateId,
+    assignedDay,
     completed: false,
   }));
 

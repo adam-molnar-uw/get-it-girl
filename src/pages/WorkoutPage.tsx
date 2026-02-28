@@ -4,12 +4,14 @@ import { useWorkoutSession } from '../hooks/useWorkoutSession';
 import { ExerciseRow } from '../components/ExerciseRow';
 import { SwapSheet } from '../components/SwapSheet';
 import { PageTransition } from '../components/PageTransition';
+import { BadgeToast } from '../components/BadgeToast';
 import { exercises as exerciseDB } from '../data/exercises';
 import { workoutTemplates } from '../data/workout-templates';
 import type { WorkoutSessionExercise } from '../types';
 
 const TYPE_GRADIENT: Record<string, string> = {
   'lower-body': 'from-peach-dark/20 to-dark-base',
+  'upper-body': 'from-lavender/20 to-dark-base',
   'full-body': 'from-lavender/20 to-dark-base',
   'hiit': 'from-peach/20 to-dark-base',
   'yoga': 'from-mint/20 to-dark-base',
@@ -23,11 +25,12 @@ export function WorkoutPage() {
   const { weekId, workoutIndex } = useParams<{ weekId: string; workoutIndex: string }>();
   const navigate = useNavigate();
   const idx = Number(workoutIndex);
-  const { session, loading, toggleExercise, swapExercise, completeWorkout } =
+  const { session, loading, toggleExercise, swapExercise, completeWorkout, newlyEarnedBadges } =
     useWorkoutSession(weekId!, idx);
 
   const [swapTarget, setSwapTarget] = useState<number | null>(null);
   const [showCompletion, setShowCompletion] = useState(false);
+  const [showBadgeToast, setShowBadgeToast] = useState(false);
 
   const template = session
     ? workoutTemplates.find((t) => t.id === session.templateId)
@@ -45,10 +48,16 @@ export function WorkoutPage() {
 
   useEffect(() => {
     if (showCompletion) {
-      const timer = setTimeout(() => navigate('/'), 2500);
-      return () => clearTimeout(timer);
+      if (newlyEarnedBadges.length > 0) {
+        // Show badge toast after a brief celebration
+        const timer = setTimeout(() => setShowBadgeToast(true), 1500);
+        return () => clearTimeout(timer);
+      } else {
+        const timer = setTimeout(() => navigate('/'), 2500);
+        return () => clearTimeout(timer);
+      }
     }
-  }, [showCompletion, navigate]);
+  }, [showCompletion, navigate, newlyEarnedBadges]);
 
   if (loading) {
     return (
@@ -160,6 +169,14 @@ export function WorkoutPage() {
             setSwapTarget(null);
           }}
           onClose={() => setSwapTarget(null)}
+        />
+      )}
+
+      {/* Badge toast */}
+      {showBadgeToast && newlyEarnedBadges.length > 0 && (
+        <BadgeToast
+          badges={newlyEarnedBadges}
+          onDismiss={() => navigate('/')}
         />
       )}
     </div>

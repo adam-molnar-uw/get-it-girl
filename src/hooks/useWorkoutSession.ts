@@ -6,14 +6,23 @@ import {
   saveWeeklyPlan,
   addHistoryEntry,
   getProgression,
+  getAllHistory,
+  getAllWeeklyPlans,
+  getAllEarnedBadges,
+  awardBadge,
+  getStreakData,
+  saveStreakData,
 } from '../db/repositories';
 import { workoutTemplates } from '../data/workout-templates';
 import { applyProgression } from '../services/progression';
-import type { WorkoutSession, WorkoutHistoryEntry } from '../types';
+import { calculateStreaks } from '../services/streak-calculator';
+import { checkNewBadges } from '../services/badge-checker';
+import type { WorkoutSession, WorkoutHistoryEntry, Badge } from '../types';
 
 export function useWorkoutSession(weekId: string, workoutIndex: number) {
   const [session, setSession] = useState<WorkoutSession | null>(null);
   const [loading, setLoading] = useState(true);
+  const [newlyEarnedBadges, setNewlyEarnedBadges] = useState<Badge[]>([]);
 
   useEffect(() => {
     async function loadOrCreate() {
@@ -135,8 +144,62 @@ export function useWorkoutSession(weekId: string, workoutIndex: number) {
     };
     await addHistoryEntry(historyEntry);
 
+    // Recalculate streaks
+    const [allHistory, allPlans, existingStreak] = await Promise.all([
+      getAllHistory(),
+      getAllWeeklyPlans(),
+      getStreakData(),
+    ]);
+
+    const { currentStreak, longestStreak } = calculateStreaks(allHistory, allPlans);
+
+    await saveStreakData({
+      id: 'current',
+      currentStreak,
+      longestStreak: Math.max(longestStreak, existingStreak?.longestStreak ?? 0),
+      lastCalculatedAt: new Date().toISOString(),
+    });
+
+    // Check for new badges
+    const updatedPlanForBadges = plan
+      ? {
+          ...plan,
+          workouts: plan.workouts.map((w) =>
+            w.sessionId === session.id ? { ...w, completed: true, completedAt } : w
+          ),
+        }
+      : null;
+
+    if (updatedPlanForBadges) {
+      const [progression, earnedBadges] = await Promise.all([
+        getProgression(),
+        getAllEarnedBadges(),
+      ]);
+
+      if (progression) {
+        const newBadges = checkNewBadges({
+          allHistory,
+          allPlans,
+          currentPlan: updatedPlanForBadges,
+          progression,
+          currentStreak,
+          earnedBadges,
+        });
+
+        for (const badge of newBadges) {
+          await awardBadge({
+            id: badge.id,
+            earnedAt: completedAt,
+            weekPlanId: session.weekPlanId,
+          });
+        }
+
+        setNewlyEarnedBadges(newBadges);
+      }
+    }
+
     setSession(updatedSession);
   }, [session]);
 
-  return { session, loading, toggleExercise, swapExercise, completeWorkout };
+  return { session, loading, toggleExercise, swapExercise, completeWorkout, newlyEarnedBadges };
 }

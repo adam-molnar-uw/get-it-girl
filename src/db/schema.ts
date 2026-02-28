@@ -5,6 +5,8 @@ import type {
   WorkoutHistoryEntry,
   ProgressionState,
   AppSettings,
+  EarnedBadge,
+  StreakData,
 } from '../types';
 
 export interface WorkoutDB extends DBSchema {
@@ -29,5 +31,13 @@ export interface WorkoutDB extends DBSchema {
   settings: {
     key: string;
     value: AppSettings;
+  };
+  badges: {
+    key: string;
+    value: EarnedBadge;
+  };
+  streaks: {
+    key: string;
+    value: StreakData;
   };
 }

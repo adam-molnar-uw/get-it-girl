@@ -1,6 +1,8 @@
 import { useWeeklyPlan } from '../hooks/useWeeklyPlan';
+import { useStreaks } from '../hooks/useStreaks';
 import { ProgressRing } from '../components/ProgressRing';
 import { WorkoutCard } from '../components/WorkoutCard';
+import { StreakDisplay } from '../components/StreakDisplay';
 import { PageTransition } from '../components/PageTransition';
 import { PullToRefresh } from '../components/PullToRefresh';
 import { workoutTemplates } from '../data/workout-templates';
@@ -29,6 +31,7 @@ function isRestDay(): boolean {
 
 export function TodayPage() {
   const { plan, loading, refresh } = useWeeklyPlan();
+  const { streaks } = useStreaks();
   const navigate = useNavigate();
 
   if (loading) {
@@ -70,6 +73,16 @@ export function TodayPage() {
           {getGreeting()}
         </p>
       </div>
+
+      {/* Streak Display */}
+      {streaks && (
+        <div className="px-5 pb-2">
+          <StreakDisplay
+            currentStreak={streaks.currentStreak}
+            longestStreak={streaks.longestStreak}
+          />
+        </div>
+      )}
 
       {/* Progress Section */}
       <div className="px-5 py-4">

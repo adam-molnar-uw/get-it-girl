@@ -1,5 +1,6 @@
 export type WorkoutType =
   | 'lower-body'
+  | 'upper-body'
   | 'full-body'
   | 'hiit'
   | 'yoga'
@@ -21,7 +22,10 @@ export type MuscleGroup =
   | 'core'
   | 'full-body'
   | 'hip-flexors'
-  | 'adductors';
+  | 'adductors'
+  | 'lats'
+  | 'rear-delts'
+  | 'rotator-cuff';
 
 export type SwapGroup = string; // e.g. "squat-pattern", "hinge-pattern", "push-horizontal"
 
@@ -30,6 +34,17 @@ export interface ExerciseVariation {
   unlocksAtWeek: number; // which progression week this becomes available
 }
 
+export type Equipment =
+  | 'dumbbells'
+  | 'bodyweight'
+  | 'band'
+  | 'barbell'
+  | 'bench'
+  | 'cable-machine'
+  | 'machine'
+  | 'rack'
+  | 'ab-wheel';
+
 export interface Exercise {
   id: string;
   name: string;
@@ -37,7 +52,7 @@ export interface Exercise {
   muscleGroups: MuscleGroup[];
   swapGroup: SwapGroup;
   workoutTypes: WorkoutType[];
-  equipment: ('dumbbells' | 'bodyweight' | 'band')[];
+  equipment: Equipment[];
   gifUrl?: string;
   description?: string; // brief "how to" explanation
   cues: string[]; // form cues
@@ -129,8 +144,49 @@ export interface AppSettings {
   restDayYogaEnabled: boolean;
 }
 
+// --- Streak & Badge types ---
+
+export type BadgeCategory =
+  | 'first-steps'
+  | 'streak'
+  | 'volume'
+  | 'type-mastery'
+  | 'progression'
+  | 'perfect-week';
+
+export type BadgeCriteria =
+  | { type: 'first-workout' }
+  | { type: 'first-week-complete' }
+  | { type: 'streak-weeks'; weeks: number }
+  | { type: 'total-workouts'; count: number }
+  | { type: 'type-count'; workoutType: WorkoutType; count: number }
+  | { type: 'reach-week'; weekNumber: number }
+  | { type: 'perfect-week' };
+
+export interface Badge {
+  id: string;
+  name: string;
+  description: string;
+  emoji: string;
+  category: BadgeCategory;
+  criteria: BadgeCriteria;
+}
+
+export interface EarnedBadge {
+  id: string;
+  earnedAt: string;
+  weekPlanId?: string;
+}
+
+export interface StreakData {
+  id: 'current';
+  currentStreak: number;
+  longestStreak: number;
+  lastCalculatedAt: string;
+}
+
 export type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
-export const WORKOUT_DAYS: DayOfWeek[] = [2, 4, 5, 6, 0]; // Tue, Thu, Fri, Sat, Sun
-export const REST_DAYS: DayOfWeek[] = [1, 3]; // Mon, Wed
+export const WORKOUT_DAYS: DayOfWeek[] = [1, 2, 3, 4, 5, 6]; // Mon–Sat
+export const REST_DAYS: DayOfWeek[] = [0]; // Sun

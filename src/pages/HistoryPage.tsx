@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { getAllHistory, getAllWeeklyPlans } from '../db/repositories';
+import { useBadges } from '../hooks/useBadges';
 import { PageTransition } from '../components/PageTransition';
+import { BadgeGrid } from '../components/BadgeGrid';
 import type { WorkoutHistoryEntry, WeeklyPlan } from '../types';
 
 interface WeekGroup {
@@ -11,6 +13,7 @@ interface WeekGroup {
 export function HistoryPage() {
   const [groups, setGroups] = useState<WeekGroup[]>([]);
   const [loading, setLoading] = useState(true);
+  const { earnedBadges, allBadges: allBadgesList } = useBadges();
 
   useEffect(() => {
     async function load() {
@@ -124,6 +127,25 @@ export function HistoryPage() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Badges Section */}
+      <div className="px-5 mt-8 mb-4">
+        <div className="flex items-center justify-between mb-1">
+          <h2 className="font-display text-2xl text-lavender font-bold">
+            Badges
+          </h2>
+          <span className="text-xs text-text-muted font-bold">
+            {earnedBadges.length}/{allBadgesList.length}
+          </span>
+        </div>
+        <div className="h-2 bg-white/8 rounded-full overflow-hidden mb-5">
+          <div
+            className="h-full bg-gradient-to-r from-lavender to-mint rounded-full transition-all duration-700"
+            style={{ width: `${allBadgesList.length > 0 ? (earnedBadges.length / allBadgesList.length) * 100 : 0}%` }}
+          />
+        </div>
+        <BadgeGrid allBadges={allBadgesList} earnedBadges={earnedBadges} />
       </div>
     </div>
     </PageTransition>

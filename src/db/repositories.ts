@@ -5,6 +5,8 @@ import type {
   WorkoutHistoryEntry,
   ProgressionState,
   AppSettings,
+  EarnedBadge,
+  StreakData,
 } from '../types';
 
 // --- Weekly Plans ---
@@ -90,12 +92,36 @@ export async function saveSettings(settings: AppSettings): Promise<void> {
   await db.put('settings', settings);
 }
 
+// --- Badges ---
+
+export async function getAllEarnedBadges(): Promise<EarnedBadge[]> {
+  const db = await getDB();
+  return db.getAll('badges');
+}
+
+export async function awardBadge(badge: EarnedBadge): Promise<void> {
+  const db = await getDB();
+  await db.put('badges', badge);
+}
+
+// --- Streaks ---
+
+export async function getStreakData(): Promise<StreakData | undefined> {
+  const db = await getDB();
+  return db.get('streaks', 'current');
+}
+
+export async function saveStreakData(data: StreakData): Promise<void> {
+  const db = await getDB();
+  await db.put('streaks', data);
+}
+
 // --- Reset ---
 
 export async function resetAllData(): Promise<void> {
   const db = await getDB();
   const tx = db.transaction(
-    ['weeklyPlans', 'sessions', 'history', 'progression', 'settings'],
+    ['weeklyPlans', 'sessions', 'history', 'progression', 'settings', 'badges', 'streaks'],
     'readwrite'
   );
   await Promise.all([
@@ -104,6 +130,8 @@ export async function resetAllData(): Promise<void> {
     tx.objectStore('history').clear(),
     tx.objectStore('progression').clear(),
     tx.objectStore('settings').clear(),
+    tx.objectStore('badges').clear(),
+    tx.objectStore('streaks').clear(),
     tx.done,
   ]);
 }

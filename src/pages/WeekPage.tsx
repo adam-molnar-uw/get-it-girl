@@ -5,7 +5,7 @@ import { DAY_NAMES } from '../types';
 import { useNavigate } from 'react-router-dom';
 
 export function WeekPage() {
-  const { plan, loading, assignDay } = useWeeklyPlan();
+  const { plan, loading, assignDay, swapTemplate } = useWeeklyPlan();
   const navigate = useNavigate();
 
   if (loading || !plan) {
@@ -98,14 +98,40 @@ export function WeekPage() {
                 <div className="flex items-center gap-3 mb-3">
                   <span className="text-3xl">{template.emoji}</span>
                   <div className="flex-1">
-                    <p className="font-display font-bold text-text-primary text-lg leading-tight">
-                      {template.name}
-                      {w.completed && <span className="text-mint ml-2">✓</span>}
-                    </p>
-                    <p className="text-xs text-text-secondary font-medium mt-0.5">
-                      {template.exercises.length} exercise{template.exercises.length !== 1 ? 's' : ''} · ~{template.estimatedMinutes ?? template.exercises.length * 4} min
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-display font-bold text-text-primary text-lg leading-tight">
+                        {template.name}
+                        {w.completed && <span className="text-mint ml-2">✓</span>}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 mt-0.5">
+                      {template.location && (
+                        <span className={`text-[9px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full ${
+                          template.location === 'gym' ? 'bg-peach/15 text-peach' :
+                          template.location === 'home' ? 'bg-mint/15 text-mint' :
+                          'bg-lavender/15 text-lavender'
+                        }`}>
+                          {template.location === 'gym' ? '🏋️ GYM' : template.location === 'home' ? '🏠 HOME' : '🌍 ANY'}
+                        </span>
+                      )}
+                      <span className="text-xs text-text-secondary font-medium">
+                        {template.exercises.length} exercise{template.exercises.length !== 1 ? 's' : ''} · ~{template.estimatedMinutes ?? template.exercises.length * 4} min
+                      </span>
+                    </div>
                   </div>
+                  {/* Gym/Home toggle */}
+                  {template.alternativeId && !w.completed && (
+                    <button
+                      onClick={() => swapTemplate(i, template.alternativeId!)}
+                      className={`text-[10px] font-bold tracking-wider uppercase px-3 py-2 rounded-xl transition-all active:scale-95 min-h-[44px] ${
+                        template.location === 'gym'
+                          ? 'bg-mint/15 text-mint'
+                          : 'bg-peach/15 text-peach'
+                      }`}
+                    >
+                      {template.location === 'gym' ? '🏠' : '🏋️'}
+                    </button>
+                  )}
                 </div>
 
                 {/* Day assignment chips + GO */}

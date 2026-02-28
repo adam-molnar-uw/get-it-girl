@@ -48,6 +48,12 @@ const TYPE_BADGE: Record<string, string> = {
   'recovery': 'bg-mint-light/20 text-mint-light',
 };
 
+const LOCATION_BADGE: Record<string, { icon: string; label: string; style: string }> = {
+  gym: { icon: '🏋️', label: 'GYM', style: 'bg-peach/15 text-peach' },
+  home: { icon: '🏠', label: 'HOME', style: 'bg-mint/15 text-mint' },
+  anywhere: { icon: '🌍', label: 'ANY', style: 'bg-lavender/15 text-lavender' },
+};
+
 interface WorkoutCardProps {
   template: WorkoutTemplate;
   onStart: () => void;
@@ -62,6 +68,7 @@ export function WorkoutCard({ template, onStart, delay = 0, featured = false }: 
   const label = TYPE_LABELS[template.type] ?? template.type.toUpperCase();
   const exerciseCount = template.exercises.length;
   const duration = template.estimatedMinutes ?? exerciseCount * 4;
+  const loc = template.location ? LOCATION_BADGE[template.location] : null;
 
   if (featured) {
     return (
@@ -72,9 +79,16 @@ export function WorkoutCard({ template, onStart, delay = 0, featured = false }: 
       >
         <div className="p-6">
           <div className="flex items-start justify-between mb-4">
-            <span className={`text-[10px] font-bold tracking-[0.2em] uppercase px-3 py-1 rounded-full ${badge}`}>
-              {label}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className={`text-[10px] font-bold tracking-[0.2em] uppercase px-3 py-1 rounded-full ${badge}`}>
+                {label}
+              </span>
+              {loc && (
+                <span className={`text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full ${loc.style}`}>
+                  {loc.icon} {loc.label}
+                </span>
+              )}
+            </div>
             <span className="text-4xl">{template.emoji}</span>
           </div>
 
@@ -115,9 +129,16 @@ export function WorkoutCard({ template, onStart, delay = 0, featured = false }: 
         <div className="flex items-center gap-4">
           <span className="text-4xl">{template.emoji}</span>
           <div className="flex-1 min-w-0">
-            <span className={`text-[10px] font-bold tracking-[0.15em] uppercase ${accent}`}>
-              {label}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className={`text-[10px] font-bold tracking-[0.15em] uppercase ${accent}`}>
+                {label}
+              </span>
+              {loc && (
+                <span className={`text-[9px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full ${loc.style}`}>
+                  {loc.icon} {loc.label}
+                </span>
+              )}
+            </div>
             <p className="font-display font-bold text-text-primary text-lg leading-tight mt-0.5">
               {template.name}
             </p>

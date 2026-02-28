@@ -92,10 +92,25 @@ export function useWeeklyPlan() {
     [plan]
   );
 
+  const swapTemplate = useCallback(
+    async (workoutIndex: number, newTemplateId: string) => {
+      if (!plan) return;
+      const updated = {
+        ...plan,
+        workouts: plan.workouts.map((w, i) =>
+          i === workoutIndex ? { ...w, templateId: newTemplateId, sessionId: undefined } : w
+        ),
+      };
+      setPlan(updated);
+      await saveWeeklyPlan(updated);
+    },
+    [plan]
+  );
+
   const refresh = useCallback(async () => {
     setLoading(true);
     await loadOrGenerate();
   }, [loadOrGenerate]);
 
-  return { plan, loading, assignDay, markCompleted, refresh };
+  return { plan, loading, assignDay, swapTemplate, markCompleted, refresh };
 }

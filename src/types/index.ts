@@ -76,6 +76,8 @@ export interface TemplateExercise {
   orderIndex: number;
 }
 
+export type WorkoutLocation = 'gym' | 'home' | 'anywhere';
+
 export interface WorkoutTemplate {
   id: string;
   name: string;
@@ -84,6 +86,8 @@ export interface WorkoutTemplate {
   exercises: TemplateExercise[];
   description: string;
   estimatedMinutes?: number;
+  location?: WorkoutLocation;
+  alternativeId?: string; // gym↔home pair
 }
 
 // --- Persisted types (IndexedDB) ---

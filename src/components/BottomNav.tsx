@@ -4,6 +4,7 @@ const NAV_ITEMS = [
   { to: '/', label: 'TODAY', icon: '🏠' },
   { to: '/week', label: 'WEEK', icon: '📅' },
   { to: '/history', label: 'HISTORY', icon: '📋' },
+  { to: '/rewards', label: 'REWARDS', icon: '🏆' },
   { to: '/settings', label: 'SETTINGS', icon: '⚙️' },
 ];
 
@@ -19,7 +20,7 @@ export function BottomNav() {
               to={item.to}
               end={item.to === '/'}
               className={({ isActive }) =>
-                `flex flex-col items-center gap-0.5 min-w-[64px] min-h-[44px] justify-center px-3 py-1.5 transition-all duration-200 border-b-3 ${
+                `flex flex-col items-center gap-0.5 min-w-[52px] min-h-[44px] justify-center px-2 py-1.5 transition-all duration-200 border-b-3 ${
                   isActive
                     ? 'text-retro-red border-retro-red'
                     : 'text-retro-warm border-transparent'

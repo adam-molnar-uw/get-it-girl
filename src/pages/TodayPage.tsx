@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useWeeklyPlan } from '../hooks/useWeeklyPlan';
 import { ProgressRing } from '../components/ProgressRing';
 import { WorkoutCard } from '../components/WorkoutCard';
@@ -6,6 +7,8 @@ import { PullToRefresh } from '../components/PullToRefresh';
 import { workoutTemplates } from '../data/workout-templates';
 import { REST_DAYS } from '../types';
 import { useNavigate } from 'react-router-dom';
+import { getAllWeeklyPlans } from '../db/repositories';
+import { calculateWeekStreak } from '../services/rewards';
 
 const GREETINGS = [
   "Let's crush it!",
@@ -30,6 +33,11 @@ function isRestDay(): boolean {
 export function TodayPage() {
   const { plan, loading, refresh } = useWeeklyPlan();
   const navigate = useNavigate();
+  const [streak, setStreak] = useState(0);
+
+  useEffect(() => {
+    getAllWeeklyPlans().then((plans) => setStreak(calculateWeekStreak(plans)));
+  }, [plan]);
 
   if (loading) {
     return (
@@ -81,6 +89,22 @@ export function TodayPage() {
       </div>
 
       <div className="px-4 mt-6 space-y-5">
+        {/* Streak banner */}
+        {streak > 0 && (
+          <button
+            onClick={() => navigate('/rewards')}
+            className="animate-slide-up w-full bg-retro-white rounded-xl p-3 border border-retro-cream-dark shadow-sm flex items-center justify-between active:scale-[0.98] transition-all"
+          >
+            <div className="flex items-center gap-2">
+              <span className="text-xl">🔥</span>
+              <span className="font-bold text-retro-brown text-sm">
+                {streak} week streak!
+              </span>
+            </div>
+            <span className="text-xs font-bold text-retro-red tracking-wide">VIEW REWARDS →</span>
+          </button>
+        )}
+
         {/* Rest day suggestion */}
         {restDay && remaining.length > 0 && (
           <div className="animate-slide-up bg-retro-green/10 rounded-xl p-4 border-l-4 border-retro-green">
@@ -93,9 +117,17 @@ export function TodayPage() {
         {/* Remaining workouts */}
         {remaining.length > 0 ? (
           <div className="space-y-3">
-            <h2 className="font-display text-2xl text-retro-brown tracking-wide">
-              {restDay ? 'UPCOMING' : "TODAY'S WORKOUTS"}
-            </h2>
+            <div className="flex items-center justify-between">
+              <h2 className="font-display text-2xl text-retro-brown tracking-wide">
+                {restDay ? 'UPCOMING' : "CHOOSE TODAY'S MOVEMENT"}
+              </h2>
+              <button
+                onClick={() => navigate('/log')}
+                className="text-xs font-bold text-retro-blue tracking-wide min-h-[44px] flex items-center"
+              >
+                + LOG OTHER
+              </button>
+            </div>
             {remaining.map((w, i) => {
               const template = workoutTemplates.find((t) => t.id === w.templateId);
               if (!template) return null;

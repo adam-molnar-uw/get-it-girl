@@ -7,6 +7,8 @@ import { WeekPage } from './pages/WeekPage';
 import { WorkoutPage } from './pages/WorkoutPage';
 import { HistoryPage } from './pages/HistoryPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { RewardsPage } from './pages/RewardsPage';
+import { LogWorkoutPage } from './pages/LogWorkoutPage';
 
 const ONBOARDING_KEY = 'gig-onboarding-done';
 
@@ -31,7 +33,9 @@ export default function App() {
           <Route path="/" element={<TodayPage />} />
           <Route path="/week" element={<WeekPage />} />
           <Route path="/workout/:weekId/:workoutIndex" element={<WorkoutPage />} />
+          <Route path="/log" element={<LogWorkoutPage />} />
           <Route path="/history" element={<HistoryPage />} />
+          <Route path="/rewards" element={<RewardsPage />} />
           <Route path="/settings" element={<SettingsPage />} />
         </Routes>
         <BottomNav />

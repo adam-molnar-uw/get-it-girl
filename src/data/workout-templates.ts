@@ -178,7 +178,7 @@ export const workoutTemplates: WorkoutTemplate[] = [
   {
     id: 'cardio-1',
     name: 'Cardio Circuit',
-    emoji: '🏃',
+    emoji: '🏃‍♀️',
     type: 'cardio',
     description: 'Heart-pumping bodyweight moves',
     exercises: [

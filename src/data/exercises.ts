@@ -743,7 +743,7 @@ export const exercises: Exercise[] = [
   {
     id: 'jumping-jacks',
     name: 'Jumping Jacks',
-    emoji: '🏃',
+    emoji: '🏃‍♀️',
     muscleGroups: ['full-body'],
     swapGroup: 'cardio-warmup',
     workoutTypes: ['cardio', 'hiit'],
@@ -755,7 +755,7 @@ export const exercises: Exercise[] = [
   {
     id: 'skaters',
     name: 'Skater Hops',
-    emoji: '🏃',
+    emoji: '🏃‍♀️',
     muscleGroups: ['quads', 'glutes'],
     swapGroup: 'cardio-lateral',
     workoutTypes: ['cardio', 'hiit'],

@@ -129,6 +129,23 @@ export interface AppSettings {
   restDayYogaEnabled: boolean;
 }
 
+// --- Rewards ---
+
+export interface Reward {
+  id: string;
+  title: string;
+  description: string;
+  emoji: string;
+  type: 'streak' | 'milestone' | 'total';
+  requirement: number; // weeks for streak, count for total, etc.
+}
+
+export interface EarnedReward {
+  id: string;
+  rewardId: string;
+  earnedAt: string;
+}
+
 export type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;

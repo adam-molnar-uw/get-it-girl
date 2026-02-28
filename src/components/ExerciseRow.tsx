@@ -50,7 +50,9 @@ export function ExerciseRow({ exercise, sessionExercise, onToggle, onSwap }: Exe
             </div>
 
             <p className="text-xs text-text-secondary font-semibold mt-0.5">
-              {holdSeconds
+              {exercise.isProtocol
+                ? 'FOLLOW PROTOCOL'
+                : holdSeconds
                 ? `HOLD ${holdSeconds}s`
                 : `${sets} × ${reps} REPS`}
               {tempoNote && ` · ${tempoNote}`}

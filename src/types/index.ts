@@ -59,6 +59,7 @@ export interface Exercise {
   variations: ExerciseVariation[]; // harder versions (variation chain)
   isYoga?: boolean;
   defaultHoldSeconds?: number; // for yoga/stretch poses
+  isProtocol?: boolean; // for cardio protocols (no sets/reps)
 }
 
 export interface ProgressionTier {

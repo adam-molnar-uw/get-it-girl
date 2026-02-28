@@ -13,6 +13,16 @@ export function applyProgression(
     .map((te) => {
       const exercise = exerciseDB.find((e) => e.id === te.exerciseId);
 
+      // Protocol exercises (cardio): just a single checkbox
+      if (exercise?.isProtocol) {
+        return {
+          exerciseId: getProgressedExerciseId(te.exerciseId, programWeek),
+          sets: 1,
+          reps: 1,
+          completed: false,
+        };
+      }
+
       // For yoga/hold exercises, use hold time instead of sets/reps
       if (exercise?.isYoga || exercise?.defaultHoldSeconds) {
         return {

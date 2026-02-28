@@ -944,6 +944,7 @@ export const exercises: Exercise[] = [
     equipment: ['bodyweight'],
     description: '4×4 Norwegian protocol. 4 min hard (RPE 8-9) + 3 min easy recovery. Bike, track, or outdoor run.',
     cues: ['4 min work at 85-95% max HR', '3 min easy recovery', 'Start with 4 rounds, build to 6'],
+    isProtocol: true,
     variations: [],
   },
   {
@@ -956,6 +957,7 @@ export const exercises: Exercise[] = [
     equipment: ['bodyweight'],
     description: 'Aerobic base building. 45-60 min at 135-148 bpm. You should be able to hold a conversation.',
     cues: ['Stay in 135-148 bpm range', 'Slow down if you can\'t talk', 'Bike, track, or outdoor run'],
+    isProtocol: true,
     variations: [],
   },
 

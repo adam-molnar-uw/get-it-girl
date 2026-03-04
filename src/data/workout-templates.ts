@@ -124,11 +124,7 @@ export const workoutTemplates: WorkoutTemplate[] = [
     estimatedMinutes: 90,
     location: 'home',
     exercises: [
-      { exerciseId: 'ashtanga-sun-salutations', orderIndex: 0 },
-      { exerciseId: 'ashtanga-standing', orderIndex: 1 },
-      { exerciseId: 'ashtanga-seated', orderIndex: 2 },
-      { exerciseId: 'ashtanga-backbending', orderIndex: 3 },
-      { exerciseId: 'ashtanga-finishing', orderIndex: 4 },
+      { exerciseId: 'ashtanga-full-primary', orderIndex: 0 },
     ],
   },
 

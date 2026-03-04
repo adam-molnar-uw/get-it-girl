@@ -861,7 +861,22 @@ export const exercises: Exercise[] = [
     variations: [],
   },
 
-  // ===== ASHTANGA YOGA SECTIONS =====
+  // ===== ASHTANGA YOGA — SINGLE PROTOCOL =====
+  {
+    id: 'ashtanga-full-primary',
+    name: 'Full Primary Series',
+    emoji: '🧘',
+    muscleGroups: ['full-body'],
+    swapGroup: 'ashtanga-protocol',
+    workoutTypes: ['yoga'],
+    equipment: ['bodyweight'],
+    description: 'Sun Salutations → Standing → Seated → Backbending → Finishing. Self-paced Mysore style.',
+    cues: ['Ujjayi breath throughout', 'Vinyasa between poses', '5 breaths per posture', 'Savasana minimum 10 minutes'],
+    isProtocol: true,
+    variations: [],
+  },
+
+  // ===== ASHTANGA YOGA SECTIONS (legacy) =====
   {
     id: 'ashtanga-sun-salutations',
     name: 'Sun Salutations',

@@ -11,6 +11,15 @@ import { workoutTemplates } from '../data/workout-templates';
 import { DAY_NAMES } from '../types';
 import type { WorkoutSessionExercise } from '../types';
 
+const COMPLETION_MESSAGES = [
+  { emoji: '🏆', title: 'Done!', subtitle: 'Great work.' },
+  { emoji: '🔥', title: 'Crushed it!', subtitle: "That's how it's done." },
+  { emoji: '💪', title: "You're a legend!", subtitle: 'Seriously impressive.' },
+  { emoji: '⭐', title: 'Nailed it!', subtitle: 'Another one in the books.' },
+  { emoji: '🎉', title: "Let's gooo!", subtitle: 'You showed up and delivered.' },
+  { emoji: '👑', title: 'Queen!', subtitle: 'Bow down to yourself.' },
+];
+
 const TYPE_GRADIENT: Record<string, string> = {
   'lower-body': 'from-peach-dark/20 to-dark-base',
   'upper-body': 'from-lavender/20 to-dark-base',
@@ -102,12 +111,13 @@ export function WorkoutPage() {
   }
 
   if (showCompletion) {
+    const msg = COMPLETION_MESSAGES[Date.now() % COMPLETION_MESSAGES.length];
     return (
       <div className="flex-1 flex items-center justify-center p-6 bg-dark-base">
         <div className="text-center animate-pop-in">
-          <p className="text-8xl mb-6">🏆</p>
-          <p className="font-display text-4xl text-peach font-bold">Done!</p>
-          <p className="text-text-secondary mt-3 font-semibold text-lg">Great work.</p>
+          <p className="text-8xl mb-6">{msg.emoji}</p>
+          <p className="font-display text-4xl text-peach font-bold">{msg.title}</p>
+          <p className="text-text-secondary mt-3 font-semibold text-lg">{msg.subtitle}</p>
         </div>
       </div>
     );

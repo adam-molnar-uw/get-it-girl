@@ -6,6 +6,7 @@ import { SwapSheet } from '../components/SwapSheet';
 import { DayPickerInline } from '../components/DayPickerInline';
 import { PageTransition } from '../components/PageTransition';
 import { BadgeToast } from '../components/BadgeToast';
+import { Confetti } from '../components/Confetti';
 import { exercises as exerciseDB } from '../data/exercises';
 import { workoutTemplates } from '../data/workout-templates';
 import { DAY_NAMES } from '../types';
@@ -114,6 +115,7 @@ export function WorkoutPage() {
     const msg = COMPLETION_MESSAGES[Date.now() % COMPLETION_MESSAGES.length];
     return (
       <div className="flex-1 flex items-center justify-center p-6 bg-dark-base">
+        <Confetti />
         <div className="text-center animate-pop-in">
           <p className="text-8xl mb-6">{msg.emoji}</p>
           <p className="font-display text-4xl text-peach font-bold">{msg.title}</p>

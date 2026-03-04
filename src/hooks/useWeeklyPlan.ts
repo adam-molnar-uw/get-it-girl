@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getWeeklyPlan, saveWeeklyPlan, getProgression, saveProgression } from '../db/repositories';
 import { generateWeeklyPlan } from '../services/week-generator';
+import { workoutTemplates } from '../data/workout-templates';
 import { checkForReminder } from '../services/notifications';
 import type { WeeklyPlan, WeeklyPlanWorkout, ProgressionState } from '../types';
 
@@ -46,6 +47,22 @@ export function useWeeklyPlan() {
     if (!existingPlan) {
       existingPlan = generateWeeklyPlan(progression.currentWeek);
       await saveWeeklyPlan(existingPlan);
+    } else {
+      // Auto-migrate: if plan has stale template IDs (from old program), regenerate
+      const validIds = new Set(workoutTemplates.map((t) => t.id));
+      const hasStale = existingPlan.workouts.some(
+        (w) => w.templateId !== 'custom' && !validIds.has(w.templateId)
+      );
+      if (hasStale) {
+        const customWorkouts = existingPlan.workouts.filter((w) => w.templateId === 'custom');
+        const fresh = generateWeeklyPlan(progression.currentWeek);
+        existingPlan = {
+          ...fresh,
+          id: existingPlan.id,
+          workouts: [...fresh.workouts, ...customWorkouts],
+        };
+        await saveWeeklyPlan(existingPlan);
+      }
     }
 
     setPlan(existingPlan);

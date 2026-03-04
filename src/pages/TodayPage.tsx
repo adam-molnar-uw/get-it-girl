@@ -5,6 +5,7 @@ import { useStreaks } from '../hooks/useStreaks';
 import { ProgressRing } from '../components/ProgressRing';
 import { WorkoutCard } from '../components/WorkoutCard';
 import { StreakDisplay } from '../components/StreakDisplay';
+import { StreakCalendar } from '../components/StreakCalendar';
 import { PageTransition } from '../components/PageTransition';
 import { PullToRefresh } from '../components/PullToRefresh';
 import { AddCustomWorkoutSheet } from '../components/AddCustomWorkoutSheet';
@@ -138,11 +139,12 @@ export function TodayPage() {
 
       {/* Streak Display */}
       {streaks && (
-        <div className="px-5 pb-2">
+        <div className="px-5 pb-2 space-y-3">
           <StreakDisplay
             currentStreak={streaks.currentStreak}
             longestStreak={streaks.longestStreak}
           />
+          <StreakCalendar />
         </div>
       )}
 

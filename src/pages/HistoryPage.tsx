@@ -52,6 +52,12 @@ export function HistoryPage() {
   }
 
   const totalWorkouts = groups.reduce((sum, g) => sum + g.entries.length, 0);
+  const avgPerWeek = groups.length > 0 ? (totalWorkouts / groups.length).toFixed(1) : '0';
+
+  // Build bar chart data (last 8 weeks, most recent on right)
+  const sortedGroups = [...groups].sort((a, b) => a.plan.weekNumber - b.plan.weekNumber);
+  const recentWeeks = sortedGroups.slice(-8);
+  const maxInWeek = Math.max(1, ...recentWeeks.map((g) => g.entries.length));
 
   if (groups.length === 0) {
     return (
@@ -77,22 +83,58 @@ export function HistoryPage() {
       </div>
 
       {/* Stats cards */}
-      <div className="px-5 py-4 grid grid-cols-3 gap-3">
+      <div className="px-5 py-4 grid grid-cols-4 gap-2">
         <div className="glass-card p-3 text-center">
-          <p className="font-display text-2xl text-peach font-bold">{totalWorkouts}</p>
-          <p className="text-[10px] text-text-muted font-bold uppercase tracking-wider mt-0.5">Workouts</p>
+          <p className="font-display text-xl text-peach font-bold">{totalWorkouts}</p>
+          <p className="text-[9px] text-text-muted font-bold uppercase tracking-wider mt-0.5">Total</p>
         </div>
         <div className="glass-card p-3 text-center">
-          <p className="font-display text-2xl text-lavender font-bold">{groups.length}</p>
-          <p className="text-[10px] text-text-muted font-bold uppercase tracking-wider mt-0.5">Weeks</p>
+          <p className="font-display text-xl text-lavender font-bold">{groups.length}</p>
+          <p className="text-[9px] text-text-muted font-bold uppercase tracking-wider mt-0.5">Weeks</p>
         </div>
         <div className="glass-card p-3 text-center">
-          <p className="font-display text-2xl text-mint font-bold">
+          <p className="font-display text-xl text-mint font-bold">{avgPerWeek}</p>
+          <p className="text-[9px] text-text-muted font-bold uppercase tracking-wider mt-0.5">Avg/Wk</p>
+        </div>
+        <div className="glass-card p-3 text-center">
+          <p className="font-display text-xl text-peach font-bold">
             {groups.reduce((sum, g) => sum + g.entries.reduce((s, e) => s + e.exerciseCount, 0), 0)}
           </p>
-          <p className="text-[10px] text-text-muted font-bold uppercase tracking-wider mt-0.5">Exercises</p>
+          <p className="text-[9px] text-text-muted font-bold uppercase tracking-wider mt-0.5">Exercises</p>
         </div>
       </div>
+
+      {/* Weekly bar chart */}
+      {recentWeeks.length > 1 && (
+        <div className="px-5 pb-4">
+          <div className="glass-card p-4">
+            <p className="text-xs font-bold text-text-muted uppercase tracking-wider mb-3">
+              Workouts per week
+            </p>
+            <div className="flex items-end gap-2 h-24">
+              {recentWeeks.map((g) => {
+                const height = (g.entries.length / maxInWeek) * 100;
+                return (
+                  <div key={g.plan.id} className="flex-1 flex flex-col items-center gap-1">
+                    <span className="text-[10px] text-text-muted font-bold">
+                      {g.entries.length}
+                    </span>
+                    <div className="w-full rounded-t-md overflow-hidden bg-white/5 flex-1 flex items-end">
+                      <div
+                        className="w-full bg-gradient-to-t from-peach to-mint rounded-t-md transition-all duration-500"
+                        style={{ height: `${height}%`, minHeight: g.entries.length > 0 ? '4px' : '0' }}
+                      />
+                    </div>
+                    <span className="text-[9px] text-text-muted font-medium">
+                      W{g.plan.weekNumber}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="px-5 space-y-6">
         {groups.map((group, gi) => (

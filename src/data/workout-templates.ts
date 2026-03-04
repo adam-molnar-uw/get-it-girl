@@ -1,138 +1,116 @@
 import type { WorkoutTemplate } from '../types';
 
 /**
- * Templates aligned to program.js — science-backed weekly structure.
- * Each strength workout has a GYM and HOME (18lb dumbbell) version.
+ * Strong Curves-inspired weekly program:
+ *   2 SC strength days (full-body, glute-focused, superset structure)
+ *   3 Mysore Ashtanga
+ *   1 HIIT (bodyweight circuit)
+ *   1 Zone 2 Cardio
  *
- *   Mon: Lower Body (Gym or Home)
- *   Tue: Mysore Ashtanga (Home)
- *   Wed: Upper Body (Gym or Home)
- *   Thu: Mysore Ashtanga (Home)
- *   Fri: Full Body + VO₂ (Gym or Home)
- *   Sat: Zone 2 Cardio (Anywhere)
- *   Sun: Rest
+ * SC superset order: A1 glute → A2 pull → B1 squat/lunge → B2 push → C hinge → D glute accessory → E core
  */
 
 export const workoutTemplates: WorkoutTemplate[] = [
-  // ===== LOWER BODY — GYM =====
+  // ===== STRONG CURVES DAY A — GYM =====
   {
-    id: 'lower-gym-1',
-    name: 'Lower Body: Glute & Ham',
+    id: 'sc-day-a',
+    name: 'Strong Curves A',
     emoji: '🍑',
-    type: 'lower-body',
-    description: 'Hip thrust, RDL, split squat & curls',
+    type: 'full-body',
+    description: 'Hip thrust, squat, row & back extension',
     estimatedMinutes: 55,
     location: 'gym',
-    alternativeId: 'lower-home-1',
+    alternativeId: 'sc-day-a-home',
     exercises: [
-      { exerciseId: 'barbell-hip-thrust', orderIndex: 0 },
-      { exerciseId: 'romanian-deadlift', orderIndex: 1 },
-      { exerciseId: 'bulgarian-split-squat', orderIndex: 2 },
-      { exerciseId: 'leg-curl', orderIndex: 3 },
-      { exerciseId: 'sumo-squat', orderIndex: 4 },
-      { exerciseId: 'calf-raises', orderIndex: 5 },
+      { exerciseId: 'barbell-hip-thrust', orderIndex: 0 },     // A1 glute
+      { exerciseId: 'seated-cable-row', orderIndex: 1 },        // A2 pull
+      { exerciseId: 'barbell-squat', orderIndex: 2 },           // B1 squat
+      { exerciseId: 'overhead-press', orderIndex: 3 },           // B2 push
+      { exerciseId: 'back-extension', orderIndex: 4 },           // C hinge
+      { exerciseId: 'side-lying-hip-abduction', orderIndex: 5 }, // D glute accessory
+      { exerciseId: 'plank', orderIndex: 6 },                    // E core
     ],
   },
 
-  // ===== LOWER BODY — HOME (18lb dumbbells) =====
+  // ===== STRONG CURVES DAY A — HOME =====
   {
-    id: 'lower-home-1',
-    name: 'Lower Body: Glute & Ham',
+    id: 'sc-day-a-home',
+    name: 'Strong Curves A',
     emoji: '🍑',
-    type: 'lower-body',
-    description: 'Squats, RDL, bridges & lunges',
-    estimatedMinutes: 45,
-    location: 'home',
-    alternativeId: 'lower-gym-1',
-    exercises: [
-      { exerciseId: 'goblet-squat', orderIndex: 0 },
-      { exerciseId: 'romanian-deadlift', orderIndex: 1 },
-      { exerciseId: 'glute-bridge', orderIndex: 2 },
-      { exerciseId: 'dumbbell-lunges', orderIndex: 3 },
-      { exerciseId: 'sumo-squat', orderIndex: 4 },
-      { exerciseId: 'calf-raises', orderIndex: 5 },
-    ],
-  },
-
-  // ===== UPPER BODY — GYM =====
-  {
-    id: 'upper-1',
-    name: 'Upper Body: Push + Pull',
-    emoji: '💪',
-    type: 'upper-body',
-    description: 'Chest, back, shoulders & arms',
-    estimatedMinutes: 60,
-    location: 'gym',
-    alternativeId: 'upper-home-1',
-    exercises: [
-      { exerciseId: 'db-bench-press', orderIndex: 0 },
-      { exerciseId: 'seated-cable-row', orderIndex: 1 },
-      { exerciseId: 'overhead-press', orderIndex: 2 },
-      { exerciseId: 'lat-pulldown', orderIndex: 3 },
-      { exerciseId: 'lateral-raise', orderIndex: 4 },
-      { exerciseId: 'cable-face-pull', orderIndex: 5 },
-      { exerciseId: 'tricep-pushdown', orderIndex: 6 },
-      { exerciseId: 'hammer-curl', orderIndex: 7 },
-    ],
-  },
-
-  // ===== UPPER BODY — HOME (18lb dumbbells) =====
-  {
-    id: 'upper-home-1',
-    name: 'Upper Body: Push + Pull',
-    emoji: '💪',
-    type: 'upper-body',
-    description: 'Press, row, shoulders & arms',
-    estimatedMinutes: 45,
-    location: 'home',
-    alternativeId: 'upper-1',
-    exercises: [
-      { exerciseId: 'dumbbell-press', orderIndex: 0 },
-      { exerciseId: 'dumbbell-row', orderIndex: 1 },
-      { exerciseId: 'overhead-press', orderIndex: 2 },
-      { exerciseId: 'lateral-raise', orderIndex: 3 },
-      { exerciseId: 'tricep-extension', orderIndex: 4 },
-      { exerciseId: 'bicep-curl', orderIndex: 5 },
-    ],
-  },
-
-  // ===== FULL BODY + VO₂ — GYM =====
-  {
-    id: 'full-body-vo2',
-    name: 'Full Body + VO₂ Max',
-    emoji: '🔥',
     type: 'full-body',
-    description: 'Compound strength + intervals',
-    estimatedMinutes: 70,
-    location: 'gym',
-    alternativeId: 'full-body-home-1',
+    description: 'Glute bridge, goblet squat, row & RDL',
+    estimatedMinutes: 45,
+    location: 'home',
+    alternativeId: 'sc-day-a',
     exercises: [
-      { exerciseId: 'barbell-squat', orderIndex: 0 },
-      { exerciseId: 'single-arm-db-row', orderIndex: 1 },
-      { exerciseId: 'push-ups', orderIndex: 2 },
-      { exerciseId: 'romanian-deadlift', orderIndex: 3 },
-      { exerciseId: 'ab-wheel', orderIndex: 4 },
-      { exerciseId: 'vo2-max-intervals', orderIndex: 5 },
+      { exerciseId: 'glute-bridge', orderIndex: 0 },             // A1 glute
+      { exerciseId: 'dumbbell-row', orderIndex: 1 },             // A2 pull
+      { exerciseId: 'goblet-squat', orderIndex: 2 },             // B1 squat
+      { exerciseId: 'overhead-press', orderIndex: 3 },           // B2 push
+      { exerciseId: 'romanian-deadlift', orderIndex: 4 },        // C hinge
+      { exerciseId: 'side-lying-hip-abduction', orderIndex: 5 }, // D glute accessory
+      { exerciseId: 'plank', orderIndex: 6 },                    // E core
     ],
   },
 
-  // ===== FULL BODY — HOME (18lb dumbbells) =====
+  // ===== STRONG CURVES DAY B — GYM =====
   {
-    id: 'full-body-home-1',
-    name: 'Full Body Strength',
-    emoji: '🔥',
+    id: 'sc-day-b',
+    name: 'Strong Curves B',
+    emoji: '🍑',
     type: 'full-body',
-    description: 'Push, pull, squat & core',
+    description: 'Hip thrust, lunge, lat pulldown & RDL',
+    estimatedMinutes: 55,
+    location: 'gym',
+    alternativeId: 'sc-day-b-home',
+    exercises: [
+      { exerciseId: 'barbell-hip-thrust', orderIndex: 0 }, // A1 glute
+      { exerciseId: 'lat-pulldown', orderIndex: 1 },       // A2 pull
+      { exerciseId: 'dumbbell-lunges', orderIndex: 2 },    // B1 lunge
+      { exerciseId: 'db-bench-press', orderIndex: 3 },     // B2 push
+      { exerciseId: 'romanian-deadlift', orderIndex: 4 },  // C hinge
+      { exerciseId: 'side-lying-clam', orderIndex: 5 },    // D glute accessory
+      { exerciseId: 'dead-bug', orderIndex: 6 },           // E core
+    ],
+  },
+
+  // ===== STRONG CURVES DAY B — HOME =====
+  {
+    id: 'sc-day-b-home',
+    name: 'Strong Curves B',
+    emoji: '🍑',
+    type: 'full-body',
+    description: 'Glute bridge, lunge, row & single-leg RDL',
     estimatedMinutes: 45,
     location: 'home',
-    alternativeId: 'full-body-vo2',
+    alternativeId: 'sc-day-b',
     exercises: [
-      { exerciseId: 'goblet-squat', orderIndex: 0 },
-      { exerciseId: 'push-ups', orderIndex: 1 },
-      { exerciseId: 'dumbbell-row', orderIndex: 2 },
-      { exerciseId: 'romanian-deadlift', orderIndex: 3 },
-      { exerciseId: 'dead-bug', orderIndex: 4 },
-      { exerciseId: 'plank', orderIndex: 5 },
+      { exerciseId: 'glute-bridge', orderIndex: 0 },    // A1 glute
+      { exerciseId: 'dumbbell-row', orderIndex: 1 },    // A2 pull
+      { exerciseId: 'dumbbell-lunges', orderIndex: 2 }, // B1 lunge
+      { exerciseId: 'push-ups', orderIndex: 3 },        // B2 push
+      { exerciseId: 'single-leg-rdl', orderIndex: 4 },  // C hinge
+      { exerciseId: 'side-lying-clam', orderIndex: 5 }, // D glute accessory
+      { exerciseId: 'dead-bug', orderIndex: 6 },        // E core
+    ],
+  },
+
+  // ===== HIIT — BODYWEIGHT CIRCUIT =====
+  {
+    id: 'hiit-1',
+    name: 'HIIT Circuit',
+    emoji: '🔥',
+    type: 'hiit',
+    description: 'Bodyweight cardio blast',
+    estimatedMinutes: 25,
+    location: 'anywhere',
+    exercises: [
+      { exerciseId: 'squat-jumps', orderIndex: 0 },
+      { exerciseId: 'mountain-climbers', orderIndex: 1 },
+      { exerciseId: 'burpees', orderIndex: 2 },
+      { exerciseId: 'high-knees', orderIndex: 3 },
+      { exerciseId: 'skaters', orderIndex: 4 },
+      { exerciseId: 'jumping-jacks', orderIndex: 5 },
     ],
   },
 

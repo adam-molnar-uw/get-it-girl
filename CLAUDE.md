@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-"Get It Girl!" — a PWA workout tracker built as a gift. The user picks from 5-6 generated workouts each week and checks off exercises. The app auto-progresses difficulty every 2 weeks since weights are fixed (2x 18lb dumbbells). All data is local (IndexedDB), hosted on GitHub Pages.
+"Get It Girl!" — a PWA workout tracker built as a gift. Strong Curves-inspired program with 7 weekly options: 2 SC strength days, 3 Mysore Ashtanga, 1 HIIT, 1 Zone 2 cardio. Rest happens organically. The app auto-progresses difficulty every 2 weeks since weights are fixed (2x 18lb dumbbells). All data is local (IndexedDB), hosted on GitHub Pages.
 
 **Live:** https://adam-molnar-uw.github.io/get-it-girl/
 
@@ -39,24 +39,38 @@ Static data (exercises, templates, progression rules) is bundled in `src/data/`.
 | Layer | Files | Purpose |
 |-------|-------|---------|
 | **Types** | `src/types/index.ts` | All interfaces and type unions in one file |
-| **Static Data** | `src/data/exercises.ts` | 59 exercises with descriptions, cues, swap groups, variation chains |
-| | `src/data/workout-templates.ts` | 15 workout templates (2-3 per type) |
+| **Static Data** | `src/data/exercises.ts` | 66 exercises with descriptions, cues, swap groups, variation chains |
+| | `src/data/workout-templates.ts` | 7 workout templates (SC A/B gym+home, HIIT, Ashtanga, Zone 2) |
 | | `src/data/progression-rules.ts` | 7 progression tiers with sets/reps/tempo |
 | | `src/data/exercise-images.ts` | Maps exercise IDs → free-exercise-db CDN URLs |
 | **Database** | `src/db/schema.ts` | IndexedDB schema (5 stores) |
 | | `src/db/database.ts` | Singleton DB init via `getDB()` |
 | | `src/db/repositories.ts` | CRUD for all stores |
-| **Services** | `src/services/week-generator.ts` | Generates 6 workouts per week (Lower A, Full Body, HIIT, Yoga, Lower B, Rotating) |
+| **Services** | `src/services/week-generator.ts` | Fixed 7-day schedule (SC A, 3x Ashtanga, SC B, HIIT, Zone 2) |
 | | `src/services/progression.ts` | Applies tier-based sets/reps/tempo and unlocks harder variations |
 | | `src/services/exercise-swap.ts` | Finds alternatives in the same swap group |
 | | `src/services/notifications.ts` | Check-on-visit reminder model |
 | **Hooks** | `src/hooks/useWeeklyPlan.ts` | Loads/generates current week, assigns days, marks complete |
-| | `src/hooks/useWorkoutSession.ts` | Creates/loads workout session, toggle/swap/complete |
-| **Pages** | `src/pages/TodayPage.tsx` | Hero + progress ring + workout cards (route: `/`) |
+| | `src/hooks/useWorkoutSession.ts` | Creates/loads workout session, toggle/swap/complete (per-set tracking) |
+| **Pages** | `src/pages/TodayPage.tsx` | Hero + progress ring + workout cards + recovery tips (route: `/`) |
 | | `src/pages/WeekPage.tsx` | 7-day grid + day assignment (route: `/week`) |
 | | `src/pages/WorkoutPage.tsx` | Exercise checklist (route: `/workout/:weekId/:workoutIndex`) |
 | | `src/pages/HistoryPage.tsx` | Past workouts by week (route: `/history`) |
 | | `src/pages/SettingsPage.tsx` | Preferences + reset (route: `/settings`) |
+
+### Weekly Schedule
+
+```
+Mon — Strong Curves A    (home default, gym toggle)
+Tue — Mysore Ashtanga    (home)
+Wed — Mysore Ashtanga    (home)
+Thu — Strong Curves B    (gym — guaranteed gym day)
+Fri — Mysore Ashtanga    (home)
+Sat — HIIT Circuit       (anywhere)
+Sun — Zone 2 Cardio      (anywhere)
+```
+
+SC templates follow superset structure: A1 glute → A2 pull → B1 squat/lunge → B2 push → C hinge → D glute accessory → E core. Each SC template has gym and home alternatives linked via `alternativeId`.
 
 ### Exercise System
 
@@ -80,56 +94,28 @@ Week number determines the progression tier (defined in `progression-rules.ts`).
 
 ### Exercise Images
 
-Images come from [free-exercise-db](https://github.com/yuhonas/free-exercise-db) (public domain). The `ExerciseImage` component cross-fades between start/end position JPGs every 1.2s. Mapping is in `src/data/exercise-images.ts`. ~40 of 59 exercises are mapped; yoga poses mostly lack images.
+Images come from [free-exercise-db](https://github.com/yuhonas/free-exercise-db) (public domain). The `ExerciseImage` component cross-fades between start/end position JPGs every 1.2s. Mapping is in `src/data/exercise-images.ts`. ~43 of 66 exercises are mapped; yoga poses mostly lack images.
 
 ## Design / Theme
 
-**70s Adicolor retro** — light brown, powder blue, orange palette:
+**Dark glassmorphism** — dark navy with peach, mint, and lavender accents:
 
 | Token | Hex | Role |
 |-------|-----|------|
-| `retro-red` | `#D97B3B` | Orange — primary accent, CTAs, hero headers |
-| `retro-blue` | `#7DA3B5` | Powder blue — secondary headers |
-| `retro-gold` | `#A68B6B` | Light brown — tertiary, progress bars |
-| `retro-green` | `#588157` | Success/complete states |
-| `retro-cream` | `#F5F0E8` | Page background |
-| `retro-brown` | `#2B2118` | Text color |
+| `dark-base` | `#1A1A2E` | Background |
+| `dark-card` | `#16213E` | Card background |
+| `peach` | `#FFAD9E` | Primary accent, CTAs |
+| `mint` | `#A8E6CF` | Success/complete states |
+| `lavender` | `#C3B1E1` | Secondary accent, cues |
+| `text-primary` | `#F0E6D3` | Primary text |
+| `text-secondary` | `#8B8FA3` | Secondary text |
 
-- **Fonts:** Bebas Neue (display headings) + Inter (body) via Google Fonts
-- **Retro stripes:** 3-color repeating gradient bar (orange/blue/brown) used as dividers
+- **Fonts:** Quicksand (display headings) + Inter (body) via Google Fonts
+- **Glass cards:** `backdrop-blur` with subtle border glow
 - All theme colors defined in `src/index.css` `@theme` block — change hex values there to update everywhere
 - Touch targets: 44px minimum
-- Tailwind classes reference theme tokens (e.g. `bg-retro-red`, `text-retro-brown`)
+- Tailwind classes reference theme tokens (e.g. `bg-peach`, `text-mint`)
 
-## Implementation Status
+## Per-Set Tracking
 
-### Complete (Phases 1-8 + extras)
-- [x] Full app scaffold with all routes and bottom nav
-- [x] 59 exercises with descriptions, cues, swap groups, variation chains
-- [x] 15 workout templates across 6 workout types
-- [x] Progression engine (7 tiers)
-- [x] Weekly plan generation + persistence
-- [x] Workout execution (checklist, swap, complete)
-- [x] History page
-- [x] Settings page (notifications toggle, rest day yoga, reset)
-- [x] Exercise images from free-exercise-db (cross-fade animation)
-- [x] 70s Adicolor retro theme (light brown / powder blue / orange)
-- [x] PWA with service worker, manifest, branded icons
-- [x] GitHub Actions auto-deploy to Pages
-- [x] Onboarding welcome flow (3 steps, shown once)
-- [x] Page transition animations
-- [x] Pull-to-refresh on Today page
-- [x] Branded "GIG" app icons
-- [x] Exercise how-to descriptions (all 59)
-- [x] Mobile fixes: safe area insets for onboarding + complete button, font size bumps (nav labels, swap button, day chips)
-
-### Potential Future Work
-- **Health profile / personalized routines** — cycle-aware training, injury filters, goal-based templates (deferred pending user consent)
-- **Per-set tracking** — check off individual sets instead of whole exercise
-- **Rest timer** — optional countdown between sets
-- **Workout duration tracking** — time workouts, show in history
-- **Better completion animation** — confetti burst
-- **Streaks / stats** — motivational tracking ("3 weeks in a row!")
-- **Weekly summary card** — end-of-week recap
-- **More exercise image coverage** — yoga poses missing from free-exercise-db
-- **Mobile testing** — user hasn't sent screenshots yet; may have more visual issues on actual device
+Multi-set exercises show dots that fill one at a time on tap (e.g. 3 dots for 3 sets). Single-set exercises (protocols, yoga) use a simple checkbox. The `completedSets` field on `WorkoutSessionExercise` is optional for backward compatibility with existing IndexedDB data.

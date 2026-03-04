@@ -66,6 +66,11 @@ const IMAGE_MAP: Record<string, string> = {
   // Cardio
   'jumping-jacks': 'Bodyweight_Squat',
   'skaters': 'Bodyweight_Walking_Lunge',
+
+  // Strong Curves accessories
+  'fire-hydrant': 'Fire_Hydrant',
+  'donkey-kick': 'Donkey_Kicks',
+  'back-extension': 'Hyperextension',
 };
 
 export function getExerciseImages(exerciseId: string): ExerciseImages | null {

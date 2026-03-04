@@ -2,25 +2,25 @@ import type { WeeklyPlan, WeeklyPlanWorkout } from '../types';
 
 /**
  * Fixed weekly program — Thursday is always a gym day:
- *   Mon — Lower Body: Glute & Ham     (gym)
- *   Tue — Mysore Ashtanga             (home)
- *   Wed — Mysore Ashtanga             (home)
- *   Thu — Upper Body: Push + Pull     (gym)
- *   Fri — Mysore Ashtanga             (home)
- *   Sat — Full Body + VO₂ Max        (gym)
- *   Sun — Zone 2 Cardio              (anywhere)
+ *   Mon — Strong Curves A          (home default, gym toggle)
+ *   Tue — Mysore Ashtanga          (home)
+ *   Wed — Mysore Ashtanga          (home)
+ *   Thu — Strong Curves B          (gym — guaranteed gym day)
+ *   Fri — Mysore Ashtanga          (home)
+ *   Sat — HIIT Circuit             (anywhere)
+ *   Sun — Zone 2 Cardio            (anywhere)
  *
- * Same every week — no randomness. Science-backed structure.
+ * 7 options available — rest happens organically.
  */
 
 // [templateId, assignedDay] — day: 0=Sun, 1=Mon, ... 6=Sat
 const WEEKLY_SCHEDULE: [string, number][] = [
-  ['lower-gym-1',   1], // Mon
+  ['sc-day-a-home', 1], // Mon
   ['ashtanga-1',    2], // Tue
   ['ashtanga-1',    3], // Wed
-  ['upper-1',       4], // Thu  ← guaranteed gym day
+  ['sc-day-b',      4], // Thu  ← guaranteed gym day
   ['ashtanga-1',    5], // Fri
-  ['full-body-vo2', 6], // Sat
+  ['hiit-1',        6], // Sat
   ['zone2-1',       0], // Sun
 ];
 

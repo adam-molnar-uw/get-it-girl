@@ -89,28 +89,20 @@ export const allBadges: Badge[] = [
 
   // === TYPE MASTERY ===
   {
-    id: 'lower-master',
-    name: 'Leg Day Legend',
-    description: 'Complete 5 Lower Body workouts',
-    emoji: '🍑',
-    category: 'type-mastery',
-    criteria: { type: 'type-count', workoutType: 'lower-body', count: 5 },
-  },
-  {
-    id: 'upper-master',
-    name: 'Upper Body Boss',
-    description: 'Complete 5 Upper Body workouts',
-    emoji: '🏋️',
-    category: 'type-mastery',
-    criteria: { type: 'type-count', workoutType: 'upper-body', count: 5 },
-  },
-  {
-    id: 'full-master',
-    name: 'Full Body Force',
-    description: 'Complete 5 Full Body + VO₂ workouts',
-    emoji: '💥',
+    id: 'sc-master',
+    name: 'Strong Curves Queen',
+    description: 'Complete 5 Strong Curves workouts',
+    emoji: '👑',
     category: 'type-mastery',
     criteria: { type: 'type-count', workoutType: 'full-body', count: 5 },
+  },
+  {
+    id: 'hiit-master',
+    name: 'HIIT Machine',
+    description: 'Complete 5 HIIT workouts',
+    emoji: '🔥',
+    category: 'type-mastery',
+    criteria: { type: 'type-count', workoutType: 'hiit', count: 5 },
   },
   {
     id: 'yoga-master',

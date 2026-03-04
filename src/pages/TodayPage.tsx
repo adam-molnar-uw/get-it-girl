@@ -139,12 +139,11 @@ export function TodayPage() {
 
       {/* Streak Display */}
       {streaks && (
-        <div className="px-5 pb-2 space-y-3">
+        <div className="px-5 pb-2">
           <StreakDisplay
             currentStreak={streaks.currentStreak}
             longestStreak={streaks.longestStreak}
           />
-          <StreakCalendar />
         </div>
       )}
 
@@ -244,6 +243,11 @@ export function TodayPage() {
             </button>
           </div>
         )}
+      </div>
+
+      {/* Activity calendar — at the bottom, out of the way */}
+      <div className="px-5 mt-6">
+        <StreakCalendar />
       </div>
     </div>
     </PullToRefresh>

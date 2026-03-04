@@ -90,14 +90,24 @@ export interface WorkoutTemplate {
   alternativeId?: string; // gym↔home pair
 }
 
+// --- Custom workout types ---
+
+export interface CustomWorkoutInfo {
+  name: string;
+  emoji: string;
+  notes?: string;
+  mode: 'quick' | 'structured';
+}
+
 // --- Persisted types (IndexedDB) ---
 
 export interface WeeklyPlanWorkout {
-  templateId: string;
+  templateId: string; // 'custom' for ad-hoc workouts
   assignedDay?: number; // 0=Sun, 1=Mon, ... 6=Sat
   completed: boolean;
   completedAt?: string; // ISO date
   sessionId?: string;
+  customWorkout?: CustomWorkoutInfo;
 }
 
 export interface WeeklyPlan {
@@ -121,21 +131,23 @@ export interface WorkoutSessionExercise {
 export interface WorkoutSession {
   id: string;
   weekPlanId: string;
-  templateId: string;
+  templateId: string; // 'custom' for ad-hoc workouts
   exercises: WorkoutSessionExercise[];
   startedAt: string;
   completedAt?: string;
+  customWorkout?: CustomWorkoutInfo;
 }
 
 export interface WorkoutHistoryEntry {
   id: string;
   weekPlanId: string;
-  templateId: string;
+  templateId: string; // 'custom' for ad-hoc workouts
   templateName: string;
   templateEmoji: string;
   completedAt: string;
   exerciseCount: number;
   duration?: number; // minutes
+  customWorkout?: CustomWorkoutInfo;
 }
 
 export interface ProgressionState {

@@ -1,10 +1,15 @@
+import { useState } from 'react';
 import { useWeeklyPlan } from '../hooks/useWeeklyPlan';
+import { useCustomWorkout } from '../hooks/useCustomWorkout';
 import { useStreaks } from '../hooks/useStreaks';
 import { ProgressRing } from '../components/ProgressRing';
 import { WorkoutCard } from '../components/WorkoutCard';
 import { StreakDisplay } from '../components/StreakDisplay';
 import { PageTransition } from '../components/PageTransition';
 import { PullToRefresh } from '../components/PullToRefresh';
+import { AddCustomWorkoutSheet } from '../components/AddCustomWorkoutSheet';
+import { QuickLogSheet } from '../components/QuickLogSheet';
+import { ExercisePickerSheet } from '../components/ExercisePickerSheet';
 import { workoutTemplates } from '../data/workout-templates';
 import { useNavigate } from 'react-router-dom';
 
@@ -38,8 +43,13 @@ const RECOVERY_TIPS = [
 
 export function TodayPage() {
   const { plan, loading, refresh } = useWeeklyPlan();
+  const { quickLog, startStructuredWorkout } = useCustomWorkout();
   const { streaks } = useStreaks();
   const navigate = useNavigate();
+
+  const [showAddSheet, setShowAddSheet] = useState(false);
+  const [showQuickLog, setShowQuickLog] = useState(false);
+  const [showExercisePicker, setShowExercisePicker] = useState(false);
 
   if (loading) {
     return (
@@ -71,7 +81,48 @@ export function TodayPage() {
   const nextWorkout = remaining[0];
   const otherWorkouts = remaining.slice(1);
 
+  function renderWorkoutCard(w: typeof remaining[number], featured: boolean, delay?: number) {
+    const isCustom = w.templateId === 'custom';
+    const template = isCustom ? null : workoutTemplates.find((t) => t.id === w.templateId);
+    if (!template && !isCustom) return null;
+
+    if (isCustom) {
+      // Render custom workout card inline
+      return (
+        <button
+          key={w.index}
+          onClick={() => navigate(`/workout/${plan!.id}/${w.index}`)}
+          className={`w-full glass-card p-4 text-left active:scale-[0.98] transition-all animate-slide-up ${featured ? 'border-peach/20' : ''}`}
+          style={delay ? { animationDelay: `${delay}ms` } : undefined}
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-3xl">{w.customWorkout?.emoji ?? '💪'}</span>
+            <div>
+              <p className="font-display font-bold text-text-primary text-lg">
+                {w.customWorkout?.name ?? 'Custom Workout'}
+              </p>
+              <span className="text-[9px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-lavender/15 text-lavender">
+                CUSTOM
+              </span>
+            </div>
+          </div>
+        </button>
+      );
+    }
+
+    return (
+      <WorkoutCard
+        key={w.index}
+        template={template!}
+        onStart={() => navigate(`/workout/${plan!.id}/${w.index}`)}
+        featured={featured}
+        delay={delay}
+      />
+    );
+  }
+
   return (
+    <>
     <PageTransition>
     <PullToRefresh onRefresh={refresh}>
     <div className="flex-1 pb-24">
@@ -133,17 +184,7 @@ export function TodayPage() {
             </div>
 
             {/* Featured next workout */}
-            {nextWorkout && (() => {
-              const template = workoutTemplates.find((t) => t.id === nextWorkout.templateId);
-              if (!template) return null;
-              return (
-                <WorkoutCard
-                  template={template}
-                  onStart={() => navigate(`/workout/${plan.id}/${nextWorkout.index}`)}
-                  featured
-                />
-              );
-            })()}
+            {nextWorkout && renderWorkoutCard(nextWorkout, true)}
 
             {/* Other workouts */}
             {otherWorkouts.length > 0 && (
@@ -151,20 +192,21 @@ export function TodayPage() {
                 <h3 className="text-xs font-bold text-text-muted uppercase tracking-wider">
                   More workouts
                 </h3>
-                {otherWorkouts.map((w, i) => {
-                  const template = workoutTemplates.find((t) => t.id === w.templateId);
-                  if (!template) return null;
-                  return (
-                    <WorkoutCard
-                      key={w.index}
-                      template={template}
-                      onStart={() => navigate(`/workout/${plan.id}/${w.index}`)}
-                      delay={i * 60}
-                    />
-                  );
-                })}
+                {otherWorkouts.map((w, i) => renderWorkoutCard(w, false, i * 60))}
               </div>
             )}
+
+            {/* Log something else */}
+            <button
+              onClick={() => setShowAddSheet(true)}
+              className="w-full glass-card p-4 text-left flex items-center gap-3 active:scale-[0.98] transition-all"
+            >
+              <span className="text-2xl">➕</span>
+              <div>
+                <p className="font-bold text-text-primary text-sm">Log something else</p>
+                <p className="text-xs text-text-muted font-medium">Quick log or build a custom workout</p>
+              </div>
+            </button>
           </>
         ) : (
           <div className="text-center py-12 animate-pop-in">
@@ -186,11 +228,57 @@ export function TodayPage() {
                 </div>
               </div>
             </div>
+
+            {/* Still allow custom logging even when week is "complete" */}
+            <button
+              onClick={() => setShowAddSheet(true)}
+              className="mt-6 w-full glass-card p-4 text-left flex items-center gap-3 active:scale-[0.98] transition-all"
+            >
+              <span className="text-2xl">➕</span>
+              <div>
+                <p className="font-bold text-text-primary text-sm">Log something else</p>
+                <p className="text-xs text-text-muted font-medium">Quick log or build a custom workout</p>
+              </div>
+            </button>
           </div>
         )}
       </div>
     </div>
     </PullToRefresh>
     </PageTransition>
+
+    {/* Modals */}
+    {showAddSheet && (
+      <AddCustomWorkoutSheet
+        onQuickLog={() => { setShowAddSheet(false); setShowQuickLog(true); }}
+        onBuildWorkout={() => { setShowAddSheet(false); setShowExercisePicker(true); }}
+        onClose={() => setShowAddSheet(false)}
+      />
+    )}
+
+    {showQuickLog && (
+      <QuickLogSheet
+        onLog={async (data) => {
+          await quickLog(plan.id, data);
+          setShowQuickLog(false);
+          refresh();
+        }}
+        onClose={() => setShowQuickLog(false)}
+      />
+    )}
+
+    {showExercisePicker && (
+      <ExercisePickerSheet
+        onStart={async (data) => {
+          const idx = await startStructuredWorkout(plan.id, data);
+          setShowExercisePicker(false);
+          if (idx >= 0) {
+            navigate(`/workout/${plan.id}/${idx}`);
+          }
+        }}
+        onClose={() => setShowExercisePicker(false)}
+      />
+    )}
+    </>
   );
 }

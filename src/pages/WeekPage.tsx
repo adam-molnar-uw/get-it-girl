@@ -1,12 +1,22 @@
+import { useState } from 'react';
 import { useWeeklyPlan } from '../hooks/useWeeklyPlan';
+import { useCustomWorkout } from '../hooks/useCustomWorkout';
 import { PageTransition } from '../components/PageTransition';
+import { AddCustomWorkoutSheet } from '../components/AddCustomWorkoutSheet';
+import { QuickLogSheet } from '../components/QuickLogSheet';
+import { ExercisePickerSheet } from '../components/ExercisePickerSheet';
 import { workoutTemplates } from '../data/workout-templates';
 import { DAY_NAMES } from '../types';
 import { useNavigate } from 'react-router-dom';
 
 export function WeekPage() {
-  const { plan, loading, assignDay, swapTemplate } = useWeeklyPlan();
+  const { plan, loading, assignDay, swapTemplate, refresh } = useWeeklyPlan();
+  const { quickLog, startStructuredWorkout } = useCustomWorkout();
   const navigate = useNavigate();
+
+  const [showAddSheet, setShowAddSheet] = useState(false);
+  const [showQuickLog, setShowQuickLog] = useState(false);
+  const [showExercisePicker, setShowExercisePicker] = useState(false);
 
   if (loading || !plan) {
     return (
@@ -83,8 +93,13 @@ export function WeekPage() {
         </h2>
 
         {plan.workouts.map((w, i) => {
-          const template = workoutTemplates.find((t) => t.id === w.templateId);
-          if (!template) return null;
+          const isCustom = w.templateId === 'custom';
+          const template = isCustom ? null : workoutTemplates.find((t) => t.id === w.templateId);
+          if (!template && !isCustom) return null;
+
+          const displayName = isCustom ? w.customWorkout?.name ?? 'Custom' : template!.name;
+          const displayEmoji = isCustom ? w.customWorkout?.emoji ?? '💪' : template!.emoji;
+
           return (
             <div
               key={i}
@@ -96,70 +111,91 @@ export function WeekPage() {
               <div className="p-4">
                 {/* Workout info */}
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="text-3xl">{template.emoji}</span>
+                  <span className="text-3xl">{displayEmoji}</span>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <p className="font-display font-bold text-text-primary text-lg leading-tight">
-                        {template.name}
+                        {displayName}
                         {w.completed && <span className="text-mint ml-2">✓</span>}
                       </p>
                     </div>
                     <div className="flex items-center gap-2 mt-0.5">
-                      {template.location && (
+                      {isCustom ? (
+                        <span className="text-[9px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-lavender/15 text-lavender">
+                          CUSTOM
+                        </span>
+                      ) : template!.location && (
                         <span className={`text-[9px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full ${
-                          template.location === 'gym' ? 'bg-peach/15 text-peach' :
-                          template.location === 'home' ? 'bg-mint/15 text-mint' :
+                          template!.location === 'gym' ? 'bg-peach/15 text-peach' :
+                          template!.location === 'home' ? 'bg-mint/15 text-mint' :
                           'bg-lavender/15 text-lavender'
                         }`}>
-                          {template.location === 'gym' ? '🏋️ GYM' : template.location === 'home' ? '🏠 HOME' : '🌍 ANY'}
+                          {template!.location === 'gym' ? '🏋️ GYM' : template!.location === 'home' ? '🏠 HOME' : '🌍 ANY'}
                         </span>
                       )}
-                      <span className="text-xs text-text-secondary font-medium">
-                        {template.exercises.length} exercise{template.exercises.length !== 1 ? 's' : ''} · ~{template.estimatedMinutes ?? template.exercises.length * 4} min
-                      </span>
+                      {!isCustom && (
+                        <span className="text-xs text-text-secondary font-medium">
+                          {template!.exercises.length} exercise{template!.exercises.length !== 1 ? 's' : ''} · ~{template!.estimatedMinutes ?? template!.exercises.length * 4} min
+                        </span>
+                      )}
+                      {isCustom && w.customWorkout?.notes && (
+                        <span className="text-xs text-text-secondary font-medium italic truncate">
+                          {w.customWorkout.notes}
+                        </span>
+                      )}
                     </div>
                   </div>
                   {/* Gym/Home toggle */}
-                  {template.alternativeId && !w.completed && (
+                  {!isCustom && template!.alternativeId && !w.completed && (
                     <button
-                      onClick={() => swapTemplate(i, template.alternativeId!)}
+                      onClick={() => swapTemplate(i, template!.alternativeId!)}
                       className={`text-[10px] font-bold tracking-wider uppercase px-3 py-2 rounded-xl transition-all active:scale-95 min-h-[44px] ${
-                        template.location === 'gym'
+                        template!.location === 'gym'
                           ? 'bg-mint/15 text-mint'
                           : 'bg-peach/15 text-peach'
                       }`}
                     >
-                      {template.location === 'gym' ? '🏠' : '🏋️'}
+                      {template!.location === 'gym' ? '🏠' : '🏋️'}
                     </button>
                   )}
                 </div>
 
                 {/* Day assignment chips + GO */}
                 <div className="flex items-center gap-2">
-                  <div className="flex gap-1.5 flex-wrap flex-1">
-                    {DAY_NAMES.map((name, dayIndex) => (
-                      <button
-                        key={name}
-                        onClick={() => assignDay(i, w.assignedDay === dayIndex ? undefined : dayIndex)}
-                        className={`w-9 h-9 rounded-full text-[10px] font-bold tracking-wide transition-all flex items-center justify-center ${
-                          w.assignedDay === dayIndex
-                            ? 'bg-lavender text-dark-base'
-                            : 'bg-white/5 text-text-muted active:scale-95'
-                        }`}
-                      >
-                        {name.substring(0, 2).toUpperCase()}
-                      </button>
-                    ))}
-                  </div>
+                  {!isCustom && (
+                    <div className="flex gap-1.5 flex-wrap flex-1">
+                      {DAY_NAMES.map((name, dayIndex) => (
+                        <button
+                          key={name}
+                          onClick={() => assignDay(i, w.assignedDay === dayIndex ? undefined : dayIndex)}
+                          className={`w-9 h-9 rounded-full text-[10px] font-bold tracking-wide transition-all flex items-center justify-center ${
+                            w.assignedDay === dayIndex
+                              ? 'bg-lavender text-dark-base'
+                              : 'bg-white/5 text-text-muted active:scale-95'
+                          }`}
+                        >
+                          {name.substring(0, 2).toUpperCase()}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  {isCustom && <div className="flex-1" />}
 
                   {w.completed ? (
                     <span className="ml-auto px-5 py-2.5 text-mint font-display text-base tracking-wider font-bold">
                       DONE ✓
                     </span>
+                  ) : !isCustom ? (
+                    <button
+                      onClick={() => navigate(`/workout/${plan.id}/${i}`)}
+                      className="ml-auto px-5 py-2.5 bg-gradient-to-r from-peach-dark to-peach text-dark-base rounded-xl font-display text-base tracking-wider active:scale-95 transition-all min-h-[44px] font-bold"
+                    >
+                      GO
+                    </button>
                   ) : (
                     <button
                       onClick={() => navigate(`/workout/${plan.id}/${i}`)}
-                      className={`ml-auto px-5 py-2.5 bg-gradient-to-r from-peach-dark to-peach text-dark-base rounded-xl font-display text-base tracking-wider active:scale-95 transition-all min-h-[44px] font-bold`}
+                      className="ml-auto px-5 py-2.5 bg-gradient-to-r from-peach-dark to-peach text-dark-base rounded-xl font-display text-base tracking-wider active:scale-95 transition-all min-h-[44px] font-bold"
                     >
                       GO
                     </button>
@@ -170,6 +206,50 @@ export function WeekPage() {
           );
         })}
       </div>
+
+      {/* FAB */}
+      <button
+        onClick={() => setShowAddSheet(true)}
+        className="fixed z-40 w-14 h-14 rounded-full bg-gradient-to-r from-peach-dark to-peach text-dark-base shadow-lg flex items-center justify-center text-2xl font-bold active:scale-90 transition-all"
+        style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 5.5rem)', right: '1.25rem' }}
+      >
+        +
+      </button>
+
+      {/* Add custom workout sheet */}
+      {showAddSheet && (
+        <AddCustomWorkoutSheet
+          onQuickLog={() => { setShowAddSheet(false); setShowQuickLog(true); }}
+          onBuildWorkout={() => { setShowAddSheet(false); setShowExercisePicker(true); }}
+          onClose={() => setShowAddSheet(false)}
+        />
+      )}
+
+      {/* Quick log sheet */}
+      {showQuickLog && (
+        <QuickLogSheet
+          onLog={async (data) => {
+            await quickLog(plan.id, data);
+            setShowQuickLog(false);
+            refresh();
+          }}
+          onClose={() => setShowQuickLog(false)}
+        />
+      )}
+
+      {/* Exercise picker */}
+      {showExercisePicker && (
+        <ExercisePickerSheet
+          onStart={async (data) => {
+            const idx = await startStructuredWorkout(plan.id, data);
+            setShowExercisePicker(false);
+            if (idx >= 0) {
+              navigate(`/workout/${plan.id}/${idx}`);
+            }
+          }}
+          onClose={() => setShowExercisePicker(false)}
+        />
+      )}
     </div>
     </PageTransition>
   );

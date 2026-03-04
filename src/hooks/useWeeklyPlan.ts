@@ -2,9 +2,9 @@ import { useState, useEffect, useCallback } from 'react';
 import { getWeeklyPlan, saveWeeklyPlan, getProgression, saveProgression } from '../db/repositories';
 import { generateWeeklyPlan } from '../services/week-generator';
 import { checkForReminder } from '../services/notifications';
-import type { WeeklyPlan, ProgressionState } from '../types';
+import type { WeeklyPlan, WeeklyPlanWorkout, ProgressionState } from '../types';
 
-function getCurrentWeekId(): string {
+export function getCurrentWeekId(): string {
   const now = new Date();
   const jan1 = new Date(now.getFullYear(), 0, 1);
   const dayOfYear = Math.ceil((now.getTime() - jan1.getTime()) / 86400000);
@@ -107,10 +107,24 @@ export function useWeeklyPlan() {
     [plan]
   );
 
+  const addCustomWorkout = useCallback(
+    async (workout: WeeklyPlanWorkout) => {
+      if (!plan) return -1;
+      const updated = {
+        ...plan,
+        workouts: [...plan.workouts, workout],
+      };
+      setPlan(updated);
+      await saveWeeklyPlan(updated);
+      return updated.workouts.length - 1; // return new workout index
+    },
+    [plan]
+  );
+
   const refresh = useCallback(async () => {
     setLoading(true);
     await loadOrGenerate();
   }, [loadOrGenerate]);
 
-  return { plan, loading, assignDay, swapTemplate, markCompleted, refresh };
+  return { plan, loading, assignDay, swapTemplate, markCompleted, addCustomWorkout, refresh };
 }

@@ -3,10 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useWorkoutSession } from '../hooks/useWorkoutSession';
 import { ExerciseRow } from '../components/ExerciseRow';
 import { SwapSheet } from '../components/SwapSheet';
+import { DayPickerInline } from '../components/DayPickerInline';
 import { PageTransition } from '../components/PageTransition';
 import { BadgeToast } from '../components/BadgeToast';
 import { exercises as exerciseDB } from '../data/exercises';
 import { workoutTemplates } from '../data/workout-templates';
+import { DAY_NAMES } from '../types';
 import type { WorkoutSessionExercise } from '../types';
 
 const TYPE_GRADIENT: Record<string, string> = {
@@ -19,7 +21,19 @@ const TYPE_GRADIENT: Record<string, string> = {
   'pilates': 'from-lavender/20 to-dark-base',
   'stretch': 'from-mint-dark/20 to-dark-base',
   'recovery': 'from-mint-light/20 to-dark-base',
+  'custom': 'from-lavender/20 to-dark-base',
 };
+
+function buildCompletedAt(day: number): string {
+  const now = new Date();
+  const todayDay = now.getDay();
+  const toMonday = (d: number) => (d === 0 ? 6 : d - 1);
+  const diff = toMonday(day) - toMonday(todayDay);
+  const target = new Date(now);
+  target.setDate(now.getDate() + diff);
+  target.setHours(12, 0, 0, 0);
+  return target.toISOString();
+}
 
 export function WorkoutPage() {
   const { weekId, workoutIndex } = useParams<{ weekId: string; workoutIndex: string }>();
@@ -31,10 +45,17 @@ export function WorkoutPage() {
   const [swapTarget, setSwapTarget] = useState<number | null>(null);
   const [showCompletion, setShowCompletion] = useState(false);
   const [showBadgeToast, setShowBadgeToast] = useState(false);
+  const [showDayPicker, setShowDayPicker] = useState(false);
+  const [selectedDay, setSelectedDay] = useState(new Date().getDay());
 
-  const template = session
+  const isCustom = session?.templateId === 'custom';
+  const template = session && !isCustom
     ? workoutTemplates.find((t) => t.id === session.templateId)
     : null;
+
+  const displayName = session?.customWorkout?.name ?? template?.name ?? 'Workout';
+  const displayEmoji = session?.customWorkout?.emoji ?? template?.emoji ?? '💪';
+  const displayType = template?.type ?? 'custom';
 
   const completedCount = session?.exercises.filter((e) => e.completed).length ?? 0;
   const totalCount = session?.exercises.length ?? 0;
@@ -42,14 +63,16 @@ export function WorkoutPage() {
   const allDone = totalCount > 0 && completedCount === totalCount;
 
   const handleComplete = useCallback(async () => {
-    await completeWorkout();
+    const completedAt = selectedDay !== new Date().getDay()
+      ? buildCompletedAt(selectedDay)
+      : undefined;
+    await completeWorkout(completedAt);
     setShowCompletion(true);
-  }, [completeWorkout]);
+  }, [completeWorkout, selectedDay]);
 
   useEffect(() => {
     if (showCompletion) {
       if (newlyEarnedBadges.length > 0) {
-        // Show badge toast after a brief celebration
         const timer = setTimeout(() => setShowBadgeToast(true), 1500);
         return () => clearTimeout(timer);
       } else {
@@ -67,7 +90,7 @@ export function WorkoutPage() {
     );
   }
 
-  if (!session || !template) {
+  if (!session || (!template && !isCustom)) {
     return (
       <div className="flex-1 flex items-center justify-center p-6">
         <p className="text-text-secondary">Workout not found.</p>
@@ -90,7 +113,8 @@ export function WorkoutPage() {
     );
   }
 
-  const gradient = TYPE_GRADIENT[template.type] ?? 'from-peach/20 to-dark-base';
+  const gradient = TYPE_GRADIENT[displayType] ?? 'from-peach/20 to-dark-base';
+  const estimatedMin = template?.estimatedMinutes ?? totalCount * 4;
 
   return (
     <PageTransition>
@@ -108,12 +132,12 @@ export function WorkoutPage() {
         </div>
 
         <div className="text-center mb-4">
-          <span className="text-4xl mb-2 block">{template.emoji}</span>
+          <span className="text-4xl mb-2 block">{displayEmoji}</span>
           <h1 className="font-display text-2xl text-text-primary font-bold mt-2">
-            {template.name}
+            {displayName}
           </h1>
           <p className="text-text-muted text-xs font-medium mt-1">
-            {totalCount} exercise{totalCount !== 1 ? 's' : ''} · ~{template.estimatedMinutes ?? totalCount * 4} min
+            {totalCount} exercise{totalCount !== 1 ? 's' : ''} · ~{estimatedMin} min
           </p>
         </div>
 
@@ -147,9 +171,29 @@ export function WorkoutPage() {
         })}
       </div>
 
-      {/* Complete button */}
+      {/* Complete button + day picker */}
       {allDone && (
         <div className="fixed left-0 right-0 px-5 animate-slide-up" style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 5.5rem)' }}>
+          {/* Day picker toggle */}
+          {showDayPicker ? (
+            <div className="mb-3 glass-card p-4">
+              <p className="text-xs font-bold text-text-muted uppercase tracking-wider mb-2 text-center">
+                Log for which day?
+              </p>
+              <DayPickerInline selectedDay={selectedDay} onSelect={setSelectedDay} />
+              <p className="text-xs text-text-muted text-center mt-1.5 font-medium">
+                {selectedDay === new Date().getDay() ? 'Today' : DAY_NAMES[selectedDay]}
+              </p>
+            </div>
+          ) : (
+            <button
+              onClick={() => setShowDayPicker(true)}
+              className="w-full text-center text-xs text-text-muted font-medium mb-2 py-1"
+            >
+              Log for a different day?
+            </button>
+          )}
+
           <button
             onClick={handleComplete}
             className="w-full py-4 bg-gradient-to-r from-mint-dark to-mint text-dark-base rounded-2xl font-display text-xl shadow-lg active:scale-[0.97] transition-all font-bold"
@@ -163,7 +207,7 @@ export function WorkoutPage() {
       {swapTarget !== null && session && (
         <SwapSheet
           currentExerciseId={session.exercises[swapTarget].exerciseId}
-          workoutType={template.type}
+          workoutType={(isCustom ? 'full-body' : displayType) as import('../types').WorkoutType}
           onSelect={(newId) => {
             swapExercise(swapTarget, newId);
             setSwapTarget(null);

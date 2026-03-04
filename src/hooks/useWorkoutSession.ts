@@ -44,7 +44,13 @@ export function useWorkoutSession(weekId: string, workoutIndex: number) {
         }
       }
 
-      // Create new session
+      // Custom workouts already have a session created by useCustomWorkout
+      if (workout.templateId === 'custom') {
+        setLoading(false);
+        return;
+      }
+
+      // Create new session from template
       const template = workoutTemplates.find((t) => t.id === workout.templateId);
       if (!template) {
         setLoading(false);
@@ -122,11 +128,11 @@ export function useWorkoutSession(weekId: string, workoutIndex: number) {
     [session]
   );
 
-  const completeWorkout = useCallback(async () => {
+  const completeWorkout = useCallback(async (completedAtOverride?: string) => {
     if (!session) return;
 
     const template = workoutTemplates.find((t) => t.id === session.templateId);
-    const completedAt = new Date().toISOString();
+    const completedAt = completedAtOverride ?? new Date().toISOString();
 
     // Update session
     const updatedSession: WorkoutSession = { ...session, completedAt };
@@ -149,10 +155,11 @@ export function useWorkoutSession(weekId: string, workoutIndex: number) {
       id: `history-${session.id}`,
       weekPlanId: session.weekPlanId,
       templateId: session.templateId,
-      templateName: template?.name ?? 'Workout',
-      templateEmoji: template?.emoji ?? '💪',
+      templateName: session.customWorkout?.name ?? template?.name ?? 'Workout',
+      templateEmoji: session.customWorkout?.emoji ?? template?.emoji ?? '💪',
       completedAt,
       exerciseCount: session.exercises.length,
+      customWorkout: session.customWorkout,
     };
     await addHistoryEntry(historyEntry);
 

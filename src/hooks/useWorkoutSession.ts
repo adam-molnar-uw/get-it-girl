@@ -220,5 +220,22 @@ export function useWorkoutSession(weekId: string, workoutIndex: number) {
     setSession(updatedSession);
   }, [session]);
 
-  return { session, loading, toggleExercise, swapExercise, completeWorkout, newlyEarnedBadges };
+  const toggleAll = useCallback(
+    async (completed: boolean) => {
+      if (!session) return;
+      const updated: WorkoutSession = {
+        ...session,
+        exercises: session.exercises.map((e) => ({
+          ...e,
+          completed,
+          completedSets: completed ? e.sets : 0,
+        })),
+      };
+      setSession(updated);
+      await saveSession(updated);
+    },
+    [session]
+  );
+
+  return { session, loading, toggleExercise, swapExercise, completeWorkout, toggleAll, newlyEarnedBadges };
 }

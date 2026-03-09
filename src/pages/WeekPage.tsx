@@ -6,7 +6,7 @@ import { AddCustomWorkoutSheet } from '../components/AddCustomWorkoutSheet';
 import { QuickLogSheet } from '../components/QuickLogSheet';
 import { ExercisePickerSheet } from '../components/ExercisePickerSheet';
 import { workoutTemplates } from '../data/workout-templates';
-import { DAY_NAMES } from '../types';
+import { DAY_NAMES, DAY_DISPLAY_ORDER } from '../types';
 import { useNavigate } from 'react-router-dom';
 
 export function WeekPage() {
@@ -26,7 +26,7 @@ export function WeekPage() {
     );
   }
 
-  const today = new Date().getDay();
+  const todayJS = new Date().getDay(); // 0=Sun, 1=Mon, ...
 
   // Build a map of which days have workouts assigned/completed
   const dayStatus = new Map<number, 'assigned' | 'completed'>();
@@ -49,19 +49,19 @@ export function WeekPage() {
         </p>
       </div>
 
-      {/* Calendar strip */}
+      {/* Calendar strip (Monday first) */}
       <div className="px-5 py-4">
         <div className="grid grid-cols-7 gap-2 text-center">
-          {DAY_NAMES.map((name, i) => {
-            const status = dayStatus.get(i);
-            const isToday = i === today;
+          {DAY_DISPLAY_ORDER.map((dayNum) => {
+            const status = dayStatus.get(dayNum);
+            const isToday = dayNum === todayJS;
 
             return (
-              <div key={name} className="flex flex-col items-center gap-1.5">
+              <div key={dayNum} className="flex flex-col items-center gap-1.5">
                 <span className={`text-[10px] font-bold tracking-wider ${
                   isToday ? 'text-peach' : 'text-text-muted'
                 }`}>
-                  {name.toUpperCase()}
+                  {DAY_NAMES[dayNum].toUpperCase()}
                 </span>
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
                   isToday
@@ -70,7 +70,7 @@ export function WeekPage() {
                     ? 'bg-mint/20 text-mint'
                     : 'bg-white/5 text-text-secondary'
                 }`}>
-                  {status === 'completed' ? '✓' : i + 1}
+                  {status === 'completed' ? '✓' : dayNum + 1}
                 </div>
                 {/* Dot indicator */}
                 <div className={`w-1.5 h-1.5 rounded-full ${
@@ -164,17 +164,17 @@ export function WeekPage() {
                 <div className="flex items-center gap-2">
                   {!isCustom && (
                     <div className="flex gap-1.5 flex-wrap flex-1">
-                      {DAY_NAMES.map((name, dayIndex) => (
+                      {DAY_DISPLAY_ORDER.map((dayNum) => (
                         <button
-                          key={name}
-                          onClick={() => assignDay(i, w.assignedDay === dayIndex ? undefined : dayIndex)}
+                          key={dayNum}
+                          onClick={() => assignDay(i, w.assignedDay === dayNum ? undefined : dayNum)}
                           className={`w-9 h-9 rounded-full text-[10px] font-bold tracking-wide transition-all flex items-center justify-center ${
-                            w.assignedDay === dayIndex
+                            w.assignedDay === dayNum
                               ? 'bg-lavender text-dark-base'
                               : 'bg-white/5 text-text-muted active:scale-95'
                           }`}
                         >
-                          {name.substring(0, 2).toUpperCase()}
+                          {DAY_NAMES[dayNum].substring(0, 2).toUpperCase()}
                         </button>
                       ))}
                     </div>

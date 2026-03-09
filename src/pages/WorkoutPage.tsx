@@ -49,7 +49,7 @@ export function WorkoutPage() {
   const { weekId, workoutIndex } = useParams<{ weekId: string; workoutIndex: string }>();
   const navigate = useNavigate();
   const idx = Number(workoutIndex);
-  const { session, loading, toggleExercise, swapExercise, completeWorkout, newlyEarnedBadges } =
+  const { session, loading, toggleExercise, swapExercise, completeWorkout, toggleAll, newlyEarnedBadges } =
     useWorkoutSession(weekId!, idx);
 
   const [swapTarget, setSwapTarget] = useState<number | null>(null);
@@ -167,20 +167,53 @@ export function WorkoutPage() {
 
       {/* Exercise list */}
       <div className="px-5 py-4 space-y-3">
-        {session.exercises.map((ex: WorkoutSessionExercise, i: number) => {
-          const exercise = exerciseDB.find((e) => e.id === ex.exerciseId);
-          if (!exercise) return null;
-          return (
-            <div key={`${ex.exerciseId}-${i}`} className="animate-slide-up" style={{ animationDelay: `${i * 40}ms` }}>
-              <ExerciseRow
-                exercise={exercise}
-                sessionExercise={ex}
-                onToggle={() => toggleExercise(i)}
-                onSwap={() => setSwapTarget(i)}
-              />
-            </div>
-          );
-        })}
+        {template?.type === 'hiit' ? (
+          /* HIIT: single checkbox to complete the whole workout */
+          <div className="animate-slide-up">
+            <button
+              onClick={() => toggleAll(!allDone)}
+              className={`w-full p-5 rounded-xl transition-all active:scale-[0.98] glass-card ${
+                allDone ? 'ring-2 ring-mint' : ''
+              }`}
+            >
+              <div className="flex items-center gap-4">
+                <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${
+                  allDone
+                    ? 'bg-mint border-mint text-dark-base'
+                    : 'border-text-muted/30'
+                }`}>
+                  {allDone && <span className="text-lg">✓</span>}
+                </div>
+                <div className="text-left">
+                  <p className="font-display text-xl text-text-primary font-bold">
+                    HIIT WORKOUT
+                  </p>
+                  <p className="text-sm text-text-secondary mt-1">
+                    {session.exercises.map((ex) => {
+                      const e = exerciseDB.find((d) => d.id === ex.exerciseId);
+                      return e?.name;
+                    }).filter(Boolean).join(' · ')}
+                  </p>
+                </div>
+              </div>
+            </button>
+          </div>
+        ) : (
+          session.exercises.map((ex: WorkoutSessionExercise, i: number) => {
+            const exercise = exerciseDB.find((e) => e.id === ex.exerciseId);
+            if (!exercise) return null;
+            return (
+              <div key={`${ex.exerciseId}-${i}`} className="animate-slide-up" style={{ animationDelay: `${i * 40}ms` }}>
+                <ExerciseRow
+                  exercise={exercise}
+                  sessionExercise={ex}
+                  onToggle={() => toggleExercise(i)}
+                  onSwap={() => setSwapTarget(i)}
+                />
+              </div>
+            );
+          })
+        )}
       </div>
 
       {/* Complete button + day picker */}

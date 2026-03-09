@@ -207,5 +207,6 @@ export interface StreakData {
 export type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
+export const DAY_DISPLAY_ORDER: DayOfWeek[] = [1, 2, 3, 4, 5, 6, 0]; // Mon-first display
 export const WORKOUT_DAYS: DayOfWeek[] = [0, 1, 2, 3, 4, 5, 6]; // Every day
 export const REST_DAYS: DayOfWeek[] = []; // No rest days
